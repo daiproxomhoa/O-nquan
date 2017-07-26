@@ -4,39 +4,30 @@ import Socket = SocketIO.Socket;
  */
 
 export class User {
-    static numUsers = 0;
-    userName: string;
-    connect: boolean = false;
+    _username: string;
 
-    constructor(public socket: Socket) {
-        socket.on("add user", this.onAddUser);
-        socket.on("new message", this.onNewMessage);
-        socket.on("disconnect", this.onUserDisconnect);
+    constructor(userInfo: any, public socket: Socket) {
+        this._username = userInfo;
+
     }
 
-    onUserDisconnect = ()=>{
-        this.socket.broadcast.emit("user left", this.userName);
+    get getUserName(): string {
+        return this._username;
     }
 
-    onAddUser = (userName: string) => {
-        if (this.connect) return;
-        this.userName = userName;
-        this.connect = true;
-        User.numUsers++;
-        this.socket.broadcast.emit("user joined", {username : this.userName,message : " joined the room!"});
+    on = (event: string, fn: Function, clear = true) => {
+        if (clear) this.socket.removeAllListeners(event);
+        this.socket.on(event, fn);
     }
 
-    onNewMessage = (msg: string) => {
-        this.socket.emit("new message", {
-            username: this.userName,
-            message: msg
-        });
-        this.socket.broadcast.emit("new message", {
-            username: this.userName,
-            message: msg
-        });
+    emit = (event: string, data?: any) => {
+        if (data) {
+            this.socket.emit(event, data);
+        } else {
+            this.socket.emit(event);
+        }
     }
-
-}/**
+}
+/**
  * Created by Vu Tien Dai on 05/07/2017.
  */

@@ -19,6 +19,20 @@ var Box = (function (_super) {
     __extends(Box, _super);
     function Box(number, type) {
         var _this = _super.call(this) || this;
+        _this.style = new PIXI.TextStyle({
+            fontFamily: 'Arial',
+            fontSize: 20,
+            fontStyle: 'italic',
+            fill: ['#BE3A11', '#FF902E'],
+            stroke: '#000000',
+            strokeThickness: 2,
+            dropShadow: true,
+            dropShadowColor: '#000000',
+            dropShadowAngle: Math.PI / 6,
+            dropShadowDistance: 2,
+            wordWrap: true,
+            wordWrapWidth: 440
+        });
         _this.createBox(type);
         _this.createNumber(_this, number);
         if (type == 1)
@@ -47,40 +61,12 @@ var Box = (function (_super) {
         this.addChild(spirte);
     };
     Box.prototype.createNumber = function (box, number) {
-        var style = new PIXI.TextStyle({
-            fontFamily: 'Arial',
-            fontSize: 20,
-            fontStyle: 'italic',
-            fill: ['#BE3A11', '#FF902E'],
-            stroke: '#000000',
-            strokeThickness: 2,
-            dropShadow: true,
-            dropShadowColor: '#000000',
-            dropShadowAngle: Math.PI / 6,
-            dropShadowDistance: 2,
-            wordWrap: true,
-            wordWrapWidth: 440
-        });
-        this.text = new PIXI.Text('' + number, style);
+        this.text = new PIXI.Text('' + number, this.style);
         this.text.x = 55;
         this.text.y = 50;
         box.addChild(this.text);
     };
     Box.prototype.setText = function (text) {
-        var style = new PIXI.TextStyle({
-            fontFamily: 'Arial',
-            fontSize: 20,
-            fontStyle: 'italic',
-            fill: ['#BE3A11', '#FF902E'],
-            stroke: '#000000',
-            strokeThickness: 2,
-            dropShadow: true,
-            dropShadowColor: '#000000',
-            dropShadowAngle: Math.PI / 6,
-            dropShadowDistance: 2,
-            wordWrap: true,
-            wordWrapWidth: 440
-        });
         this.text.text = '' + text;
     };
     return Box;

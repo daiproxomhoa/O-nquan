@@ -20,7 +20,7 @@ var Stone_1 = require("./Stone");
  */
 var Square = (function (_super) {
     __extends(Square, _super);
-    function Square(count, type, index, player) {
+    function Square(count, type, index) {
         if (count === void 0) { count = 0; }
         var _this = _super.call(this) || this;
         _this.count = count;
@@ -29,16 +29,18 @@ var Square = (function (_super) {
         _this.minDis = 5;
         _this.pos = 1;
         _this.seq = 0;
+        _this.endgame = false;
+        _this.player = viewGame_1.viewGame.player;
         _this.onDragStart = function (event) {
             _this.data = event.data;
             _this.alpha = 0.5;
             _this.dragging = true;
             _this.posx = _this.x;
             _this.posy = _this.y;
+            _this.scale.set(1.1);
         };
         _this.onDragEnd = function () {
-            // this.posx = this.x;
-            // this.posy = this.y;
+            _this.scale.set(1);
             if (_this.data == null)
                 return;
             _this.alpha = 1;
@@ -66,34 +68,17 @@ var Square = (function (_super) {
             }
         };
         _this.onCanMove = function (ct) {
+            var arraySquare = ct.parent.children; //12 ô
             if (ct.y > _this.posy - 80 && ct.y < _this.posy + 80 && (ct.x < _this.posx + 150 && ct.x > _this.posx + 40)) {
-                // this.emit("move");
-                if (ct.y > 130 && viewGame_1.viewGame.turn == false) {
-                    // viewGame.socket.emit("MoveRight", ct.parent.getChildIndex(ct));
-                    _this.onMoveRight(ct);
-                }
-                if (ct.y < 130 && viewGame_1.viewGame.turn == true) {
-                    // viewGame.socket.emit("MoveLeft", ct.parent.getChildIndex(ct));
-                    _this.onMoveLeft(ct);
-                }
-                // viewGame.socket.emit('YourTurn');
-                // this.onStopMove(ct);
+                _this.player.emit("move", { posi: _this.index + 6, dr: false });
+                viewGame_1.viewGame.clock.stop();
+                _this.onMoveRight(ct);
             }
             else if (ct.y > _this.posy - 80 && ct.y < _this.posy + 80 && (ct.x > _this.posx - 150 && ct.x < _this.posx - 40)) {
-                // this.emit("move");
-                // ct.position.set(this.posx, this.posy);
-                if (ct.y > 130 && viewGame_1.viewGame.turn == false) {
-                    // viewGame.socket.emit("MoveLeft", ct.parent.getChildIndex(ct));
-                    _this.onMoveLeft(ct);
-                }
-                if (ct.y < 130 && viewGame_1.viewGame.turn == true) {
-                    // viewGame.socket.emit("MoveRight", ct.parent.getChildIndex(ct));
-                    _this.onMoveRight(ct);
-                }
-                // viewGame.socket.emit('YourTurn');
-                // / this.onStopMove(ct);
+                _this.player.emit("move", { posi: _this.index + 6, dr: true });
+                viewGame_1.viewGame.clock.stop();
+                _this.onMoveLeft(ct);
             }
-            // else
             ct.position.set(_this.posx, _this.posy);
         };
         _this.onEatRight = function (arraySquare, Box) {
@@ -139,7 +124,7 @@ var Square = (function (_super) {
                     var oldPos = new PIXI.Point(arraySquare[_this.pos].position.x, arraySquare[_this.pos].position.y);
                     arraySquare[14].position.set(oldPos.x, oldPos.y);
                     _this.MoveEat(arraySquare[_this.pos], arraySquare[14]);
-                    if (viewGame_1.viewGame.turn == true) {
+                    if (viewGame_1.viewGame.turn != viewGame_1.viewGame.game_turn) {
                         var square_1 = arraySquare[13];
                         TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[13].x, y: arraySquare[13].y });
                         setTimeout(function () {
@@ -274,7 +259,7 @@ var Square = (function (_super) {
                     var oldPos = new PIXI.Point(arraySquare[_this.pos].position.x, arraySquare[_this.pos].position.y);
                     arraySquare[14].position.set(oldPos.x, oldPos.y);
                     _this.MoveEat(arraySquare[_this.pos], arraySquare[14]);
-                    if (viewGame_1.viewGame.turn == true) {
+                    if (viewGame_1.viewGame.turn != viewGame_1.viewGame.game_turn) {
                         var square_3 = arraySquare[13];
                         TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[13].x, y: arraySquare[13].y });
                         setTimeout(function () {
@@ -375,25 +360,26 @@ var Square = (function (_super) {
         else {
             _this.addStone(count, 0, 0);
         }
-        if (index != 0 && index != 6 && index != 12 && index != 13 && index != 14) {
+        if (index > 0 && index < 6) {
             _this.interactive = true;
             _this.on('pointerdown', _this.onDragStart)
                 .on('pointerup', _this.onDragEnd)
                 .on('pointerupoutside', _this.onDragEnd)
-                .on('pointermove', _this.onDragMove);
+                .on('pointermove', _this.onDragMove)
+                .on("pointerover", function () {
+                _this.scale.set(1.1);
+            })
+                .on("pointerout", function () {
+                _this.scale.set(1);
+            })
+                .on("finish move", function () {
+                if (viewGame_1.viewGame.turn == viewGame_1.viewGame.game_turn)
+                    viewGame_1.viewGame.player.emit("change turn");
+            });
         }
-        if (viewGame_1.viewGame.turn == false && _this.index > 6) {
-            _this.interactive = false;
-        }
-        if (viewGame_1.viewGame.turn == true && _this.index > 0 && _this.index < 6) {
-            _this.interactive = false;
-        }
-        _this.posx = _this.x;
-        _this.posy = _this.y;
         return _this;
     }
     Square.prototype.addStone = function (count, type, s) {
-        // this.createStone(Math.floor((Math.random() - Math.random()) * 25) + 40, Math.floor((Math.random() - Math.random()) * 25) + 40, type, s);
         this.createStone(35, 35, type, s);
     };
     Square.prototype.createStone = function (x, y, type, s) {
@@ -403,8 +389,8 @@ var Square = (function (_super) {
             var rdY = void 0;
             if (type == 1) {
                 stone = new Stone_1.Stone(1);
-                stone.x = 40;
-                stone.y = 100;
+                stone.x = 27;
+                stone.y = 95;
             }
             else if (type == 2) {
                 stone = new Stone_1.Stone(2);
@@ -417,140 +403,125 @@ var Square = (function (_super) {
                 stone.x = x;
                 stone.y = y;
             }
-            // if (s == 1) {
-            //     rdX = Math.floor(Math.random() * 20) + 20;
-            //     rdY = Math.floor(Math.random() * 20) + 30;
-            // }
-            // else if (s == 2) {
-            //     rdX = Math.floor(Math.random() * 20) + 20;
-            //     rdY = Math.floor(Math.random() * 20) + 75;
-            //
-            // }
-            // else
-            //     {
             rdX = Math.floor((Math.random() - Math.random()) * 15) + 20;
             rdY = Math.floor((Math.random() - Math.random()) * 25) + 30;
-            // }
             this.addChild(stone);
             this.count--;
             this.createStone(rdX, rdY, 0, s);
         }
     };
     Square.prototype.checkStoneLast = function (arraySquare) {
-        var count = 0;
+        var team1 = 0;
+        var team2 = 0;
         for (var i = 0; i < arraySquare.length; i++) {
-            if (viewGame_1.viewGame.turn == false && i > 0 && i < 6) {
+            if (i > 0 && i < 6) {
                 if (arraySquare[i].children.length == 0) {
-                    count++;
+                    team1++;
                 }
             }
-            if (viewGame_1.viewGame.turn == true && i > 6 && i < 12) {
+            if (i > 6 && i < 12) {
                 if (arraySquare[i].children.length == 0) {
-                    count++;
+                    team2++;
                 }
             }
         }
-        if (count == 5) {
-            this.SpeardStone(arraySquare);
-            console.log("Chao dz");
+        if (team1 == 5) {
+            this.SpeardStone(arraySquare, 1);
+        }
+        if (team2 == 5) {
+            this.SpeardStone(arraySquare, 2);
         }
     };
-    Square.prototype.SpeardStone = function (arraySquare) {
+    Square.prototype.SpeardStone = function (arraySquare, team) {
         var _this = this;
         var arrayBox = arraySquare[1].parent.parent.getChildAt(1); //12 ô
         var Box = arrayBox.children; //12 ô
         var spread = arraySquare[14];
         var oldPos;
-        if (viewGame_1.viewGame.turn == false) {
+        if (team == 1) {
             oldPos = new PIXI.Point(arraySquare[12].position.x, arraySquare[12].position.y);
             spread.position.set(oldPos.x, oldPos.y);
-            var Stones = arraySquare[12].children;
-            var n = Stones.length;
-            var count_1 = 1;
-            var i = 0;
-            if (n > 4) {
-                while (count_1 < 6) {
-                    if (Stones[i].getType() == 0) {
-                        spread.addChild(Stones[i]);
-                        count_1++;
-                    }
-                    else
-                        i++;
+            var Square_1 = arraySquare[12].children;
+            var n = Square_1.length;
+            var count_1 = 0;
+            var isExist = false;
+            console.log("n :" + n);
+            for (var i = 0; i < n; i++) {
+                var x = Square_1[i].getType;
+                if (x == 0) {
+                    spread.addChild(Square_1[i]);
+                    i--;
+                    count_1++;
                 }
-                count_1 = 1;
-                var Stone_2 = spread.children;
-                var m = Stone_2.length;
-                for (var i_1 = 0; i_1 < 5; i_1++) {
+                else
+                    isExist = true;
+                if (count_1 == 5)
+                    break;
+                if (isExist == false && count_1 == n)
+                    break;
+                if (isExist == true && count_1 == n - 1)
+                    break;
+            }
+            var Stone_2 = spread.children;
+            var m = Stone_2.length;
+            count_1 = 1;
+            if (m == 0) {
+                viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 3 });
+            }
+            for (var i = 0; i < m; i++) {
+                setTimeout(function () {
+                    TweenMax.to(spread, 0.4, { x: arraySquare[count_1].x, y: arraySquare[count_1].y });
                     setTimeout(function () {
-                        TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[count_1].x, y: arraySquare[count_1].y });
-                        setTimeout(function () {
-                            var box = Box[count_1];
-                            Stone_2[0].position.set(35, 35);
-                            arraySquare[count_1].addChild(Stone_2[0]);
-                            box.setText(_this.checkPoint(arraySquare[count_1]));
-                            count_1++;
-                            var box1 = Box[12];
-                            box1.setText(_this.checkPoint(arraySquare[12]) + _this.checkPoint(arraySquare[14]));
-                        }, 450);
-                    }, 700 + 470 * i_1);
-                }
+                        var box = Box[count_1];
+                        Stone_2[0].position.set(35, 35);
+                        arraySquare[count_1].addChild(Stone_2[0]);
+                        box.setText(_this.checkPoint(arraySquare[count_1]));
+                        count_1++;
+                        var box1 = Box[12];
+                        box1.setText(_this.checkPoint(arraySquare[12]) + _this.checkPoint(spread));
+                    }, 450);
+                }, 700 + 470 * i);
             }
         }
-        if (viewGame_1.viewGame.turn == true) {
+        if (team == 2) {
             oldPos = new PIXI.Point(arraySquare[13].position.x, arraySquare[13].position.y);
             spread.position.set(oldPos.x, oldPos.y);
-            var Stones = arraySquare[13].children;
-            var n = Stones.length;
-            var count_2 = 1;
-            var i = 0;
-            if (n > 4) {
-                while (count_2 < 6) {
-                    if (Stones[i].getType() == 0) {
-                        spread.addChild(Stones[i]);
-                        count_2++;
-                    }
-                    else
-                        i++;
+            var Square_2 = arraySquare[13].children;
+            var n = Square_2.length;
+            var count_2 = 0;
+            var isExist = false;
+            for (var i = 0; i < n; i++) {
+                var x = Square_2[i].getType;
+                if (x == 0) {
+                    spread.addChild(Square_2[i]);
+                    i--;
+                    count_2++;
                 }
-                count_2 = 7;
-                var Stone_3 = spread.children;
-                var m = Stone_3.length;
-                for (var i_2 = 0; i_2 < 5; i_2++) {
+                else
+                    isExist = true;
+                if (count_2 == 5)
+                    break;
+                if (isExist == false && count_2 == n)
+                    break;
+                if (isExist == true && count_2 == n - 1)
+                    break;
+            }
+            count_2 = 7;
+            var Stone_3 = spread.children;
+            var m = Stone_3.length;
+            for (var i = 0; i < m; i++) {
+                setTimeout(function () {
+                    TweenMax.to(spread, 0.4, { x: arraySquare[count_2].x, y: arraySquare[count_2].y });
                     setTimeout(function () {
-                        TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[count_2].x, y: arraySquare[count_2].y });
-                        setTimeout(function () {
-                            var box = Box[count_2];
-                            Stone_3[0].position.set(35, 35);
-                            arraySquare[count_2].addChild(Stone_3[0]);
-                            box.setText(_this.checkPoint(arraySquare[count_2]));
-                            count_2++;
-                            var box1 = Box[13];
-                            box1.setText(_this.checkPoint(arraySquare[13]) + _this.checkPoint(arraySquare[14]));
-                        }, 450);
-                    }, 700 + 470 * i_2);
-                }
-            }
-        }
-    };
-    Square.prototype.onSquareTurn = function (arraySquare) {
-        viewGame_1.viewGame.turn = !viewGame_1.viewGame.turn;
-        if (!viewGame_1.viewGame.turn) {
-            for (var i = 0; i < arraySquare.length - 2; i++) {
-                if (i > 0 && i < 6) {
-                    arraySquare[i].interactive = true;
-                }
-                else {
-                    arraySquare[i].interactive = false;
-                }
-            }
-        }
-        else {
-            for (var i = 0; i < arraySquare.length - 3; i++) {
-                if (i > 6)
-                    arraySquare[i].interactive = true;
-                else {
-                    arraySquare[i].interactive = false;
-                }
+                        var box = Box[count_2];
+                        Stone_3[0].position.set(35, 35);
+                        arraySquare[count_2].addChild(Stone_3[0]);
+                        box.setText(_this.checkPoint(arraySquare[count_2]));
+                        count_2++;
+                        var box1 = Box[13];
+                        box1.setText(_this.checkPoint(arraySquare[13]) + _this.checkPoint(spread));
+                    }, 450);
+                }, 700 + 470 * i);
             }
         }
     };
@@ -565,7 +536,6 @@ var Square = (function (_super) {
     Square.prototype.checkForRight = function (arraySquare, v, Box, ct) {
         var _this = this;
         this.onEatRight(arraySquare, Box);
-        ct.position.set(this.posx, this.posy);
         if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 5 && this.pos != 11) {
             this.posx = arraySquare[v].x;
             this.posy = arraySquare[v].y;
@@ -573,18 +543,19 @@ var Square = (function (_super) {
         }
         else {
             setTimeout(function () {
-                _this.onStartMove(arraySquare[1]);
-                _this.checkStoneLast(arraySquare);
-                _this.onSquareTurn(arraySquare);
-                console.log(viewGame_1.viewGame.turn);
-                _this.checkStoneLast(arraySquare);
+                _this.checkEndGame(arraySquare);
+                if (_this.endgame == false)
+                    _this.checkStoneLast(arraySquare);
+                if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
+                    _this.onStartMove(arraySquare[1]);
+                }
+                _this.emit("finish move");
             }, 500);
         }
     };
     Square.prototype.checkForLeft = function (arraySquare, v, Box, ct) {
         var _this = this;
         this.onEatLeft(arraySquare, Box);
-        ct.position.set(this.posx, this.posy);
         if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 7 && this.pos != 1) {
             this.posx = arraySquare[v].x;
             this.posy = arraySquare[v].y;
@@ -592,21 +563,71 @@ var Square = (function (_super) {
         }
         else {
             setTimeout(function () {
-                _this.onStartMove(arraySquare[1]);
-                _this.checkStoneLast(arraySquare);
-                _this.onSquareTurn(arraySquare);
-                console.log(viewGame_1.viewGame.turn);
-                _this.checkStoneLast(arraySquare);
-            }, 500);
+                _this.checkEndGame(arraySquare);
+                if (_this.endgame == false)
+                    _this.checkStoneLast(arraySquare);
+                console.log(viewGame_1.viewGame.turn + "  " + viewGame_1.viewGame.game_turn);
+                if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
+                    _this.onStartMove(arraySquare[1]);
+                    console.log("DAI");
+                }
+                _this.emit("finish move");
+            }, 400);
         }
     };
     Square.prototype.checkPoint = function (ct) {
         var stone = ct.children;
         var count = 0;
         for (var i = 0; i < stone.length; i++) {
-            count += stone[i].getPoint();
+            count += stone[i].getPoint;
         }
         return count;
+    };
+    Square.prototype.checkEndGame = function (arraySquare) {
+        var Stone1 = arraySquare[12].children;
+        var n1 = Stone1.length;
+        var count = 0;
+        for (var i = 0; i < n1; i++) {
+            if (Stone1[i].getType != 0)
+                count++;
+        }
+        var Stone2 = arraySquare[13].children;
+        var n2 = Stone2.length;
+        for (var i = 0; i < n2; i++) {
+            if (Stone2[i].getType != 0)
+                count++;
+        }
+        if (count == 2) {
+            var result = this.countPoit(arraySquare);
+            this.endgame = true;
+            viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: result });
+        }
+    };
+    Square.prototype.countPoit = function (arraySquare) {
+        var stone1 = arraySquare[12].children;
+        var count1 = 0;
+        for (var i = 0; i < stone1.length; i++) {
+            count1 += stone1[i].getPoint;
+        }
+        var stone11 = arraySquare[0].children;
+        for (var i = 0; i < stone11.length; i++) {
+            count1 += stone11[i].getPoint;
+        }
+        var stone2 = arraySquare[13].children;
+        var count2 = 0;
+        for (var i = 0; i < stone2.length; i++) {
+            count2 += stone2[i].getPoint;
+        }
+        var stone22 = arraySquare[6].children;
+        for (var i = 0; i < stone22.length; i++) {
+            count2 += stone22[i].getPoint;
+        }
+        if (count1 > count2)
+            return 1;
+        else if (count1 < count2)
+            return 3;
+        else
+            return 2;
     };
     return Square;
 }(Container));

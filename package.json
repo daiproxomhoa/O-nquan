@@ -2,7 +2,8 @@
   "name": "application-name",
   "version": "0.0.1",
   "scripts": {
-    "start-server": "node Server/Main.js"
+    "start-server": "node Server/Main.js",
+    "build": "webpack"
   },
   "dependencies": {
     "@types/gsap": "^1.19.1",

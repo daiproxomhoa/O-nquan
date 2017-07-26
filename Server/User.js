@@ -4,39 +4,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Created by Administrator on 25/02/2017.
  */
 var User = (function () {
-    function User(socket) {
+    function User(userInfo, socket) {
         var _this = this;
         this.socket = socket;
-        this.connect = false;
-        this.onUserDisconnect = function () {
-            _this.socket.broadcast.emit("user left", _this.userName);
+        this.on = function (event, fn, clear) {
+            if (clear === void 0) { clear = true; }
+            if (clear)
+                _this.socket.removeAllListeners(event);
+            _this.socket.on(event, fn);
         };
-        this.onAddUser = function (userName) {
-            if (_this.connect)
-                return;
-            _this.userName = userName;
-            _this.connect = true;
-            User.numUsers++;
-            _this.socket.broadcast.emit("user joined", { username: _this.userName, message: " joined the room!" });
+        this.emit = function (event, data) {
+            if (data) {
+                _this.socket.emit(event, data);
+            }
+            else {
+                _this.socket.emit(event);
+            }
         };
-        this.onNewMessage = function (msg) {
-            _this.socket.emit("new message", {
-                username: _this.userName,
-                message: msg
-            });
-            _this.socket.broadcast.emit("new message", {
-                username: _this.userName,
-                message: msg
-            });
-        };
-        socket.on("add user", this.onAddUser);
-        socket.on("new message", this.onNewMessage);
-        socket.on("disconnect", this.onUserDisconnect);
+        this._username = userInfo;
     }
+    Object.defineProperty(User.prototype, "getUserName", {
+        get: function () {
+            return this._username;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return User;
-}()); /**
+}());
+exports.User = User;
+/**
  * Created by Vu Tien Dai on 05/07/2017.
  */
-User.numUsers = 0;
-exports.User = User;
 //# sourceMappingURL=User.js.map
