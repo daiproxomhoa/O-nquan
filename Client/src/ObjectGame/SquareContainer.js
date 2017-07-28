@@ -81,14 +81,11 @@ var Square = (function (_super) {
             }
             ct.position.set(_this.posx, _this.posy);
         };
-        _this.onEatRight = function (arraySquare, Box) {
+        _this.onEatRight = function (arraySquare, Box, v) {
             var check;
             var s = 1;
             var one = arraySquare[0].children.length;
             var two = arraySquare[6].children.length;
-            var v = _this.pos + 1;
-            if (v == 12)
-                v = 0;
             var _loop_1 = function () {
                 _this.stop = true;
                 var check_1 = false;
@@ -143,14 +140,13 @@ var Square = (function (_super) {
                             box2.setText(_this.checkPoint(square_2));
                         }, s * 400);
                     }
+                    s++;
+                    v = _this.pos + 1;
+                    if (v == 12)
+                        v = 0;
+                    one = arraySquare[0].children.length;
+                    two = arraySquare[6].children.length;
                 }
-                s++;
-                v = _this.pos + 1;
-                if (v == 12)
-                    v = 0;
-                one = arraySquare[0].children.length;
-                two = arraySquare[6].children.length;
-                // if(arraySquare[v].children.length == 0)
             };
             while (arraySquare[v].children.length == 0) {
                 var state_1 = _loop_1();
@@ -216,17 +212,13 @@ var Square = (function (_super) {
                 var v = j + 1;
                 if (v == 12)
                     v = 0;
-                _this.onEatRight(arraySquare, Box);
                 _this.checkForRight(arraySquare, v, Box, ct);
             }, n * 450 + 650);
         };
-        _this.onEatLeft = function (arraySquare, Box) {
+        _this.onEatLeft = function (arraySquare, Box, v) {
             var check;
             var one = arraySquare[0].children.length;
             var two = arraySquare[6].children.length;
-            var v = _this.pos - 1;
-            if (v == -1)
-                v = 11;
             var _loop_2 = function () {
                 _this.stop = true;
                 if (_this.pos == 8) {
@@ -352,7 +344,6 @@ var Square = (function (_super) {
                 var v = j - 1;
                 if (v == -1)
                     v = 11;
-                _this.onEatLeft(arraySquare, Box);
                 _this.checkForLeft(arraySquare, v, Box, ct);
             }, n * 450 + 650);
         };
@@ -537,6 +528,7 @@ var Square = (function (_super) {
     };
     Square.prototype.checkForRight = function (arraySquare, v, Box, ct) {
         var _this = this;
+        this.onEatRight(arraySquare, Box, v);
         if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 5 && this.pos != 11) {
             this.posx = arraySquare[v].x;
             this.posy = arraySquare[v].y;
@@ -556,6 +548,7 @@ var Square = (function (_super) {
     };
     Square.prototype.checkForLeft = function (arraySquare, v, Box, ct) {
         var _this = this;
+        this.onEatLeft(arraySquare, Box, v);
         if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 7 && this.pos != 1) {
             this.posx = arraySquare[v].x;
             this.posy = arraySquare[v].y;

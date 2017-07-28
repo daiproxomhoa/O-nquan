@@ -16,8 +16,8 @@ import {clock} from  "../ObjectGame/Clock";
 import TweenMax = gsap.TweenMax;
 export class viewGame {
     app = new PIXI.Application(1200, 640, {backgroundColor: 0x1099bb});
-    // gametable = [7, 5, 5, 1, 0, 0, 7, 5, 5, 1, 0, 0, 7, 7];
-    gametable = [1,5,5,5,5,5,1,5,5,5,5,5, 0,0];
+    gametable = [7, 5, 5, 1, 0, 0, 7, 5, 5, 1, 0, 0, 7, 7];
+    // gametable = [1,5,5,5,5,5,1,5,5,5,5,5, 0,0];
     field = new PIXI.Container();
     private broad_main;
     private broad;

@@ -19,8 +19,8 @@ var viewGame = (function () {
     function viewGame() {
         var _this = this;
         this.app = new PIXI.Application(1200, 640, { backgroundColor: 0x1099bb });
-        // gametable = [7, 5, 5, 1, 0, 0, 7, 5, 5, 1, 0, 0, 7, 7];
-        this.gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
+        this.gametable = [7, 5, 5, 1, 0, 0, 7, 5, 5, 1, 0, 0, 7, 7];
+        // gametable = [1,5,5,5,5,5,1,5,5,5,5,5, 0,0];
         this.field = new PIXI.Container();
         this.FinishGame = false;
         this.createFlag = function () {
