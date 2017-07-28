@@ -19,9 +19,10 @@ var viewGame = (function () {
     function viewGame() {
         var _this = this;
         this.app = new PIXI.Application(1200, 640, { backgroundColor: 0x1099bb });
+        // gametable = [7, 5, 5, 1, 0, 0, 7, 5, 5, 1, 0, 0, 7, 7];
         this.gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
-        // gametable = [5,0,0,1,0,0,5,0,0,1,0,0, 0,0];
         this.field = new PIXI.Container();
+        this.FinishGame = false;
         this.createFlag = function () {
             _this.flag = new PIXI.Sprite(Utils_1.Utils.Flag);
             _this.flag.scale.set(0.65);
@@ -42,24 +43,26 @@ var viewGame = (function () {
             viewGame.player.on("new message", function (data) {
                 _this.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
             });
-            viewGame.player.on("End_turn", _this.onAutoEndturn);
+            // viewGame.player.on("End_turn",this.onAutoEndturn);
         };
         this.onAutoEndturn = function () {
-            var bool;
-            var rd = Math.round(Math.random());
-            if (rd == 1)
-                bool = true;
-            else
-                bool = false;
-            var Square = _this.broad.children;
-            for (var i = 1; i < 6; i++) {
-                if (Square[i].children.length != 0) {
-                    viewGame.player.emit("move", { posi: i + 6, dr: bool });
-                    if (bool == false)
-                        _this.broad.getChildAt(i).onMoveRight(_this.broad.getChildAt(i));
-                    else
-                        _this.broad.getChildAt(i).onMoveLeft(_this.broad.getChildAt(i));
-                    return;
+            if (_this.FinishGame == false) {
+                var bool = void 0;
+                var rd = Math.round(Math.random());
+                if (rd == 1)
+                    bool = true;
+                else
+                    bool = false;
+                var Square_1 = _this.broad.children;
+                for (var i = 1; i < 6; i++) {
+                    if (Square_1[i].children.length != 0) {
+                        viewGame.player.emit("move", { posi: i + 6, dr: bool });
+                        if (bool == false)
+                            _this.broad.getChildAt(i).onMoveRight(_this.broad.getChildAt(i));
+                        else
+                            _this.broad.getChildAt(i).onMoveLeft(_this.broad.getChildAt(i));
+                        return;
+                    }
                 }
             }
         };
@@ -77,6 +80,7 @@ var viewGame = (function () {
         };
         this.onEndGame = function (data) {
             console.log("End game :" + data.result);
+            _this.FinishGame = true;
             _this.broad.getChildAt(1).onStopMove(_this.broad.getChildAt(1));
             if (data.result == 1) {
                 var win = new PIXI.Sprite(Utils_1.Utils.Win);
@@ -110,9 +114,11 @@ var viewGame = (function () {
             console.log(data);
             viewGame.clock.restart();
             if (viewGame.turn == viewGame.game_turn) {
+                _this.broad.getChildAt(1).onStartMove(_this.broad.getChildAt(1));
                 TweenMax.to(_this.flag, 0.5, { x: 700, y: 460 });
             }
             else {
+                _this.broad.getChildAt(1).onStopMove(_this.broad.getChildAt(1));
                 TweenMax.to(_this.flag, 0.5, { x: 370, y: 90 });
             }
         };

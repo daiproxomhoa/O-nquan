@@ -7831,9 +7831,10 @@ var viewGame = (function () {
     function viewGame() {
         var _this = this;
         this.app = new PIXI.Application(1200, 640, { backgroundColor: 0x1099bb });
-        this.gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
-        // gametable = [5,0,0,1,0,0,5,0,0,1,0,0, 0,0];
+        this.gametable = [7, 5, 5, 1, 0, 0, 7, 5, 5, 1, 0, 0, 7, 7];
+        // gametable = [1,5,5,5,5,5,1,5,5,5,5,5, 0,0];
         this.field = new PIXI.Container();
+        this.FinishGame = false;
         this.createFlag = function () {
             _this.flag = new PIXI.Sprite(Utils_1.Utils.Flag);
             _this.flag.scale.set(0.65);
@@ -7854,24 +7855,26 @@ var viewGame = (function () {
             viewGame.player.on("new message", function (data) {
                 _this.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
             });
-            viewGame.player.on("End_turn", _this.onAutoEndturn);
+            // viewGame.player.on("End_turn",this.onAutoEndturn);
         };
         this.onAutoEndturn = function () {
-            var bool;
-            var rd = Math.round(Math.random());
-            if (rd == 1)
-                bool = true;
-            else
-                bool = false;
-            var Square = _this.broad.children;
-            for (var i = 1; i < 6; i++) {
-                if (Square[i].children.length != 0) {
-                    viewGame.player.emit("move", { posi: i + 6, dr: bool });
-                    if (bool == false)
-                        _this.broad.getChildAt(i).onMoveRight(_this.broad.getChildAt(i));
-                    else
-                        _this.broad.getChildAt(i).onMoveLeft(_this.broad.getChildAt(i));
-                    return;
+            if (_this.FinishGame == false) {
+                var bool = void 0;
+                var rd = Math.round(Math.random());
+                if (rd == 1)
+                    bool = true;
+                else
+                    bool = false;
+                var Square_1 = _this.broad.children;
+                for (var i = 1; i < 6; i++) {
+                    if (Square_1[i].children.length != 0) {
+                        viewGame.player.emit("move", { posi: i + 6, dr: bool });
+                        if (bool == false)
+                            _this.broad.getChildAt(i).onMoveRight(_this.broad.getChildAt(i));
+                        else
+                            _this.broad.getChildAt(i).onMoveLeft(_this.broad.getChildAt(i));
+                        return;
+                    }
                 }
             }
         };
@@ -7889,6 +7892,7 @@ var viewGame = (function () {
         };
         this.onEndGame = function (data) {
             console.log("End game :" + data.result);
+            _this.FinishGame = true;
             _this.broad.getChildAt(1).onStopMove(_this.broad.getChildAt(1));
             if (data.result == 1) {
                 var win = new PIXI.Sprite(Utils_1.Utils.Win);
@@ -7922,9 +7926,11 @@ var viewGame = (function () {
             console.log(data);
             viewGame.clock.restart();
             if (viewGame.turn == viewGame.game_turn) {
+                _this.broad.getChildAt(1).onStartMove(_this.broad.getChildAt(1));
                 TweenMax.to(_this.flag, 0.5, { x: 700, y: 460 });
             }
             else {
+                _this.broad.getChildAt(1).onStopMove(_this.broad.getChildAt(1));
                 TweenMax.to(_this.flag, 0.5, { x: 370, y: 90 });
             }
         };
@@ -32921,7 +32927,7 @@ var clock = (function (_super) {
     __extends(clock, _super);
     function clock() {
         var _this = _super.call(this) || this;
-        _this.timedisplay = 4;
+        _this.timedisplay = 1;
         _this.timecount = 0;
         _this.style = new PIXI.TextStyle({
             fontFamily: 'Cooper Black',
@@ -33067,6 +33073,7 @@ var Square = (function (_super) {
         };
         _this.onEatRight = function (arraySquare, Box) {
             var check;
+            var s = 1;
             var one = arraySquare[0].children.length;
             var two = arraySquare[6].children.length;
             var v = _this.pos + 1;
@@ -33115,7 +33122,7 @@ var Square = (function (_super) {
                             _this.MoveEat(arraySquare[14], arraySquare[13]);
                             var box2 = Box[13];
                             box2.setText(_this.checkPoint(square_1));
-                        }, 400);
+                        }, s * 400);
                     }
                     else {
                         var square_2 = arraySquare[12];
@@ -33124,14 +33131,16 @@ var Square = (function (_super) {
                             _this.MoveEat(arraySquare[14], arraySquare[12]);
                             var box2 = Box[12];
                             box2.setText(_this.checkPoint(square_2));
-                        }, 400);
+                        }, s * 400);
                     }
                 }
+                s++;
                 v = _this.pos + 1;
                 if (v == 12)
                     v = 0;
                 one = arraySquare[0].children.length;
                 two = arraySquare[6].children.length;
+                // if(arraySquare[v].children.length == 0)
             };
             while (arraySquare[v].children.length == 0) {
                 var state_1 = _loop_1();
@@ -33197,8 +33206,8 @@ var Square = (function (_super) {
                 var v = j + 1;
                 if (v == 12)
                     v = 0;
+                _this.onEatRight(arraySquare, Box);
                 _this.checkForRight(arraySquare, v, Box, ct);
-                _this.pos = null;
             }, n * 450 + 650);
         };
         _this.onEatLeft = function (arraySquare, Box) {
@@ -33333,8 +33342,8 @@ var Square = (function (_super) {
                 var v = j - 1;
                 if (v == -1)
                     v = 11;
+                _this.onEatLeft(arraySquare, Box);
                 _this.checkForLeft(arraySquare, v, Box, ct);
-                _this.pos = null;
             }, n * 450 + 650);
         };
         _this.index = index;
@@ -33429,7 +33438,6 @@ var Square = (function (_super) {
             var n = Square_1.length;
             var count_1 = 0;
             var isExist = false;
-            console.log("n :" + n);
             for (var i = 0; i < n; i++) {
                 var x = Square_1[i].getType;
                 if (x == 0) {
@@ -33519,7 +33527,6 @@ var Square = (function (_super) {
     };
     Square.prototype.checkForRight = function (arraySquare, v, Box, ct) {
         var _this = this;
-        this.onEatRight(arraySquare, Box);
         if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 5 && this.pos != 11) {
             this.posx = arraySquare[v].x;
             this.posy = arraySquare[v].y;
@@ -33527,7 +33534,7 @@ var Square = (function (_super) {
         }
         else {
             setTimeout(function () {
-                _this.checkEndGame(arraySquare);
+                _this.checkEndGame(arraySquare, Box);
                 if (_this.endgame == false)
                     _this.checkStoneLast(arraySquare);
                 if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
@@ -33539,7 +33546,6 @@ var Square = (function (_super) {
     };
     Square.prototype.checkForLeft = function (arraySquare, v, Box, ct) {
         var _this = this;
-        this.onEatLeft(arraySquare, Box);
         if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 7 && this.pos != 1) {
             this.posx = arraySquare[v].x;
             this.posy = arraySquare[v].y;
@@ -33547,13 +33553,11 @@ var Square = (function (_super) {
         }
         else {
             setTimeout(function () {
-                _this.checkEndGame(arraySquare);
+                _this.checkEndGame(arraySquare, Box);
                 if (_this.endgame == false)
                     _this.checkStoneLast(arraySquare);
-                console.log(viewGame_1.viewGame.turn + "  " + viewGame_1.viewGame.game_turn);
                 if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
                     _this.onStartMove(arraySquare[1]);
-                    console.log("DAI");
                 }
                 _this.emit("finish move");
             }, 400);
@@ -33567,7 +33571,7 @@ var Square = (function (_super) {
         }
         return count;
     };
-    Square.prototype.checkEndGame = function (arraySquare) {
+    Square.prototype.checkEndGame = function (arraySquare, Box) {
         var Stone1 = arraySquare[12].children;
         var n1 = Stone1.length;
         var count = 0;
@@ -33582,36 +33586,53 @@ var Square = (function (_super) {
                 count++;
         }
         if (count == 2) {
-            var result = this.countPoit(arraySquare);
+            this.countPoit(arraySquare, Box);
             this.endgame = true;
-            viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: result });
         }
     };
-    Square.prototype.countPoit = function (arraySquare) {
-        var stone1 = arraySquare[12].children;
-        var count1 = 0;
-        for (var i = 0; i < stone1.length; i++) {
-            count1 += stone1[i].getPoint;
+    Square.prototype.countPoit = function (arraySquare, Box) {
+        var _this = this;
+        var _loop_3 = function (i) {
+            setTimeout(function () {
+                var home1 = Box[12];
+                var home2 = Box[13];
+                TweenMax.to(arraySquare[i], 0.4, { x: arraySquare[12].x, y: arraySquare[12].y });
+                setTimeout(function () {
+                    var box = Box[i];
+                    var oldPos = new PIXI.Point(arraySquare[i].x, arraySquare[i].y);
+                    _this.MoveEat(arraySquare[i], arraySquare[12]);
+                    arraySquare[i].position.set(oldPos.x, oldPos.y);
+                    box.setText(_this.checkPoint(arraySquare[i]));
+                    home1.setText(_this.checkPoint(arraySquare[12]));
+                    console.log("Nhu ccc");
+                }, 400);
+                TweenMax.to(arraySquare[i + 6], 0.4, { x: arraySquare[13].x, y: arraySquare[13].y });
+                setTimeout(function () {
+                    var box = Box[i + 6];
+                    var oldPos = new PIXI.Point(arraySquare[i + 6].x, arraySquare[i + 6].y);
+                    _this.MoveEat(arraySquare[i + 6], arraySquare[13]);
+                    arraySquare[i].position.set(oldPos.x, oldPos.y);
+                    box.setText(_this.checkPoint(arraySquare[i + 6]));
+                    home2.setText(_this.checkPoint(arraySquare[13]));
+                }, 400);
+            }, (i + 1) * 450);
+        };
+        for (var i = 0; i < 6; i++) {
+            _loop_3(i);
         }
-        var stone11 = arraySquare[0].children;
-        for (var i = 0; i < stone11.length; i++) {
-            count1 += stone11[i].getPoint;
-        }
-        var stone2 = arraySquare[13].children;
-        var count2 = 0;
-        for (var i = 0; i < stone2.length; i++) {
-            count2 += stone2[i].getPoint;
-        }
-        var stone22 = arraySquare[6].children;
-        for (var i = 0; i < stone22.length; i++) {
-            count2 += stone22[i].getPoint;
-        }
-        if (count1 > count2)
-            return 1;
-        else if (count1 < count2)
-            return 3;
-        else
-            return 2;
+        var count1;
+        var count2;
+        setTimeout(function () {
+            count1 = _this.checkPoint(arraySquare[12]);
+            count2 = _this.checkPoint(arraySquare[13]);
+            if (count1 > count2)
+                viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 1 });
+            else if (count1 < count2)
+                viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 3 });
+            else
+                viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 2 });
+            ;
+        }, 7 * 450);
     };
     return Square;
 }(Container));

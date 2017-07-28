@@ -16,8 +16,8 @@ import {clock} from  "../ObjectGame/Clock";
 import TweenMax = gsap.TweenMax;
 export class viewGame {
     app = new PIXI.Application(1200, 640, {backgroundColor: 0x1099bb});
-    gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
-    // gametable = [5,0,0,1,0,0,5,0,0,1,0,0, 0,0];
+    // gametable = [7, 5, 5, 1, 0, 0, 7, 5, 5, 1, 0, 0, 7, 7];
+    gametable = [1,5,5,5,5,5,1,5,5,5,5,5, 0,0];
     field = new PIXI.Container();
     private broad_main;
     private broad;
@@ -30,6 +30,7 @@ export class viewGame {
     private messageBox: ScrollPane;
     public static clock;
     private flag;
+    private FinishGame =false;
 
     constructor() {
         viewGame.player = new Player(this);
@@ -60,9 +61,10 @@ export class viewGame {
         viewGame.player.on("new message", (data: any) => {
             this.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
         });
-       viewGame.player.on("End_turn",this.onAutoEndturn);
+       // viewGame.player.on("End_turn",this.onAutoEndturn);
     }
     onAutoEndturn=()=>{
+        if(this.FinishGame==false){
         let bool ;
         let rd = Math.round(Math.random());
         if(rd==1)
@@ -79,7 +81,7 @@ export class viewGame {
                     this.broad.getChildAt(i).onMoveLeft(this.broad.getChildAt(i))
                 return;
             }
-        }
+        }}
 
     }
     onStartGame = (data: any) => {
@@ -96,6 +98,7 @@ export class viewGame {
     }
     onEndGame = (data: any) => {
         console.log("End game :" + data.result);
+        this.FinishGame=true;
         this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
         if (data.result == 1) {
             let win = new PIXI.Sprite(Utils.Win);
@@ -133,9 +136,11 @@ export class viewGame {
         console.log(data);
         viewGame.clock.restart();
         if (viewGame.turn == viewGame.game_turn) {
+            this.broad.getChildAt(1).onStartMove(this.broad.getChildAt(1));
             TweenMax.to(this.flag, 0.5, {x: 700, y: 460})
         }
         else {
+            this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
             TweenMax.to(this.flag, 0.5, {x: 370, y: 90})
         }
 
