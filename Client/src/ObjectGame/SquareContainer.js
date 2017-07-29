@@ -86,7 +86,7 @@ var Square = (function (_super) {
                 viewGame_1.viewGame.clock.stop();
                 _this.onMoveLeft(ct);
             }
-            ct.position.set(_this.x, _this.y);
+            ct.position.set(_this.posx, _this.posy);
         };
         _this.onEatRight = function (arraySquare, Box, v) {
             var check;
@@ -193,7 +193,7 @@ var Square = (function (_super) {
                             arrayStone[0].position.set(x_1, y_1);
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
-                        }, 450);
+                        }, 400);
                     }
                     else if (j == 6) {
                         var y_2 = arrayStone[0].y + 65;
@@ -202,16 +202,16 @@ var Square = (function (_super) {
                             arrayStone[0].position.y = y_2;
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
-                        }, 450);
+                        }, 400);
                     }
                     else {
                         TweenMax.to(spread, 0.4, { x: square.x, y: square.y });
                         setTimeout(function () {
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
-                        }, 450);
+                        }, 400);
                     }
-                }, i * 450 + 100);
+                }, i * 450);
             }
             setTimeout(function () {
                 _this.pos = j;
@@ -219,7 +219,7 @@ var Square = (function (_super) {
                 if (v == 12)
                     v = 0;
                 _this.checkForRight(arraySquare, v, Box, ct);
-            }, n * 450 + 1200);
+            }, n * 450);
         };
         _this.onEatLeft = function (arraySquare, Box, v) {
             var check;
@@ -325,7 +325,7 @@ var Square = (function (_super) {
                             arrayStone[0].position.set(x_2, y_3);
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
-                        }, 450);
+                        }, 400);
                     }
                     else if (j == 6) {
                         var y_4 = arrayStone[0].y + 50;
@@ -334,17 +334,16 @@ var Square = (function (_super) {
                             arrayStone[0].position.y = y_4;
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
-                        }, 450);
+                        }, 400);
                     }
                     else {
                         TweenMax.to(spread, 0.4, { x: square.x, y: square.y });
                         setTimeout(function () {
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
-                        }, 450);
+                        }, 400);
                     }
-                }, i * 450 + 100);
-                // console.log(Box);
+                }, i * 450);
             }
             setTimeout(function () {
                 _this.pos = j;
@@ -352,7 +351,7 @@ var Square = (function (_super) {
                 if (v == -1)
                     v = 11;
                 _this.checkForLeft(arraySquare, v, Box, ct);
-            }, n * 450 + 1200);
+            }, n * 450);
         };
         _this.index = index;
         if (type == 1 || type == 2) {
@@ -456,6 +455,7 @@ var Square = (function (_super) {
             for (var i = 0; i < n; i++) {
                 var x = Square_1[i].getType;
                 if (x == 0) {
+                    Square_1[i].position.set(35, 35);
                     spread.addChild(Square_1[i]);
                     i--;
                     count_1++;
@@ -480,14 +480,13 @@ var Square = (function (_super) {
                     TweenMax.to(spread, 0.4, { x: arraySquare[count_1].x, y: arraySquare[count_1].y });
                     setTimeout(function () {
                         var box = Box[count_1];
-                        Stone_2[0].position.set(35, 35);
                         arraySquare[count_1].addChild(Stone_2[0]);
                         box.setText(_this.checkPoint(arraySquare[count_1]));
                         count_1++;
                         var box1 = Box[12];
                         box1.setText(_this.checkPoint(arraySquare[12]) + _this.checkPoint(spread));
-                    }, 450);
-                }, 700 + 470 * i);
+                    }, 420);
+                }, 450 * i);
             }
         }
         if (team == 2) {
@@ -500,6 +499,7 @@ var Square = (function (_super) {
             for (var i = 0; i < n; i++) {
                 var x = Square_2[i].getType;
                 if (x == 0) {
+                    Square_2[i].position.set(35, 35);
                     spread.addChild(Square_2[i]);
                     i--;
                     count_2++;
@@ -521,14 +521,13 @@ var Square = (function (_super) {
                     TweenMax.to(spread, 0.4, { x: arraySquare[count_2].x, y: arraySquare[count_2].y });
                     setTimeout(function () {
                         var box = Box[count_2];
-                        Stone_3[0].position.set(35, 35);
                         arraySquare[count_2].addChild(Stone_3[0]);
                         box.setText(_this.checkPoint(arraySquare[count_2]));
                         count_2++;
                         var box1 = Box[13];
                         box1.setText(_this.checkPoint(arraySquare[13]) + _this.checkPoint(spread));
-                    }, 450);
-                }, 700 + 470 * i);
+                    }, 420);
+                }, 450 * i);
             }
         }
     };
@@ -556,7 +555,7 @@ var Square = (function (_super) {
                 }
                 _this.emit("finish move");
             }
-        }, this.timeout + 300);
+        }, this.timeout + 100);
         this.timeout = 0;
     };
     Square.prototype.checkForLeft = function (arraySquare, v, Box, ct) {
@@ -575,7 +574,7 @@ var Square = (function (_super) {
                 }
                 _this.emit("finish move");
             }
-        }, this.timeout + 300);
+        }, this.timeout + 100);
         this.timeout = 0;
     };
     Square.prototype.checkPoint = function (ct) {

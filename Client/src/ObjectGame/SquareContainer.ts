@@ -138,6 +138,7 @@ export class Square extends Container {
             for (let i = 0; i < n; i++) {
                 let x = (<Stone> Square[i]).getType;
                 if (x == 0) {
+                    Square[i].position.set(35,35);
                     spread.addChild(Square[i]);
                     i--;
                     count++
@@ -164,14 +165,13 @@ export class Square extends Container {
                     TweenMax.to(spread, 0.4, {x: arraySquare[count].x, y: arraySquare[count].y})
                     setTimeout(() => {
                         let box = <Box> Box[count];
-                        Stone[0].position.set(35, 35);
                         arraySquare[count].addChild(Stone[0]);
                         box.setText(this.checkPoint(arraySquare[count]));
                         count++;
                         let box1 = <Box> Box[12];
                         box1.setText(this.checkPoint(arraySquare[12]) + this.checkPoint(spread));
-                    }, 450);
-                }, 700 + 470 * i)
+                    }, 420);
+                }, 450 * i)
             }
         }
         if (team == 2) {
@@ -184,6 +184,7 @@ export class Square extends Container {
             for (let i = 0; i < n; i++) {
                 let x = (<Stone> Square[i]).getType;
                 if (x == 0) {
+                    Square[i].position.set(35,35);
                     spread.addChild(Square[i]);
                     i--;
                     count++
@@ -206,14 +207,13 @@ export class Square extends Container {
                     TweenMax.to(spread, 0.4, {x: arraySquare[count].x, y: arraySquare[count].y});
                     setTimeout(() => {
                         let box = <Box> Box[count];
-                        Stone[0].position.set(35, 35);
                         arraySquare[count].addChild(Stone[0]);
                         box.setText(this.checkPoint(arraySquare[count]));
                         count++;
                         let box1 = <Box> Box[13];
                         box1.setText(this.checkPoint(arraySquare[13]) + this.checkPoint(spread))
-                    }, 450);
-                }, 700 + 470 * i)
+                    }, 420);
+                }, 450 * i)
             }
         }
 
@@ -277,7 +277,7 @@ export class Square extends Container {
             this.onMoveLeft(ct);
         }
 
-        ct.position.set(this.x, this.y);
+        ct.position.set(this.posx, this.posy);
     }
 
     MoveEat(ct1: Container, ct2: Container) {
@@ -377,7 +377,7 @@ export class Square extends Container {
                 this.emit("finish move");
 
             }
-        }, this.timeout + 300);
+        }, this.timeout + 100);
         this.timeout = 0;
     }
 
@@ -414,7 +414,7 @@ export class Square extends Container {
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
 
-                    }, 450);
+                    }, 400);
                 }
                 else if (j == 6) {
                     let y = arrayStone[0].y + 65;
@@ -423,17 +423,17 @@ export class Square extends Container {
                         arrayStone[0].position.y = y;
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
-                    }, 450);
+                    }, 400);
                 }
                 else {
                     TweenMax.to(spread, 0.4, {x: square.x, y: square.y});
                     setTimeout(() => {
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
-                    }, 450);
+                    }, 400);
                 }
 
-            }, i * 450 + 100);
+            }, i * 450 );
         }
         setTimeout(() => {
             this.pos = j;
@@ -442,7 +442,7 @@ export class Square extends Container {
             this.checkForRight(arraySquare, v, Box, ct);
 
 
-        }, n * 450 + 1200);
+        }, n * 450 );
     }
 
 
@@ -529,7 +529,7 @@ export class Square extends Container {
                 }
                 this.emit("finish move");
             }
-        }, this.timeout + 300);
+        }, this.timeout + 100);
         this.timeout = 0;
     }
 
@@ -566,7 +566,7 @@ export class Square extends Container {
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
 
-                    }, 450);
+                    }, 400);
                 }
                 else if (j == 6) {
                     let y = arrayStone[0].y + 50;
@@ -575,18 +575,18 @@ export class Square extends Container {
                         arrayStone[0].position.y = y;
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
-                    }, 450);
+                    }, 400);
                 }
                 else {
                     TweenMax.to(spread, 0.4, {x: square.x, y: square.y});
                     setTimeout(() => {
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
-                    }, 450);
+                    }, 400);
                 }
 
-            }, i * 450 + 100);
-            // console.log(Box);
+            }, i * 450);
+
         }
         setTimeout(() => {
             this.pos = j;
@@ -594,7 +594,7 @@ export class Square extends Container {
             if (v == -1) v = 11;
             this.checkForLeft(arraySquare, v, Box, ct);
 
-        }, n * 450 + 1200);
+        }, n * 450);
     }
 
 

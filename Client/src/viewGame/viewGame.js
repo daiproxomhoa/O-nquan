@@ -81,6 +81,7 @@ var viewGame = (function () {
         this.onEndGame = function (data) {
             console.log("End game :" + data.result);
             _this.FinishGame = true;
+            viewGame.clock.stop();
             _this.broad.getChildAt(1).onStopMove(_this.broad.getChildAt(1));
             if (data.result == 1) {
                 var win = new PIXI.Sprite(Utils_1.Utils.Win);

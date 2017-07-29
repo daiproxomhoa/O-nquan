@@ -99,6 +99,7 @@ export class viewGame {
     onEndGame = (data: any) => {
         console.log("End game :" + data.result);
         this.FinishGame=true;
+        viewGame.clock.stop();
         this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
         if (data.result == 1) {
             let win = new PIXI.Sprite(Utils.Win);
