@@ -13,8 +13,8 @@ export class Square extends Container {
     maxWidth = 64;
     maxHeight = 56;
     minDis = 5;
-    posx;
-    posy;
+    private posx;
+    private posy;
     index;
     data;
     dragging;
@@ -23,6 +23,7 @@ export class Square extends Container {
     seq = 0;
     endgame = false;
     player: Player = viewGame.player;
+    timeout;
 
     constructor(public count = 0, type, index) {
         super();
@@ -57,6 +58,14 @@ export class Square extends Container {
 
     public addStone(count: number, type, s) {
         this.createStone(35, 35, type, s);
+    }
+    public setPos(x :number ,y:number ){
+        this.posx= x;
+        this.posy= y;
+
+    }
+    public rePos(){
+       this.position.set(this.posx,this.posy);
     }
 
     private createStone(x, y, type, s) {
@@ -214,8 +223,8 @@ export class Square extends Container {
         this.data = event.data;
         this.alpha = 0.5;
         this.dragging = true;
-        this.posx = this.x;
-        this.posy = this.y;
+        this.posx=this.x;
+        this.posy =this.y;
         this.scale.set(1.1);
     }
     onDragEnd = () => {
@@ -238,7 +247,15 @@ export class Square extends Container {
         let arraySquare: PIXI.Container[] = <PIXI.Container[]>ct.parent.children;//12 ô
         for (let i = 0; i < arraySquare.length; i++) {
             arraySquare[i].interactive = false;
+            if(i<12) {
+                (<Square> arraySquare[i]).rePos();
+                (<Square> arraySquare[i]).scale.set(1);
+                (<Square> arraySquare[i]).alpha = 1;
+                (<Square> arraySquare[i]).dragging = false;
+                (<Square> arraySquare[i]).data = null;
+            }
         }
+
     }
     onStartMove = (ct: PIXI.Container) => {
         let arraySquare: PIXI.Container[] = <PIXI.Container[]>ct.parent.children;//12 ô
@@ -260,7 +277,7 @@ export class Square extends Container {
             this.onMoveLeft(ct);
         }
 
-        ct.position.set(this.posx, this.posy);
+        ct.position.set(this.x, this.y);
     }
 
     MoveEat(ct1: Container, ct2: Container) {
@@ -273,9 +290,8 @@ export class Square extends Container {
 
     }
 
-    onEatRight = (arraySquare: PIXI.Container[], Box,v) => {
+    onEatRight = (arraySquare: PIXI.Container[], Box, v) => {
         let check;
-        let s = 1;
         let one = arraySquare[0].children.length;
         let two = arraySquare[6].children.length;
         while (arraySquare[v].children.length == 0) {
@@ -322,7 +338,7 @@ export class Square extends Container {
                         this.MoveEat(arraySquare[14], arraySquare[13]);
                         let box2 = <Box> Box[13];
                         box2.setText(this.checkPoint(square));
-                    }, s * 400);
+                    }, 400);
                 }
                 else {
                     let square = arraySquare[12];
@@ -331,29 +347,27 @@ export class Square extends Container {
                         this.MoveEat(arraySquare[14], arraySquare[12]);
                         let box2 = <Box> Box[12];
                         box2.setText(this.checkPoint(square));
-                    }, s * 400);
+                    }, 400);
                 }
-                s++;
+
                 v = this.pos + 1;
                 if (v == 12)
                     v = 0
                 one = arraySquare[0].children.length;
                 two = arraySquare[6].children.length;
             }
-
-
+            this.timeout += 420;
         }
 
     }
+
     checkForRight(arraySquare: PIXI.Container[], v, Box, ct) {
-        this.onEatRight(arraySquare, Box,v);
-        if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 5 && this.pos != 11) {
-            this.posx = arraySquare[v].x;
-            this.posy = arraySquare[v].y;
-            this.onMoveRight(arraySquare[v]);
-        }
-        else {
-            setTimeout(() => {
+        this.onEatRight(arraySquare, Box, v);
+        setTimeout(() => {
+            if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 5 && this.pos != 11) {
+                this.onMoveRight(arraySquare[v]);
+            }
+            else {
                 this.checkEndGame(arraySquare, Box);
                 if (this.endgame == false)
                     this.checkStoneLast(arraySquare);
@@ -361,10 +375,12 @@ export class Square extends Container {
                     this.onStartMove(arraySquare[1]);
                 }
                 this.emit("finish move");
-            }, 500);
-        }
 
+            }
+        }, this.timeout + 300);
+        this.timeout = 0;
     }
+
     onMoveRight = (ct: PIXI.Container) => {
         this.stop = false;
         let arraySquare: PIXI.Container[] = <PIXI.Container[]>ct.parent.children;//12 ô
@@ -417,7 +433,7 @@ export class Square extends Container {
                     }, 450);
                 }
 
-            }, i * 450 + 550);
+            }, i * 450 + 100);
         }
         setTimeout(() => {
             this.pos = j;
@@ -426,12 +442,11 @@ export class Square extends Container {
             this.checkForRight(arraySquare, v, Box, ct);
 
 
-        }, n * 450 + 650);
+        }, n * 450 + 1200);
     }
 
 
-
-    onEatLeft = (arraySquare: PIXI.Container[], Box,v) => {
+    onEatLeft = (arraySquare: PIXI.Container[], Box, v) => {
         let check;
         let one = arraySquare[0].children.length;
         let two = arraySquare[6].children.length;
@@ -495,17 +510,17 @@ export class Square extends Container {
                 v = 11
             one = arraySquare[0].children.length;
             two = arraySquare[6].children.length;
+            this.timeout += 420;
         }
     }
+
     checkForLeft(arraySquare: PIXI.Container[], v, Box, ct) {
-        this.onEatLeft(arraySquare, Box,v);
-        if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 7 && this.pos != 1) {
-            this.posx = arraySquare[v].x;
-            this.posy = arraySquare[v].y;
-            this.onMoveLeft(arraySquare[v]);
-        }
-        else {
-            setTimeout(() => {
+        this.onEatLeft(arraySquare, Box, v);
+        setTimeout(() => {
+            if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 7 && this.pos != 1) {
+                this.onMoveLeft(arraySquare[v]);
+            }
+            else {
                 this.checkEndGame(arraySquare, Box);
                 if (this.endgame == false)
                     this.checkStoneLast(arraySquare);
@@ -513,10 +528,11 @@ export class Square extends Container {
                     this.onStartMove(arraySquare[1]);
                 }
                 this.emit("finish move");
-            }, 400);
-        }
-
+            }
+        }, this.timeout + 300);
+        this.timeout = 0;
     }
+
     onMoveLeft = (ct: PIXI.Container) => {
         this.stop = false;
         let arraySquare: PIXI.Container[] = <PIXI.Container[]>ct.parent.children;//12 ô
@@ -569,7 +585,7 @@ export class Square extends Container {
                     }, 450);
                 }
 
-            }, i * 450 + 550);
+            }, i * 450 + 100);
             // console.log(Box);
         }
         setTimeout(() => {
@@ -578,9 +594,8 @@ export class Square extends Container {
             if (v == -1) v = 11;
             this.checkForLeft(arraySquare, v, Box, ct);
 
-        }, n * 450 + 650);
+        }, n * 450 + 1200);
     }
-
 
 
     checkPoint(ct: PIXI.Container): number {
@@ -607,7 +622,7 @@ export class Square extends Container {
                 count++;
         }
         if (count == 2) {
-             this.countPoit(arraySquare, Box)
+            this.countPoit(arraySquare, Box)
             this.endgame = true;
         }
     }
@@ -635,7 +650,7 @@ export class Square extends Container {
                     let oldPos = new PIXI.Point(arraySquare[i + 6].x, arraySquare[i + 6].y);
                     this.MoveEat(arraySquare[i + 6], arraySquare[13]);
                     arraySquare[i].position.set(oldPos.x, oldPos.y);
-                    box.setText(this.checkPoint(arraySquare[i+6]));
+                    box.setText(this.checkPoint(arraySquare[i + 6]));
                     home2.setText(this.checkPoint(arraySquare[13]));
                 }, 400);
             }, (i + 1) * 450);
@@ -650,7 +665,8 @@ export class Square extends Container {
             else if (count1 < count2)
                 viewGame.player.emit("end game", {team: viewGame.game_turn, result: 3});
             else
-                viewGame.player.emit("end game", {team: viewGame.game_turn, result: 2});;
+                viewGame.player.emit("end game", {team: viewGame.game_turn, result: 2});
+            ;
         }, 7 * 450);
 
     }

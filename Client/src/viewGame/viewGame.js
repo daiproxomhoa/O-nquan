@@ -19,8 +19,8 @@ var viewGame = (function () {
     function viewGame() {
         var _this = this;
         this.app = new PIXI.Application(1200, 640, { backgroundColor: 0x1099bb });
-        this.gametable = [7, 5, 5, 1, 0, 0, 7, 5, 5, 1, 0, 0, 7, 7];
-        // gametable = [1,5,5,5,5,5,1,5,5,5,5,5, 0,0];
+        // gametable = [0 , 5, 0, 0, 1, 0, 7, 5, 5, 1, 0, 1, 7, 7];
+        this.gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
         this.field = new PIXI.Container();
         this.FinishGame = false;
         this.createFlag = function () {
@@ -43,7 +43,7 @@ var viewGame = (function () {
             viewGame.player.on("new message", function (data) {
                 _this.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
             });
-            // viewGame.player.on("End_turn",this.onAutoEndturn);
+            viewGame.player.on("End_turn", _this.onAutoEndturn);
         };
         this.onAutoEndturn = function () {
             if (_this.FinishGame == false) {
@@ -204,15 +204,19 @@ var viewGame = (function () {
                 box.position.set(a, b_1);
                 square.position.set(a, b_1);
             }
+            square.setPos(square.x, square.y);
             this.broad.addChild(square);
             container.addChild(box);
         }
         var home1 = new SquareContainer_1.Square(table[12], 0, 12);
         home1.position.set(355, 318);
+        home1.setPos(home1.x, home1.y);
         var home2 = new SquareContainer_1.Square(table[13], 0, 13);
         home2.position.set(355, -100);
+        home2.setPos(home1.x, home1.y);
         var spread = new SquareContainer_1.Square(0, 0, 14);
         spread.position.set(10, 10);
+        spread.setPos(10, 10);
         this.broad.addChild(home1, home2, spread);
         var h1 = new BoxContainer_1.Box(0, 1);
         h1.position.set(300, 305);

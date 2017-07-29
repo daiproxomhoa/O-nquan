@@ -59,6 +59,13 @@ var Square = (function (_super) {
             var arraySquare = ct.parent.children; //12 ô
             for (var i = 0; i < arraySquare.length; i++) {
                 arraySquare[i].interactive = false;
+                if (i < 12) {
+                    arraySquare[i].rePos();
+                    arraySquare[i].scale.set(1);
+                    arraySquare[i].alpha = 1;
+                    arraySquare[i].dragging = false;
+                    arraySquare[i].data = null;
+                }
             }
         };
         _this.onStartMove = function (ct) {
@@ -79,11 +86,10 @@ var Square = (function (_super) {
                 viewGame_1.viewGame.clock.stop();
                 _this.onMoveLeft(ct);
             }
-            ct.position.set(_this.posx, _this.posy);
+            ct.position.set(_this.x, _this.y);
         };
         _this.onEatRight = function (arraySquare, Box, v) {
             var check;
-            var s = 1;
             var one = arraySquare[0].children.length;
             var two = arraySquare[6].children.length;
             var _loop_1 = function () {
@@ -129,7 +135,7 @@ var Square = (function (_super) {
                             _this.MoveEat(arraySquare[14], arraySquare[13]);
                             var box2 = Box[13];
                             box2.setText(_this.checkPoint(square_1));
-                        }, s * 400);
+                        }, 400);
                     }
                     else {
                         var square_2 = arraySquare[12];
@@ -138,15 +144,15 @@ var Square = (function (_super) {
                             _this.MoveEat(arraySquare[14], arraySquare[12]);
                             var box2 = Box[12];
                             box2.setText(_this.checkPoint(square_2));
-                        }, s * 400);
+                        }, 400);
                     }
-                    s++;
                     v = _this.pos + 1;
                     if (v == 12)
                         v = 0;
                     one = arraySquare[0].children.length;
                     two = arraySquare[6].children.length;
                 }
+                _this.timeout += 420;
             };
             while (arraySquare[v].children.length == 0) {
                 var state_1 = _loop_1();
@@ -205,7 +211,7 @@ var Square = (function (_super) {
                             box.setText(_this.checkPoint(square));
                         }, 450);
                     }
-                }, i * 450 + 550);
+                }, i * 450 + 100);
             }
             setTimeout(function () {
                 _this.pos = j;
@@ -213,7 +219,7 @@ var Square = (function (_super) {
                 if (v == 12)
                     v = 0;
                 _this.checkForRight(arraySquare, v, Box, ct);
-            }, n * 450 + 650);
+            }, n * 450 + 1200);
         };
         _this.onEatLeft = function (arraySquare, Box, v) {
             var check;
@@ -278,6 +284,7 @@ var Square = (function (_super) {
                     v = 11;
                 one = arraySquare[0].children.length;
                 two = arraySquare[6].children.length;
+                _this.timeout += 420;
             };
             while (arraySquare[v].children.length == 0) {
                 var state_2 = _loop_2();
@@ -336,7 +343,7 @@ var Square = (function (_super) {
                             box.setText(_this.checkPoint(square));
                         }, 450);
                     }
-                }, i * 450 + 550);
+                }, i * 450 + 100);
                 // console.log(Box);
             }
             setTimeout(function () {
@@ -345,7 +352,7 @@ var Square = (function (_super) {
                 if (v == -1)
                     v = 11;
                 _this.checkForLeft(arraySquare, v, Box, ct);
-            }, n * 450 + 650);
+            }, n * 450 + 1200);
         };
         _this.index = index;
         if (type == 1 || type == 2) {
@@ -375,6 +382,13 @@ var Square = (function (_super) {
     }
     Square.prototype.addStone = function (count, type, s) {
         this.createStone(35, 35, type, s);
+    };
+    Square.prototype.setPos = function (x, y) {
+        this.posx = x;
+        this.posy = y;
+    };
+    Square.prototype.rePos = function () {
+        this.position.set(this.posx, this.posy);
     };
     Square.prototype.createStone = function (x, y, type, s) {
         if (this.count > 0) {
@@ -529,13 +543,11 @@ var Square = (function (_super) {
     Square.prototype.checkForRight = function (arraySquare, v, Box, ct) {
         var _this = this;
         this.onEatRight(arraySquare, Box, v);
-        if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 5 && this.pos != 11) {
-            this.posx = arraySquare[v].x;
-            this.posy = arraySquare[v].y;
-            this.onMoveRight(arraySquare[v]);
-        }
-        else {
-            setTimeout(function () {
+        setTimeout(function () {
+            if (_this.stop == false && _this.pos != 0 && _this.pos != 6 && _this.pos != 5 && _this.pos != 11) {
+                _this.onMoveRight(arraySquare[v]);
+            }
+            else {
                 _this.checkEndGame(arraySquare, Box);
                 if (_this.endgame == false)
                     _this.checkStoneLast(arraySquare);
@@ -543,19 +555,18 @@ var Square = (function (_super) {
                     _this.onStartMove(arraySquare[1]);
                 }
                 _this.emit("finish move");
-            }, 500);
-        }
+            }
+        }, this.timeout + 300);
+        this.timeout = 0;
     };
     Square.prototype.checkForLeft = function (arraySquare, v, Box, ct) {
         var _this = this;
         this.onEatLeft(arraySquare, Box, v);
-        if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 7 && this.pos != 1) {
-            this.posx = arraySquare[v].x;
-            this.posy = arraySquare[v].y;
-            this.onMoveLeft(arraySquare[v]);
-        }
-        else {
-            setTimeout(function () {
+        setTimeout(function () {
+            if (_this.stop == false && _this.pos != 0 && _this.pos != 6 && _this.pos != 7 && _this.pos != 1) {
+                _this.onMoveLeft(arraySquare[v]);
+            }
+            else {
                 _this.checkEndGame(arraySquare, Box);
                 if (_this.endgame == false)
                     _this.checkStoneLast(arraySquare);
@@ -563,8 +574,9 @@ var Square = (function (_super) {
                     _this.onStartMove(arraySquare[1]);
                 }
                 _this.emit("finish move");
-            }, 400);
-        }
+            }
+        }, this.timeout + 300);
+        this.timeout = 0;
     };
     Square.prototype.checkPoint = function (ct) {
         var stone = ct.children;
