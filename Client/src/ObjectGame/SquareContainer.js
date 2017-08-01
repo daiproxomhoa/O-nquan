@@ -20,7 +20,7 @@ var Stone_1 = require("./Stone");
  */
 var Square = (function (_super) {
     __extends(Square, _super);
-    function Square(count, type, index) {
+    function Square(count, type, index, ct) {
         if (count === void 0) { count = 0; }
         var _this = _super.call(this) || this;
         _this.count = count;
@@ -78,12 +78,12 @@ var Square = (function (_super) {
             var arraySquare = ct.parent.children; //12 ô
             if (ct.y > _this.posy - 80 && ct.y < _this.posy + 80 && (ct.x < _this.posx + 150 && ct.x > _this.posx + 40)) {
                 _this.player.emit("move", { posi: _this.index + 6, dr: false });
-                viewGame_1.viewGame.clock.stop();
+                _this.ct.clock.stop();
                 _this.onMoveRight(ct);
             }
             else if (ct.y > _this.posy - 80 && ct.y < _this.posy + 80 && (ct.x > _this.posx - 150 && ct.x < _this.posx - 40)) {
                 _this.player.emit("move", { posi: _this.index + 6, dr: true });
-                viewGame_1.viewGame.clock.stop();
+                _this.ct.clock.stop();
                 _this.onMoveLeft(ct);
             }
             ct.position.set(_this.posx, _this.posy);
@@ -353,6 +353,7 @@ var Square = (function (_super) {
                 _this.checkForLeft(arraySquare, v, Box, ct);
             }, n * 450);
         };
+        _this.ct = ct;
         _this.index = index;
         if (type == 1 || type == 2) {
             _this.addStone(count, type, type);

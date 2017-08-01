@@ -24,9 +24,10 @@ export class Square extends Container {
     endgame = false;
     player: Player = viewGame.player;
     timeout;
-
-    constructor(public count = 0, type, index) {
+    ct;
+    constructor(public count = 0, type, index,ct) {
         super();
+        this.ct=ct
         this.index = index;
         if (type == 1 || type == 2) {
             this.addStone(count, type, type);
@@ -267,13 +268,13 @@ export class Square extends Container {
         let arraySquare: PIXI.Container[] = <PIXI.Container[]>ct.parent.children;//12 ô
         if (ct.y > this.posy - 80 && ct.y < this.posy + 80 && (ct.x < this.posx + 150 && ct.x > this.posx + 40)) {
             this.player.emit("move", {posi: this.index + 6, dr: false});
-            viewGame.clock.stop();
+            this.ct.clock.stop();
             this.onMoveRight(ct);
 
         }
         else if (ct.y > this.posy - 80 && ct.y < this.posy + 80 && (ct.x > this.posx - 150 && ct.x < this.posx - 40)) {
             this.player.emit("move", {posi: this.index + 6, dr: true});
-            viewGame.clock.stop();
+            this.ct.clock.stop();
             this.onMoveLeft(ct);
         }
 

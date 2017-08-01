@@ -11,6 +11,7 @@ export class Utils {
     public static Lose = PIXI.Texture.from("../Picture/lose.png");
     public static Daw = PIXI.Texture.from("../Picture/daw.png");
     public static Clock = PIXI.Texture.from("../Picture/shape/clock.png");
+
     // public static ScollPane = PIXI.Texture.from("../Picture/IU/scrollpane.png");
     // public static SendMSG = PIXI.Texture.from("../Picture/IU/sendmsg.png");
     // public static TextField = PIXI.Texture.from("../Picture/IU/textfield.png");
