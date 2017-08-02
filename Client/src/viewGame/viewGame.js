@@ -16,8 +16,6 @@ var viewGame = (function () {
     function viewGame() {
         var _this = this;
         this.app = new PIXI.Application(1200, 640, { backgroundColor: 0x1099bb });
-        // gametable = [0 , 5, 0, 0, 1, 0, 7, 5, 5, 1, 0, 1, 7, 7];
-        this.gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
         this.FinishGame = false;
         this.createLogin = function () {
             _this.login_broad = new LoginView_1.Login();
@@ -30,11 +28,13 @@ var viewGame = (function () {
             _this.chat_board = new Chat_1.Chat();
             _this.resetGame = new Button_1.Button(1110, 50, "", "../Picture/IU/refreshbtn.png");
             _this.resetGame.scale.set(0.75);
+            _this.resetGame.visible = false;
             _this.resetGame.onClick = function () {
-                // this.Game.removeChildAt(0);
-                // this.game_broad = new Game();
-                // this.Game.addChildAt(0,this.game_broad);
-                // console.log("nhu cc");
+                viewGame.player.emit("reload", viewGame.game_turn);
+                viewGame.turn = viewGame.game_turn;
+                _this.game_broad.reloadGame();
+                TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
+                _this.resetGame.visible = false;
             };
             _this.Game.addChild(_this.game_broad, _this.chat_board, _this.resetGame);
             _this.app.stage.addChild(_this.Game);
@@ -50,6 +50,22 @@ var viewGame = (function () {
                 _this.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
             });
             viewGame.player.on("End_turn", _this.onAutoEndturn);
+            viewGame.player.on("restart", _this.onRestart);
+            viewGame.player.on("reload game", _this.onReLoad);
+        };
+        this.onRestart = function () {
+            if (_this.last_turn == true) {
+                _this.resetGame.visible = true;
+                _this.FinishGame = false;
+            }
+        };
+        this.onReLoad = function (data) {
+            _this.game_broad.reloadGame();
+            console.log(viewGame.turn + " " + viewGame.game_turn);
+            viewGame.turn = data;
+            _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
+            _this.FinishGame = false;
+            TweenMax.to(_this.game_broad.flag, 0.5, { x: 370, y: 90 });
         };
         this.onAutoEndturn = function () {
             if (_this.FinishGame == false) {
@@ -90,23 +106,28 @@ var viewGame = (function () {
             _this.game_broad.clock.stop();
             _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
             if (data.result == 1) {
-                var win = new PIXI.Sprite(Utils_1.Utils.Win);
-                win.position.set(520, 395);
-                _this.game_broad.addChild(win);
+                _this.result = new PIXI.Sprite(Utils_1.Utils.Win);
+                _this.result.position.set(520, 395);
+                _this.game_broad.addChild(_this.result);
+                _this.last_turn = true;
             }
             else if (data.result == 3) {
-                var win = new PIXI.Sprite(Utils_1.Utils.Lose);
-                win.position.set(520, 395);
-                _this.game_broad.addChild(win);
+                _this.result = new PIXI.Sprite(Utils_1.Utils.Lose);
+                _this.result.position.set(520, 395);
+                _this.game_broad.addChild(_this.result);
+                _this.last_turn = false;
             }
             else if (data.result == 2) {
-                var win = new PIXI.Sprite(Utils_1.Utils.Daw);
-                win.position.set(520, 395);
-                _this.game_broad.addChild(win);
+                if (_this.last_turn != false)
+                    _this.last_turn = true;
+                _this.result = new PIXI.Sprite(Utils_1.Utils.Daw);
+                _this.result.position.set(520, 395);
+                _this.game_broad.addChild(_this.result);
             }
         };
         this.onSetTurn = function (data) {
             viewGame.game_turn = data;
+            _this.last_turn = data;
             if (viewGame.game_turn == true) {
                 _this.game_broad.broad.getChildAt(1).onStartMove(_this.game_broad.broad.getChildAt(1));
                 TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
@@ -118,7 +139,6 @@ var viewGame = (function () {
         };
         this.onTurnColor = function (data) {
             viewGame.turn = data;
-            console.log(data);
             _this.game_broad.clock.restart();
             if (viewGame.turn == viewGame.game_turn) {
                 _this.game_broad.broad.getChildAt(1).onStartMove(_this.game_broad.broad.getChildAt(1));

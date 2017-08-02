@@ -31,6 +31,7 @@ var Square = (function (_super) {
         _this.seq = 0;
         _this.endgame = false;
         _this.player = viewGame_1.viewGame.player;
+        _this.timeout = 0;
         _this.onDragStart = function (event) {
             _this.data = event.data;
             _this.alpha = 0.5;
@@ -544,6 +545,7 @@ var Square = (function (_super) {
         var _this = this;
         this.onEatRight(arraySquare, Box, v);
         setTimeout(function () {
+            _this.timeout = 0;
             if (_this.stop == false && _this.pos != 0 && _this.pos != 6 && _this.pos != 5 && _this.pos != 11) {
                 _this.onMoveRight(arraySquare[v]);
             }
@@ -557,12 +559,12 @@ var Square = (function (_super) {
                 _this.emit("finish move");
             }
         }, this.timeout + 100);
-        this.timeout = 0;
     };
     Square.prototype.checkForLeft = function (arraySquare, v, Box, ct) {
         var _this = this;
         this.onEatLeft(arraySquare, Box, v);
         setTimeout(function () {
+            _this.timeout = 0;
             if (_this.stop == false && _this.pos != 0 && _this.pos != 6 && _this.pos != 7 && _this.pos != 1) {
                 _this.onMoveLeft(arraySquare[v]);
             }
@@ -576,7 +578,6 @@ var Square = (function (_super) {
                 _this.emit("finish move");
             }
         }, this.timeout + 100);
-        this.timeout = 0;
     };
     Square.prototype.checkPoint = function (ct) {
         var stone = ct.children;
@@ -619,7 +620,6 @@ var Square = (function (_super) {
                     arraySquare[i].position.set(oldPos.x, oldPos.y);
                     box.setText(_this.checkPoint(arraySquare[i]));
                     home1.setText(_this.checkPoint(arraySquare[12]));
-                    console.log("Nhu ccc");
                 }, 400);
                 TweenMax.to(arraySquare[i + 6], 0.4, { x: arraySquare[13].x, y: arraySquare[13].y });
                 setTimeout(function () {
@@ -630,7 +630,7 @@ var Square = (function (_super) {
                     box.setText(_this.checkPoint(arraySquare[i + 6]));
                     home2.setText(_this.checkPoint(arraySquare[13]));
                 }, 400);
-            }, (i + 1) * 450);
+            }, (i + 1) * 420);
         };
         for (var i = 0; i < 6; i++) {
             _loop_3(i);
@@ -647,7 +647,7 @@ var Square = (function (_super) {
             else
                 viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 2 });
             ;
-        }, 7 * 450);
+        }, 6 * 450);
     };
     return Square;
 }(Container));

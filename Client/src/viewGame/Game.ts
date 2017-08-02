@@ -8,6 +8,7 @@ import {Utils} from "../Utils";
 import {clock} from  "../ObjectGame/Clock";
 import TweenMax = gsap.TweenMax;
 export class Game extends Container {
+    // gametable = [7 , 0, 0, 1, 0, 0, 7, 0, 0, 1, 0, 0, 7, 7];
     private gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
     private broad_main;
     broad;
@@ -33,8 +34,14 @@ export class Game extends Container {
         this.clock.position.set(70, 205);
         this.addChild(this.clock);
     }
-
-    createBroadGame() {
+    reloadGame=()=>{
+        this.removeChildren();
+        this.createBroadGame();
+        this.createFlag();
+        this.createClock();
+        this.clock.restart();
+    }
+    createBroadGame=()=> {
         var background = PIXI.Sprite.fromImage('../Picture/background.png');
         background.width = 1200;
         background.height = 640;

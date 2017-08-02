@@ -15,8 +15,6 @@ import {Chat} from "./Chat";
 import {Button} from "../IU/Button";
 export class viewGame {
     app = new PIXI.Application(1200, 640, {backgroundColor: 0x1099bb});
-    // gametable = [0 , 5, 0, 0, 1, 0, 7, 5, 5, 1, 0, 1, 7, 7];
-    private gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
     private wait;
     static turn = true;
     static game_turn;
@@ -26,7 +24,10 @@ export class viewGame {
     game_broad: Game;
     login_broad: Login;
     chat_board: Chat;
+    result: PIXI.Sprite;
+    last_turn;
     Game;
+
 
     constructor() {
         viewGame.player = new Player(this);
@@ -47,11 +48,14 @@ export class viewGame {
         this.chat_board = new Chat();
         this.resetGame = new Button(1110, 50, "", "../Picture/IU/refreshbtn.png")
         this.resetGame.scale.set(0.75);
+        this.resetGame.visible = false;
         this.resetGame.onClick = () => {
-            // this.Game.removeChildAt(0);
-            // this.game_broad = new Game();
-            // this.Game.addChildAt(0,this.game_broad);
-            // console.log("nhu cc");
+            viewGame.player.emit("reload",viewGame.game_turn);
+            viewGame.turn=viewGame.game_turn;
+            this.game_broad.reloadGame();
+            TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460});
+            this.resetGame.visible = false;
+
         };
         this.Game.addChild(this.game_broad, this.chat_board, this.resetGame);
         this.app.stage.addChild(this.Game);
@@ -68,8 +72,23 @@ export class viewGame {
             this.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
         });
         viewGame.player.on("End_turn", this.onAutoEndturn);
+        viewGame.player.on("restart", this.onRestart);
+        viewGame.player.on("reload game", this.onReLoad);
     }
-
+    onRestart = () => {
+        if (this.last_turn == true) {
+            this.resetGame.visible = true;
+            this.FinishGame = false;
+        }
+    }
+    onReLoad = (data:any) => {
+        this.game_broad.reloadGame();
+        console.log(viewGame.turn+" "+viewGame.game_turn);
+        viewGame.turn=data;
+        this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
+        this.FinishGame = false;
+        TweenMax.to(this.game_broad.flag, 0.5, {x: 370, y: 90})
+    }
     onAutoEndturn = () => {
         if (this.FinishGame == false) {
             let bool;
@@ -110,26 +129,29 @@ export class viewGame {
         this.game_broad.clock.stop();
         this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
         if (data.result == 1) {
-            let win = new PIXI.Sprite(Utils.Win);
-            win.position.set(520, 395);
-            this.game_broad.addChild(win);
-
+            this.result = new PIXI.Sprite(Utils.Win);
+            this.result.position.set(520, 395);
+            this.game_broad.addChild(this.result);
+            this.last_turn = true;
         }
         else if (data.result == 3) {
-            let win = new PIXI.Sprite(Utils.Lose);
-            win.position.set(520, 395);
-            this.game_broad.addChild(win);
-
+            this.result = new PIXI.Sprite(Utils.Lose);
+            this.result.position.set(520, 395);
+            this.game_broad.addChild(this.result);
+            this.last_turn = false;
         }
         else if (data.result == 2) {
-            let win = new PIXI.Sprite(Utils.Daw);
-            win.position.set(520, 395);
-            this.game_broad.addChild(win);
+            if (this.last_turn != false)
+                this.last_turn = true
+            this.result = new PIXI.Sprite(Utils.Daw);
+            this.result.position.set(520, 395);
+            this.game_broad.addChild(this.result);
 
         }
     }
     onSetTurn = (data: any) => {
         viewGame.game_turn = data;
+        this.last_turn = data;
         if (viewGame.game_turn == true) {
             this.game_broad.broad.getChildAt(1).onStartMove(this.game_broad.broad.getChildAt(1));
             TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460})
@@ -142,7 +164,6 @@ export class viewGame {
     }
     onTurnColor = (data: any) => {
         viewGame.turn = data;
-        console.log(data);
         this.game_broad.clock.restart();
         if (viewGame.turn == viewGame.game_turn) {
             this.game_broad.broad.getChildAt(1).onStartMove(this.game_broad.broad.getChildAt(1));

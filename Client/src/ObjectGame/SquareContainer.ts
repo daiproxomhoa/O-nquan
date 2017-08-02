@@ -23,11 +23,12 @@ export class Square extends Container {
     seq = 0;
     endgame = false;
     player: Player = viewGame.player;
-    timeout;
+    timeout = 0;
     ct;
-    constructor(public count = 0, type, index,ct) {
+
+    constructor(public count = 0, type, index, ct) {
         super();
-        this.ct=ct
+        this.ct = ct
         this.index = index;
         if (type == 1 || type == 2) {
             this.addStone(count, type, type);
@@ -60,13 +61,15 @@ export class Square extends Container {
     public addStone(count: number, type, s) {
         this.createStone(35, 35, type, s);
     }
-    public setPos(x :number ,y:number ){
-        this.posx= x;
-        this.posy= y;
+
+    public setPos(x: number, y: number) {
+        this.posx = x;
+        this.posy = y;
 
     }
-    public rePos(){
-       this.position.set(this.posx,this.posy);
+
+    public rePos() {
+        this.position.set(this.posx, this.posy);
     }
 
     private createStone(x, y, type, s) {
@@ -139,7 +142,7 @@ export class Square extends Container {
             for (let i = 0; i < n; i++) {
                 let x = (<Stone> Square[i]).getType;
                 if (x == 0) {
-                    Square[i].position.set(35,35);
+                    Square[i].position.set(35, 35);
                     spread.addChild(Square[i]);
                     i--;
                     count++
@@ -185,7 +188,7 @@ export class Square extends Container {
             for (let i = 0; i < n; i++) {
                 let x = (<Stone> Square[i]).getType;
                 if (x == 0) {
-                    Square[i].position.set(35,35);
+                    Square[i].position.set(35, 35);
                     spread.addChild(Square[i]);
                     i--;
                     count++
@@ -224,8 +227,8 @@ export class Square extends Container {
         this.data = event.data;
         this.alpha = 0.5;
         this.dragging = true;
-        this.posx=this.x;
-        this.posy =this.y;
+        this.posx = this.x;
+        this.posy = this.y;
         this.scale.set(1.1);
     }
     onDragEnd = () => {
@@ -248,7 +251,7 @@ export class Square extends Container {
         let arraySquare: PIXI.Container[] = <PIXI.Container[]>ct.parent.children;//12 ô
         for (let i = 0; i < arraySquare.length; i++) {
             arraySquare[i].interactive = false;
-            if(i<12) {
+            if (i < 12) {
                 (<Square> arraySquare[i]).rePos();
                 (<Square> arraySquare[i]).scale.set(1);
                 (<Square> arraySquare[i]).alpha = 1;
@@ -365,6 +368,7 @@ export class Square extends Container {
     checkForRight(arraySquare: PIXI.Container[], v, Box, ct) {
         this.onEatRight(arraySquare, Box, v);
         setTimeout(() => {
+            this.timeout = 0;
             if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 5 && this.pos != 11) {
                 this.onMoveRight(arraySquare[v]);
             }
@@ -376,10 +380,10 @@ export class Square extends Container {
                     this.onStartMove(arraySquare[1]);
                 }
                 this.emit("finish move");
-
             }
+
         }, this.timeout + 100);
-        this.timeout = 0;
+
     }
 
     onMoveRight = (ct: PIXI.Container) => {
@@ -434,7 +438,7 @@ export class Square extends Container {
                     }, 400);
                 }
 
-            }, i * 450 );
+            }, i * 450);
         }
         setTimeout(() => {
             this.pos = j;
@@ -443,7 +447,7 @@ export class Square extends Container {
             this.checkForRight(arraySquare, v, Box, ct);
 
 
-        }, n * 450 );
+        }, n * 450);
     }
 
 
@@ -518,20 +522,21 @@ export class Square extends Container {
     checkForLeft(arraySquare: PIXI.Container[], v, Box, ct) {
         this.onEatLeft(arraySquare, Box, v);
         setTimeout(() => {
+            this.timeout = 0;
             if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 7 && this.pos != 1) {
                 this.onMoveLeft(arraySquare[v]);
             }
             else {
                 this.checkEndGame(arraySquare, Box);
-                if (this.endgame == false)
-                    this.checkStoneLast(arraySquare);
-                if (viewGame.game_turn != viewGame.turn) {
-                    this.onStartMove(arraySquare[1]);
-                }
-                this.emit("finish move");
+                    if (this.endgame == false)
+                        this.checkStoneLast(arraySquare);
+                    if (viewGame.game_turn != viewGame.turn) {
+                        this.onStartMove(arraySquare[1]);
+                    }
+                    this.emit("finish move");
             }
+
         }, this.timeout + 100);
-        this.timeout = 0;
     }
 
     onMoveLeft = (ct: PIXI.Container) => {
@@ -629,7 +634,6 @@ export class Square extends Container {
     }
 
     countPoit(arraySquare: PIXI.Container[], Box) {
-
         for (let i = 0; i < 6; i++) {
             setTimeout(() => {
                 let home1 = <Box> Box[12];
@@ -642,7 +646,6 @@ export class Square extends Container {
                     arraySquare[i].position.set(oldPos.x, oldPos.y);
                     box.setText(this.checkPoint(arraySquare[i]));
                     home1.setText(this.checkPoint(arraySquare[12]));
-                    console.log("Nhu ccc");
                 }, 400);
 
                 TweenMax.to(arraySquare[i + 6], 0.4, {x: arraySquare[13].x, y: arraySquare[13].y});
@@ -654,7 +657,7 @@ export class Square extends Container {
                     box.setText(this.checkPoint(arraySquare[i + 6]));
                     home2.setText(this.checkPoint(arraySquare[13]));
                 }, 400);
-            }, (i + 1) * 450);
+            }, (i + 1) * 420);
         }
         let count1;
         let count2;
@@ -668,7 +671,6 @@ export class Square extends Container {
             else
                 viewGame.player.emit("end game", {team: viewGame.game_turn, result: 2});
             ;
-        }, 7 * 450);
-
+        }, 6 * 450);
     }
 }
