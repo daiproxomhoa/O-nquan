@@ -41,18 +41,23 @@ var Room = (function () {
                     _this.users[1 - i].socket.emit("opponent move", data);
                 });
                 _this.users[i].socket.on("change turn", function () {
-                    ;
                     _this.turnColor = !_this.turnColor;
                     console.log(_this.turnColor);
                     _this.users[1 - i].socket.emit("turn color", _this.turnColor);
                     _this.users[i].socket.emit("turn color", _this.turnColor);
                 });
                 _this.users[i].on("end game", function (data) {
-                    _this.users[1 - i].socket.emit("game_end", { team: data.team, result: 4 - data.result });
+                    _this.users[1 - i].socket.emit("game_end", { result: 4 - data.result });
+                    if (data.result != 3)
+                        _this.users[i].socket.emit("restart");
                 });
                 _this.users[i].on("send message", function (msg) {
                     _this.users[i].socket.emit("new message", { playername: _this.users[i].getUserName, message: msg });
                     _this.users[1 - i].socket.emit("new message", { playername: _this.users[i].getUserName, message: msg });
+                });
+                _this.users[i].on("reload", function (data) {
+                    _this.turnColor = data;
+                    _this.users[1 - i].emit("reload game", data);
                 });
                 // this.users[i].on("restart", () => {
                 //     if (i == 0) this.player0accept = true;

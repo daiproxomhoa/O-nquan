@@ -1,7 +1,7 @@
 import Socket = SocketIO.Socket;
 import {User} from "./User";
 export class Room {
-    private id: number;
+    id: number;
     users = [];
     turnColor = true;
     player0accept = false;
@@ -42,13 +42,13 @@ export class Room {
         this.users[1].socket.emit("start game", {color: false, oppname: this.users[0].getUserName});
 
         for (let i = 0; i < 2; i++) {
-            this.users[i].on("End turn",()=>{
+            this.users[i].on("End turn", () => {
                 this.users[i].socket.emit("End_turn")
             })
             this.users[i].on("move", (data: any) => {
                 this.users[1 - i].socket.emit("opponent move", data);
             });
-            this.users[i].socket.on("change turn", () => {;
+            this.users[i].socket.on("change turn", () => {
                 this.turnColor = !this.turnColor;
                 console.log(this.turnColor);
                 this.users[1 - i].socket.emit("turn color", this.turnColor);
@@ -56,12 +56,21 @@ export class Room {
 
             });
             this.users[i].on("end game", (data: any) => {
-                this.users[1 - i].socket.emit("game_end", {team: data.team, result: 4 - data.result});
+                this.users[1 - i].socket.emit("game_end", {result: 4 - data.result});
+                if (data.result != 3)
+                    this.users[i].socket.emit("restart");
+
             });
+
             this.users[i].on("send message", (msg: string) => {
                 this.users[i].socket.emit("new message", {playername: this.users[i].getUserName, message: msg});
                 this.users[1 - i].socket.emit("new message", {playername: this.users[i].getUserName, message: msg});
             });
+
+            this.users[i].on("reload", (data:any) => {
+                this.turnColor=data;
+                this.users[1 - i].emit("reload game",data);
+            })
 
 
             // this.users[i].on("restart", () => {
