@@ -7,7 +7,6 @@ import Container = PIXI.Container;
 import Sprite = PIXI.Sprite;
 import {Player} from "../Player";
 import {Utils} from "../Utils";
-import {ScrollPane} from "../IU/ScollPane";
 import TweenMax = gsap.TweenMax;
 import {Game} from "./Game";
 import {Login} from "./LoginView";
@@ -21,6 +20,7 @@ export class viewGame {
     public static player: Player;
     private FinishGame = false;
     resetGame: Button;
+    leftGame:Button;
     game_broad: Game;
     login_broad: Login;
     chat_board: Chat;
@@ -39,25 +39,37 @@ export class viewGame {
 
     createLogin = () => {
         this.login_broad = new Login();
-        this.wait = PIXI.Sprite.fromImage('../Picture/wait.png');
         this.app.stage.addChild(this.login_broad);
     }
     createGame = () => {
         this.Game = new PIXI.Container();
         this.game_broad = new Game();
         this.chat_board = new Chat();
-        this.resetGame = new Button(1110, 50, "", "../Picture/IU/refreshbtn.png")
+        this.resetGame = new Button(950, 50, "", "../Picture/IU/refreshbtn.png")
         this.resetGame.scale.set(0.75);
         this.resetGame.visible = false;
         this.resetGame.onClick = () => {
             viewGame.player.emit("reload",viewGame.game_turn);
             viewGame.turn=viewGame.game_turn;
             this.game_broad.reloadGame();
+            this.game_broad.clock.restart();
             TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460});
             this.resetGame.visible = false;
 
         };
-        this.Game.addChild(this.game_broad, this.chat_board, this.resetGame);
+        this.leftGame = new Button(1110,50,"","../Picture/IU/outroom.png");
+        this.leftGame.onClick=()=>{
+            this.game_broad.reloadGame();
+            this.onWait();
+            this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
+            viewGame.player.emit("left room");
+            viewGame.player.emit("join room");
+        }
+        this.wait = PIXI.Sprite.fromImage('../Picture/wait.png');
+        this.wait.scale.set(0.7);
+        this.wait.visible=false;
+        this.wait.position.set(330, 164);
+        this.Game.addChild(this.game_broad, this.chat_board, this.resetGame,this.leftGame,this.wait);
         this.app.stage.addChild(this.Game);
     }
 
@@ -74,6 +86,13 @@ export class viewGame {
         viewGame.player.on("End_turn", this.onAutoEndturn);
         viewGame.player.on("restart", this.onRestart);
         viewGame.player.on("reload game", this.onReLoad);
+        viewGame.player.on("user left",this.onUserLeft);
+
+    }
+    onUserLeft=()=>{
+        viewGame.turn=true;
+        this.game_broad.reloadGame();
+        this.FinishGame=false;
     }
     onRestart = () => {
         if (this.last_turn == true) {
@@ -83,7 +102,7 @@ export class viewGame {
     }
     onReLoad = (data:any) => {
         this.game_broad.reloadGame();
-        console.log(viewGame.turn+" "+viewGame.game_turn);
+        this.game_broad.clock.restart();
         viewGame.turn=data;
         this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
         this.FinishGame = false;
@@ -112,6 +131,7 @@ export class viewGame {
 
     }
     onStartGame = (data: any) => {
+        console.log("CHoi thoi")
         this.wait.visible = false;
         viewGame.player.color = data.color;
         viewGame.player.oppname = data.oppname;
@@ -119,12 +139,11 @@ export class viewGame {
     }
     onWait = () => {
         this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
-        this.wait.position.set(330, 164);
-        this.wait.scale.set(0.7);
-        this.game_broad.addChild(this.wait);
+        this.wait.visible=true;
+        TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460});
+
     }
     onEndGame = (data: any) => {
-        console.log("End game :" + data.result);
         this.FinishGame = true;
         this.game_broad.clock.stop();
         this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
@@ -150,8 +169,8 @@ export class viewGame {
         }
     }
     onSetTurn = (data: any) => {
-        viewGame.game_turn = data;
-        this.last_turn = data;
+        viewGame.game_turn = data.gameturn;
+        this.last_turn = data.gameturn;
         if (viewGame.game_turn == true) {
             this.game_broad.broad.getChildAt(1).onStartMove(this.game_broad.broad.getChildAt(1));
             TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460})
@@ -163,7 +182,8 @@ export class viewGame {
         }
     }
     onTurnColor = (data: any) => {
-        viewGame.turn = data;
+        viewGame.turn = data.turn;
+        console.log("Change_turn: "+viewGame.game_turn+":  " +viewGame.turn);
         this.game_broad.clock.restart();
         if (viewGame.turn == viewGame.game_turn) {
             this.game_broad.broad.getChildAt(1).onStartMove(this.game_broad.broad.getChildAt(1));

@@ -8,7 +8,7 @@ import {viewGame} from "../viewGame/viewGame";
 export class clock extends Container {
     private _number;
     time;
-    timedisplay =1;
+    timedisplay =15;
     timecount = 0;
     i;
     countdown;
@@ -49,6 +49,7 @@ export class clock extends Container {
                 viewGame.player.emit("End turn");
                 clearTimeout(this.countdown);
             }
+
         }, 1000);
     }
     restart = () => {

@@ -35,11 +35,11 @@ export class Game extends Container {
         this.addChild(this.clock);
     }
     reloadGame=()=>{
+        this.clock.stop();
         this.removeChildren();
         this.createBroadGame();
         this.createFlag();
         this.createClock();
-        this.clock.restart();
     }
     createBroadGame=()=> {
         var background = PIXI.Sprite.fromImage('../Picture/background.png');

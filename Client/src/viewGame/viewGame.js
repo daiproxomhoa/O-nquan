@@ -19,24 +19,36 @@ var viewGame = (function () {
         this.FinishGame = false;
         this.createLogin = function () {
             _this.login_broad = new LoginView_1.Login();
-            _this.wait = PIXI.Sprite.fromImage('../Picture/wait.png');
             _this.app.stage.addChild(_this.login_broad);
         };
         this.createGame = function () {
             _this.Game = new PIXI.Container();
             _this.game_broad = new Game_1.Game();
             _this.chat_board = new Chat_1.Chat();
-            _this.resetGame = new Button_1.Button(1110, 50, "", "../Picture/IU/refreshbtn.png");
+            _this.resetGame = new Button_1.Button(950, 50, "", "../Picture/IU/refreshbtn.png");
             _this.resetGame.scale.set(0.75);
             _this.resetGame.visible = false;
             _this.resetGame.onClick = function () {
                 viewGame.player.emit("reload", viewGame.game_turn);
                 viewGame.turn = viewGame.game_turn;
                 _this.game_broad.reloadGame();
+                _this.game_broad.clock.restart();
                 TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
                 _this.resetGame.visible = false;
             };
-            _this.Game.addChild(_this.game_broad, _this.chat_board, _this.resetGame);
+            _this.leftGame = new Button_1.Button(1110, 50, "", "../Picture/IU/outroom.png");
+            _this.leftGame.onClick = function () {
+                _this.game_broad.reloadGame();
+                _this.onWait();
+                _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
+                viewGame.player.emit("left room");
+                viewGame.player.emit("join room");
+            };
+            _this.wait = PIXI.Sprite.fromImage('../Picture/wait.png');
+            _this.wait.scale.set(0.7);
+            _this.wait.visible = false;
+            _this.wait.position.set(330, 164);
+            _this.Game.addChild(_this.game_broad, _this.chat_board, _this.resetGame, _this.leftGame, _this.wait);
             _this.app.stage.addChild(_this.Game);
         };
         this.eventPlayer = function () {
@@ -52,6 +64,12 @@ var viewGame = (function () {
             viewGame.player.on("End_turn", _this.onAutoEndturn);
             viewGame.player.on("restart", _this.onRestart);
             viewGame.player.on("reload game", _this.onReLoad);
+            viewGame.player.on("user left", _this.onUserLeft);
+        };
+        this.onUserLeft = function () {
+            viewGame.turn = true;
+            _this.game_broad.reloadGame();
+            _this.FinishGame = false;
         };
         this.onRestart = function () {
             if (_this.last_turn == true) {
@@ -61,7 +79,7 @@ var viewGame = (function () {
         };
         this.onReLoad = function (data) {
             _this.game_broad.reloadGame();
-            console.log(viewGame.turn + " " + viewGame.game_turn);
+            _this.game_broad.clock.restart();
             viewGame.turn = data;
             _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
             _this.FinishGame = false;
@@ -89,6 +107,7 @@ var viewGame = (function () {
             }
         };
         this.onStartGame = function (data) {
+            console.log("CHoi thoi");
             _this.wait.visible = false;
             viewGame.player.color = data.color;
             viewGame.player.oppname = data.oppname;
@@ -96,12 +115,10 @@ var viewGame = (function () {
         };
         this.onWait = function () {
             _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
-            _this.wait.position.set(330, 164);
-            _this.wait.scale.set(0.7);
-            _this.game_broad.addChild(_this.wait);
+            _this.wait.visible = true;
+            TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
         };
         this.onEndGame = function (data) {
-            console.log("End game :" + data.result);
             _this.FinishGame = true;
             _this.game_broad.clock.stop();
             _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
@@ -126,8 +143,8 @@ var viewGame = (function () {
             }
         };
         this.onSetTurn = function (data) {
-            viewGame.game_turn = data;
-            _this.last_turn = data;
+            viewGame.game_turn = data.gameturn;
+            _this.last_turn = data.gameturn;
             if (viewGame.game_turn == true) {
                 _this.game_broad.broad.getChildAt(1).onStartMove(_this.game_broad.broad.getChildAt(1));
                 TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
@@ -138,7 +155,8 @@ var viewGame = (function () {
             }
         };
         this.onTurnColor = function (data) {
-            viewGame.turn = data;
+            viewGame.turn = data.turn;
+            console.log("Change_turn: " + viewGame.game_turn + ":  " + viewGame.turn);
             _this.game_broad.clock.restart();
             if (viewGame.turn == viewGame.game_turn) {
                 _this.game_broad.broad.getChildAt(1).onStartMove(_this.game_broad.broad.getChildAt(1));
