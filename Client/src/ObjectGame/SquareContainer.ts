@@ -299,7 +299,8 @@ export class Square extends Container {
         let check;
         let one = arraySquare[0].children.length;
         let two = arraySquare[6].children.length;
-        while (arraySquare[v].children.length == 0) {
+        this.timeout += 420;
+        if (arraySquare[v].children.length == 0) {
             this.stop = true;
             let check = false;
             if (this.pos == 4) {
@@ -308,7 +309,7 @@ export class Square extends Container {
                     check = true;
                 }
                 else
-                    break;
+             return;
             }
             else if (this.pos == 10) {
                 if (one > 4) {
@@ -316,7 +317,7 @@ export class Square extends Container {
                     check = true;
                 }
                 else
-                    break;
+                    return ;
 
             }
             else if (this.pos != 4 && this.pos != 10) {
@@ -326,7 +327,7 @@ export class Square extends Container {
                 if (this.pos == 12)
                     this.pos = 0;
                 if (arraySquare[this.pos].children.length == 0) {
-                    break;
+                    return;
                 }
                 check = true;
             }
@@ -362,10 +363,9 @@ export class Square extends Container {
                 v = this.pos + 1;
                 if (v == 12)
                     v = 0
-                one = arraySquare[0].children.length;
-                two = arraySquare[6].children.length;
+               setTimeout(()=>{this.onEatRight(arraySquare,Box,v)},400);
             }
-            this.timeout += 420;
+
         }
 
     }
@@ -463,7 +463,8 @@ export class Square extends Container {
         let check;
         let one = arraySquare[0].children.length;
         let two = arraySquare[6].children.length;
-        while (arraySquare[v].children.length == 0) {
+        this.timeout += 420;
+       if (arraySquare[v].children.length == 0) {
             this.stop = true;
             if (this.pos == 8) {
                 if (two > 4) {
@@ -471,7 +472,7 @@ export class Square extends Container {
                     check = true;
                 }
                 else
-                    break;
+                    return;
             }
             else if (this.pos == 2) {
                 if (one > 4) {
@@ -479,7 +480,7 @@ export class Square extends Container {
                     check = true;
                 }
                 else
-                    break;
+                    return;
 
             }
             else if (this.pos != 2 && this.pos != 8) {
@@ -489,7 +490,7 @@ export class Square extends Container {
                 if (this.pos == -1)
                     this.pos = 11;
                 if (arraySquare[this.pos].children.length == 0) {
-                    break;
+                    return;
                 }
                 check = true;
             }
@@ -521,13 +522,12 @@ export class Square extends Container {
                         box2.setText(this.checkPoint(square));
                     }, 400);
                 }
+                v = this.pos - 1;
+                if (v == -1)
+                    v = 11
+                setTimeout(()=>{this.onEatLeft(arraySquare,Box,v)},400);
             }
-            v = this.pos - 1;
-            if (v == -1)
-                v = 11
-            one = arraySquare[0].children.length;
-            two = arraySquare[6].children.length;
-            this.timeout += 420;
+
         }
     }
 

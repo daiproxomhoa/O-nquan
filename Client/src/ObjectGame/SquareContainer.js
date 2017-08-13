@@ -94,7 +94,8 @@ var Square = (function (_super) {
             var check;
             var one = arraySquare[0].children.length;
             var two = arraySquare[6].children.length;
-            var _loop_1 = function () {
+            _this.timeout += 420;
+            if (arraySquare[v].children.length == 0) {
                 _this.stop = true;
                 var check_1 = false;
                 if (_this.pos == 4) {
@@ -103,7 +104,7 @@ var Square = (function (_super) {
                         check_1 = true;
                     }
                     else
-                        return "break";
+                        return;
                 }
                 else if (_this.pos == 10) {
                     if (one > 4) {
@@ -111,7 +112,7 @@ var Square = (function (_super) {
                         check_1 = true;
                     }
                     else
-                        return "break";
+                        return;
                 }
                 else if (_this.pos != 4 && _this.pos != 10) {
                     _this.pos = _this.pos + 2;
@@ -120,7 +121,7 @@ var Square = (function (_super) {
                     if (_this.pos == 12)
                         _this.pos = 0;
                     if (arraySquare[_this.pos].children.length == 0) {
-                        return "break";
+                        return;
                     }
                     check_1 = true;
                 }
@@ -155,15 +156,8 @@ var Square = (function (_super) {
                     v = _this.pos + 1;
                     if (v == 12)
                         v = 0;
-                    one = arraySquare[0].children.length;
-                    two = arraySquare[6].children.length;
+                    setTimeout(function () { _this.onEatRight(arraySquare, Box, v); }, 400);
                 }
-                _this.timeout += 420;
-            };
-            while (arraySquare[v].children.length == 0) {
-                var state_1 = _loop_1();
-                if (state_1 === "break")
-                    break;
             }
         };
         _this.onMoveRight = function (ct) {
@@ -234,7 +228,8 @@ var Square = (function (_super) {
             var check;
             var one = arraySquare[0].children.length;
             var two = arraySquare[6].children.length;
-            var _loop_2 = function () {
+            _this.timeout += 420;
+            if (arraySquare[v].children.length == 0) {
                 _this.stop = true;
                 if (_this.pos == 8) {
                     if (two > 4) {
@@ -242,7 +237,7 @@ var Square = (function (_super) {
                         check = true;
                     }
                     else
-                        return "break";
+                        return;
                 }
                 else if (_this.pos == 2) {
                     if (one > 4) {
@@ -250,7 +245,7 @@ var Square = (function (_super) {
                         check = true;
                     }
                     else
-                        return "break";
+                        return;
                 }
                 else if (_this.pos != 2 && _this.pos != 8) {
                     _this.pos = _this.pos - 2;
@@ -259,7 +254,7 @@ var Square = (function (_super) {
                     if (_this.pos == -1)
                         _this.pos = 11;
                     if (arraySquare[_this.pos].children.length == 0) {
-                        return "break";
+                        return;
                     }
                     check = true;
                 }
@@ -291,18 +286,11 @@ var Square = (function (_super) {
                             box2.setText(_this.checkPoint(square_4));
                         }, 400);
                     }
+                    v = _this.pos - 1;
+                    if (v == -1)
+                        v = 11;
+                    setTimeout(function () { _this.onEatLeft(arraySquare, Box, v); }, 400);
                 }
-                v = _this.pos - 1;
-                if (v == -1)
-                    v = 11;
-                one = arraySquare[0].children.length;
-                two = arraySquare[6].children.length;
-                _this.timeout += 420;
-            };
-            while (arraySquare[v].children.length == 0) {
-                var state_2 = _loop_2();
-                if (state_2 === "break")
-                    break;
             }
         };
         _this.onMoveLeft = function (ct) {
@@ -623,7 +611,7 @@ var Square = (function (_super) {
     };
     Square.prototype.countPoit = function (arraySquare, Box) {
         var _this = this;
-        var _loop_3 = function (i) {
+        var _loop_1 = function (i) {
             setTimeout(function () {
                 var home1 = Box[12];
                 var home2 = Box[13];
@@ -648,7 +636,7 @@ var Square = (function (_super) {
             }, (i + 1) * 420);
         };
         for (var i = 0; i < 6; i++) {
-            _loop_3(i);
+            _loop_1(i);
         }
         var count1;
         var count2;
