@@ -15,6 +15,7 @@ var gsap = require("gsap");
 var TweenMax = gsap.TweenMax;
 var viewGame_1 = require("../viewGame/viewGame");
 var Stone_1 = require("./Stone");
+var HowlerUtils_1 = require("../HowlerUtils");
 /**
  * Created by Vu Tien Dai on 21/06/2017.
  */
@@ -133,6 +134,8 @@ var Square = (function (_super) {
                         var square_1 = arraySquare[13];
                         TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[13].x, y: arraySquare[13].y });
                         setTimeout(function () {
+                            if (_this.pos == 0 || _this.pos == 6)
+                                HowlerUtils_1.HowlerUtils.AnQuan.play();
                             _this.MoveEat(arraySquare[14], arraySquare[13]);
                             var box2 = Box[13];
                             box2.setText(_this.checkPoint(square_1));
@@ -142,6 +145,8 @@ var Square = (function (_super) {
                         var square_2 = arraySquare[12];
                         TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[12].x, y: arraySquare[12].y });
                         setTimeout(function () {
+                            if (_this.pos == 0 || _this.pos == 6)
+                                HowlerUtils_1.HowlerUtils.AnQuan.play();
                             _this.MoveEat(arraySquare[14], arraySquare[12]);
                             var box2 = Box[12];
                             box2.setText(_this.checkPoint(square_2));
@@ -191,6 +196,7 @@ var Square = (function (_super) {
                         var x_1 = arrayStone[0].x + 5;
                         TweenMax.to(spread, 0.4, { x: 113, y: 92 });
                         setTimeout(function () {
+                            HowlerUtils_1.HowlerUtils.Stone.play();
                             arrayStone[0].position.set(x_1, y_1);
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
@@ -200,6 +206,7 @@ var Square = (function (_super) {
                         var y_2 = arrayStone[0].y + 65;
                         TweenMax.to(spread, 0.4, { x: 575, y: 130 });
                         setTimeout(function () {
+                            HowlerUtils_1.HowlerUtils.Stone.play();
                             arrayStone[0].position.y = y_2;
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
@@ -208,6 +215,7 @@ var Square = (function (_super) {
                     else {
                         TweenMax.to(spread, 0.4, { x: square.x, y: square.y });
                         setTimeout(function () {
+                            HowlerUtils_1.HowlerUtils.Stone.play();
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
                         }, 400);
@@ -265,6 +273,8 @@ var Square = (function (_super) {
                         var square_3 = arraySquare[13];
                         TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[13].x, y: arraySquare[13].y });
                         setTimeout(function () {
+                            if (_this.pos == 0 || _this.pos == 6)
+                                HowlerUtils_1.HowlerUtils.AnQuan.play();
                             _this.MoveEat(arraySquare[14], arraySquare[13]);
                             var box2 = Box[13];
                             box2.setText(_this.checkPoint(square_3));
@@ -274,6 +284,8 @@ var Square = (function (_super) {
                         var square_4 = arraySquare[12];
                         TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[12].x, y: arraySquare[12].y });
                         setTimeout(function () {
+                            if (_this.pos == 0 || _this.pos == 6)
+                                HowlerUtils_1.HowlerUtils.AnQuan.play();
                             _this.MoveEat(arraySquare[14], arraySquare[12]);
                             var box2 = Box[12];
                             box2.setText(_this.checkPoint(square_4));
@@ -323,6 +335,7 @@ var Square = (function (_super) {
                         var x_2 = arrayStone[0].x + 5;
                         TweenMax.to(spread, 0.4, { x: 113, y: 92 });
                         setTimeout(function () {
+                            HowlerUtils_1.HowlerUtils.Stone.play();
                             arrayStone[0].position.set(x_2, y_3);
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
@@ -332,6 +345,7 @@ var Square = (function (_super) {
                         var y_4 = arrayStone[0].y + 50;
                         TweenMax.to(spread, 0.4, { x: 575, y: 130 });
                         setTimeout(function () {
+                            HowlerUtils_1.HowlerUtils.Stone.play();
                             arrayStone[0].position.y = y_4;
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
@@ -340,6 +354,7 @@ var Square = (function (_super) {
                     else {
                         TweenMax.to(spread, 0.4, { x: square.x, y: square.y });
                         setTimeout(function () {
+                            HowlerUtils_1.HowlerUtils.Stone.play();
                             square.addChild(arrayStone[0]);
                             box.setText(_this.checkPoint(square));
                         }, 400);
