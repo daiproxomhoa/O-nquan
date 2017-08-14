@@ -3,6 +3,8 @@
  */
 import "pixi.js";
 import Point = PIXI.Point;
+import {HowlerUtils} from "../HowlerUtils";
+import {App} from "../Const/App";
 
 export class Button extends PIXI.Sprite {
 
@@ -11,13 +13,16 @@ export class Button extends PIXI.Sprite {
 
     constructor(x: number, y: number, text: string, url?: string) {
         super();
+        this.on("pointerdown",()=>{
+            HowlerUtils.MouseClick.play();
+        });
         if (url) {
             this.texture = PIXI.Texture.fromImage(url);
             this.width = 143;
             this.height = 78;
             this._size = new Point(143, 78);
         } else {
-            this.texture = PIXI.Texture.fromImage("../Picture/IU/button.png");
+            this.texture = PIXI.Texture.fromImage(App.AssetDir + "Picture/IU/button.png");
             this._size = new Point(150, 80);
             this.width = 150;
             this.height = 80;

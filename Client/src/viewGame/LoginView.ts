@@ -1,23 +1,27 @@
 import {TextField} from "../IU/TextField";
 import {viewGame} from "./viewGame";
 import {Button} from "../IU/Button";
+import {HowlerUtils} from "../HowlerUtils";
+import {App} from "../Const/App";
 /**
  * Created by Vu Tien Dai on 01/08/2017.
  */
 export class Login extends PIXI.Container {
+    private LoginSong;
     constructor() {
         super();
         this.createLogin();
+        HowlerUtils.Login.play();
     }
 
     createLogin = () => {
-        let backgroud = PIXI.Sprite.fromImage('../Picture/background.jpg');
+        let backgroud = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/background.jpg');
         backgroud.width = 1200;
         backgroud.height = 640;
         let txtMessage = new TextField(145, 400);
-        txtMessage.setText('User name ');
+        txtMessage.setText('User name');
         txtMessage.scale.set(0.4);
-        let Loginbtn = new Button(510, 400, "", "../Picture/IU/loginbtn.png");
+        let Loginbtn = new Button(510, 400, "", App.AssetDir + "Picture/IU/loginbtn.png");
         Loginbtn.setSize(new PIXI.Point(100, 50));
         Loginbtn.onClick = () => {
             if (txtMessage.getText() != "") {
@@ -27,6 +31,8 @@ export class Login extends PIXI.Container {
                 txtMessage.setText("");
                 this.alpha = 0;
                 this.visible=false;
+                viewGame.Game.visible=true;
+                HowlerUtils.Login.stop();
             }
         };
         this.addChild(backgroud, txtMessage, Loginbtn)

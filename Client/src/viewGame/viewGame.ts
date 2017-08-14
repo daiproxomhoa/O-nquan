@@ -3,6 +3,7 @@
  */
 import * as PIXI from "pixi.js"
 import * as gsap from "gsap"
+import * as howler from 'howler';
 import Container = PIXI.Container;
 import Sprite = PIXI.Sprite;
 import {Player} from "../Player";
@@ -12,65 +13,99 @@ import {Game} from "./Game";
 import {Login} from "./LoginView";
 import {Chat} from "./Chat";
 import {Button} from "../IU/Button";
+import {HowlerUtils} from "../HowlerUtils";
+import {App} from "../Const/App";
+var screenfull = require('screenfull');
+// var StatusBar = require('cordova-plugin-statusbar');
 export class viewGame {
-    app = new PIXI.Application(1200, 640, {backgroundColor: 0x1099bb});
+    app ;
     private wait;
     static turn = true;
     static game_turn;
     public static player: Player;
     private FinishGame = false;
     resetGame: Button;
-    leftGame:Button;
+    leftGame: Button;
     game_broad: Game;
     login_broad: Login;
     chat_board: Chat;
     result: PIXI.Sprite;
     last_turn;
-    Game;
+    static Game: PIXI.Container;
 
 
     constructor() {
-        viewGame.player = new Player(this);
+        viewGame.player = new Player(this);;
+        this.app = new PIXI.Application(App.width, App.height, {backgroundColor: 0x1099bb});
         document.body.appendChild(this.app.view);
         this.eventPlayer();
-        this.createGame();
         this.createLogin();
+        this.createGame();
+        // if (!App.IsWeb) {
+            this.ReSize();
+            this.app.stage.scale.set(App.W/App.width,App.H/App.height);
+        // }
+
     }
 
+    // onDeviceReady = () => {
+    //     if (StatusBar.isVisible = true) {
+    //         StatusBar.hide();
+    //     }
+    //
+    // }
+    ReSize=()=>{
+        if(!App.IsWeb||screenfull.isFullScreen){
+            App.W = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            App.H = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+            if(App.IsWeb){
+                // let zoomBrowser = Math.round(window.devicePixelRatio * 100);
+                // if (zoomBrowser != 100) {
+                //     w = window.innerWidth;
+                //     h = window.innerHeight;
+                // } else {
+                //     w = window.screen.width;
+                //     h = window.screen.height;
+                // }
+            }
+        }
+
+    }
     createLogin = () => {
         this.login_broad = new Login();
         this.app.stage.addChild(this.login_broad);
     }
     createGame = () => {
-        this.Game = new PIXI.Container();
+        viewGame.Game = new PIXI.Container();
         this.game_broad = new Game();
         this.chat_board = new Chat();
-        this.resetGame = new Button(950, 50, "", "../Picture/IU/refreshbtn.png")
+        this.resetGame = new Button(950, 50, "", App.AssetDir + "Picture/IU/refreshbtn.png")
         this.resetGame.scale.set(0.75);
         this.resetGame.visible = false;
         this.resetGame.onClick = () => {
-            viewGame.player.emit("reload",viewGame.game_turn);
-            viewGame.turn=viewGame.game_turn;
+            viewGame.player.emit("reload", viewGame.game_turn);
+            viewGame.turn = viewGame.game_turn;
             this.game_broad.reloadGame();
             this.game_broad.clock.restart();
             TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460});
             this.resetGame.visible = false;
-
         };
-        this.leftGame = new Button(1110,50,"","../Picture/IU/outroom.png");
-        this.leftGame.onClick=()=>{
+        this.leftGame = new Button(1110, 50, "", App.AssetDir + "Picture/IU/outroom.png");
+        this.leftGame.onClick = () => {
             this.game_broad.reloadGame();
             this.onWait();
             this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
             viewGame.player.emit("left room");
             viewGame.player.emit("join room");
         }
-        this.wait = PIXI.Sprite.fromImage('../Picture/wait.png');
+        this.wait = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/wait.png');
         this.wait.scale.set(0.7);
-        this.wait.visible=false;
+        this.wait.visible = false;
         this.wait.position.set(330, 164);
-        this.Game.addChild(this.game_broad, this.chat_board, this.resetGame,this.leftGame,this.wait);
-        this.app.stage.addChild(this.Game);
+        viewGame.Game.addChild(this.game_broad, this.chat_board, this.resetGame, this.leftGame, this.wait);
+        viewGame.Game.visible = false;
+        this.app.stage.addChild(viewGame.Game);
     }
 
     eventPlayer = () => {
@@ -86,13 +121,14 @@ export class viewGame {
         viewGame.player.on("End_turn", this.onAutoEndturn);
         viewGame.player.on("restart", this.onRestart);
         viewGame.player.on("reload game", this.onReLoad);
-        viewGame.player.on("user left",this.onUserLeft);
+        viewGame.player.on("user left", this.onUserLeft);
 
     }
-    onUserLeft=()=>{
-        viewGame.turn=true;
+    onUserLeft = () => {
+        HowlerUtils.DiDau.play();
+        viewGame.turn = true;
         this.game_broad.reloadGame();
-        this.FinishGame=false;
+        this.FinishGame = false;
     }
     onRestart = () => {
         if (this.last_turn == true) {
@@ -100,10 +136,10 @@ export class viewGame {
             this.FinishGame = false;
         }
     }
-    onReLoad = (data:any) => {
+    onReLoad = (data: any) => {
         this.game_broad.reloadGame();
         this.game_broad.clock.restart();
-        viewGame.turn=data;
+        viewGame.turn = data;
         this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
         this.FinishGame = false;
         TweenMax.to(this.game_broad.flag, 0.5, {x: 370, y: 90})
@@ -131,29 +167,45 @@ export class viewGame {
 
     }
     onStartGame = (data: any) => {
-        console.log("CHoi thoi")
+        HowlerUtils.QueenGarden.stop();
+        HowlerUtils.Orbis.play();
         this.wait.visible = false;
         viewGame.player.color = data.color;
         viewGame.player.oppname = data.oppname;
         this.game_broad.clock.restart();
     }
     onWait = () => {
+        HowlerUtils.QueenGarden.play();
         this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
-        this.wait.visible=true;
+        this.wait.visible = true;
         TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460});
 
     }
     onEndGame = (data: any) => {
+        HowlerUtils.Orbis.stop();
         this.FinishGame = true;
         this.game_broad.clock.stop();
         this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
+        console.log(data.src);
         if (data.result == 1) {
+            setTimeout(() => {
+                if (data.src > 10)
+                    HowlerUtils.TRBT.play();
+                else
+                    HowlerUtils.ConGa.play();
+            }, 2500);
             this.result = new PIXI.Sprite(Utils.Win);
             this.result.position.set(520, 395);
             this.game_broad.addChild(this.result);
             this.last_turn = true;
         }
         else if (data.result == 3) {
+            setTimeout(() => {
+                if (data.src > 10)
+                    HowlerUtils.Hazz.play();
+                else
+                    HowlerUtils.Othua.play();
+            }, 2500)
             this.result = new PIXI.Sprite(Utils.Lose);
             this.result.position.set(520, 395);
             this.game_broad.addChild(this.result);
@@ -183,7 +235,6 @@ export class viewGame {
     }
     onTurnColor = (data: any) => {
         viewGame.turn = data.turn;
-        console.log("Change_turn: "+viewGame.game_turn+":  " +viewGame.turn);
         this.game_broad.clock.restart();
         if (viewGame.turn == viewGame.game_turn) {
             this.game_broad.broad.getChildAt(1).onStartMove(this.game_broad.broad.getChildAt(1));

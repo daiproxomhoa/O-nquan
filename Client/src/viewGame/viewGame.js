@@ -12,20 +12,45 @@ var Game_1 = require("./Game");
 var LoginView_1 = require("./LoginView");
 var Chat_1 = require("./Chat");
 var Button_1 = require("../IU/Button");
+var HowlerUtils_1 = require("../HowlerUtils");
+var App_1 = require("../Const/App");
+var screenfull = require('screenfull');
+// var StatusBar = require('cordova-plugin-statusbar');
 var viewGame = (function () {
     function viewGame() {
         var _this = this;
-        this.app = new PIXI.Application(1200, 640, { backgroundColor: 0x1099bb });
         this.FinishGame = false;
+        // onDeviceReady = () => {
+        //     if (StatusBar.isVisible = true) {
+        //         StatusBar.hide();
+        //     }
+        //
+        // }
+        this.ReSize = function () {
+            if (!App_1.App.IsWeb || screenfull.isFullScreen) {
+                App_1.App.W = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+                App_1.App.H = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+                if (App_1.App.IsWeb) {
+                    // let zoomBrowser = Math.round(window.devicePixelRatio * 100);
+                    // if (zoomBrowser != 100) {
+                    //     w = window.innerWidth;
+                    //     h = window.innerHeight;
+                    // } else {
+                    //     w = window.screen.width;
+                    //     h = window.screen.height;
+                    // }
+                }
+            }
+        };
         this.createLogin = function () {
             _this.login_broad = new LoginView_1.Login();
             _this.app.stage.addChild(_this.login_broad);
         };
         this.createGame = function () {
-            _this.Game = new PIXI.Container();
+            viewGame.Game = new PIXI.Container();
             _this.game_broad = new Game_1.Game();
             _this.chat_board = new Chat_1.Chat();
-            _this.resetGame = new Button_1.Button(950, 50, "", "../Picture/IU/refreshbtn.png");
+            _this.resetGame = new Button_1.Button(950, 50, "", App_1.App.AssetDir + "Picture/IU/refreshbtn.png");
             _this.resetGame.scale.set(0.75);
             _this.resetGame.visible = false;
             _this.resetGame.onClick = function () {
@@ -36,7 +61,7 @@ var viewGame = (function () {
                 TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
                 _this.resetGame.visible = false;
             };
-            _this.leftGame = new Button_1.Button(1110, 50, "", "../Picture/IU/outroom.png");
+            _this.leftGame = new Button_1.Button(1110, 50, "", App_1.App.AssetDir + "Picture/IU/outroom.png");
             _this.leftGame.onClick = function () {
                 _this.game_broad.reloadGame();
                 _this.onWait();
@@ -44,12 +69,13 @@ var viewGame = (function () {
                 viewGame.player.emit("left room");
                 viewGame.player.emit("join room");
             };
-            _this.wait = PIXI.Sprite.fromImage('../Picture/wait.png');
+            _this.wait = PIXI.Sprite.fromImage(App_1.App.AssetDir + 'Picture/wait.png');
             _this.wait.scale.set(0.7);
             _this.wait.visible = false;
             _this.wait.position.set(330, 164);
-            _this.Game.addChild(_this.game_broad, _this.chat_board, _this.resetGame, _this.leftGame, _this.wait);
-            _this.app.stage.addChild(_this.Game);
+            viewGame.Game.addChild(_this.game_broad, _this.chat_board, _this.resetGame, _this.leftGame, _this.wait);
+            viewGame.Game.visible = false;
+            _this.app.stage.addChild(viewGame.Game);
         };
         this.eventPlayer = function () {
             viewGame.player.on("start game", _this.onStartGame);
@@ -67,6 +93,7 @@ var viewGame = (function () {
             viewGame.player.on("user left", _this.onUserLeft);
         };
         this.onUserLeft = function () {
+            HowlerUtils_1.HowlerUtils.DiDau.play();
             viewGame.turn = true;
             _this.game_broad.reloadGame();
             _this.FinishGame = false;
@@ -107,28 +134,44 @@ var viewGame = (function () {
             }
         };
         this.onStartGame = function (data) {
-            console.log("CHoi thoi");
+            HowlerUtils_1.HowlerUtils.QueenGarden.stop();
+            HowlerUtils_1.HowlerUtils.Orbis.play();
             _this.wait.visible = false;
             viewGame.player.color = data.color;
             viewGame.player.oppname = data.oppname;
             _this.game_broad.clock.restart();
         };
         this.onWait = function () {
+            HowlerUtils_1.HowlerUtils.QueenGarden.play();
             _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
             _this.wait.visible = true;
             TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
         };
         this.onEndGame = function (data) {
+            HowlerUtils_1.HowlerUtils.Orbis.stop();
             _this.FinishGame = true;
             _this.game_broad.clock.stop();
             _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
+            console.log(data.src);
             if (data.result == 1) {
+                setTimeout(function () {
+                    if (data.src > 10)
+                        HowlerUtils_1.HowlerUtils.TRBT.play();
+                    else
+                        HowlerUtils_1.HowlerUtils.ConGa.play();
+                }, 2500);
                 _this.result = new PIXI.Sprite(Utils_1.Utils.Win);
                 _this.result.position.set(520, 395);
                 _this.game_broad.addChild(_this.result);
                 _this.last_turn = true;
             }
             else if (data.result == 3) {
+                setTimeout(function () {
+                    if (data.src > 10)
+                        HowlerUtils_1.HowlerUtils.Hazz.play();
+                    else
+                        HowlerUtils_1.HowlerUtils.Othua.play();
+                }, 2500);
                 _this.result = new PIXI.Sprite(Utils_1.Utils.Lose);
                 _this.result.position.set(520, 395);
                 _this.game_broad.addChild(_this.result);
@@ -156,7 +199,6 @@ var viewGame = (function () {
         };
         this.onTurnColor = function (data) {
             viewGame.turn = data.turn;
-            console.log("Change_turn: " + viewGame.game_turn + ":  " + viewGame.turn);
             _this.game_broad.clock.restart();
             if (viewGame.turn == viewGame.game_turn) {
                 _this.game_broad.broad.getChildAt(1).onStartMove(_this.game_broad.broad.getChildAt(1));
@@ -177,10 +219,16 @@ var viewGame = (function () {
             }
         };
         viewGame.player = new Player_1.Player(this);
+        ;
+        this.app = new PIXI.Application(App_1.App.width, App_1.App.height, { backgroundColor: 0x1099bb });
         document.body.appendChild(this.app.view);
         this.eventPlayer();
-        this.createGame();
         this.createLogin();
+        this.createGame();
+        // if (!App.IsWeb) {
+        this.ReSize();
+        this.app.stage.scale.set(App_1.App.W / App_1.App.width, App_1.App.H / App_1.App.height);
+        // }
     }
     return viewGame;
 }());

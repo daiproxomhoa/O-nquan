@@ -20,7 +20,7 @@
 //     buttonBox: PIXI.Container;
 //
 //     constructor() {
-//         super(PIXI.Texture.fromImage("../Picture/IU/panel.png"));
+//         super(PIXI.Texture.fromImage(App.AssetDir + "Picture/IU/panel.png"));
 //         this.anchor.set(0.5);
 //         this.x = 500;
 //         this.y = 200;
@@ -42,7 +42,7 @@
 //
 //     static showDialog = (message: string, duration?: number) => {
 //         viewGame.gameContainer.interactiveChildren = false;
-//         Panel.panel.texture = PIXI.Texture.fromImage("../Picture/IU/panel.png");
+//         Panel.panel.texture = PIXI.Texture.fromImage(App.AssetDir + "Picture/IU/panel.png");
 //         Panel.panel.scale.set(0.7);
 //         Panel.panel.y = -500;
 //         Panel.panel.x = Math.random() * 1280;
@@ -75,7 +75,7 @@
 //
 //     static showMessageDialog = (message: string, action?: any) => {
 //         viewGame.gameContainer.interactiveChildren = false;
-//         Panel.panel.texture = PIXI.Texture.fromImage("../Picture/IU/panel.png");
+//         Panel.panel.texture = PIXI.Texture.fromImage(App.AssetDir + "Picture/IU/panel.png");
 //         Panel.panel.scale.set(0.7);
 //         Panel.panel.y = -500;
 //         Panel.panel.x = Math.random() * 1280;
@@ -114,7 +114,7 @@
 //
 //     static showConfirmDialog(msg: string, ...buttons) {
 //         viewGame.gameContainer.interactiveChildren = false;
-//         Panel.panel.texture = PIXI.Texture.fromImage("../Picture/IU/panel.png");
+//         Panel.panel.texture = PIXI.Texture.fromImage(App.AssetDir + "Picture/IU/panel.png");
 //         Panel.panel.scale.set(0.7);
 //         Panel.panel.y = -500;
 //         Panel.panel.x = Math.random() * 1280;

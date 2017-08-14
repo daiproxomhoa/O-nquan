@@ -7,7 +7,7 @@ var express = require("express");
 var http = require("http");
 var SocketIO = require("socket.io");
 var User_1 = require("./User");
-var Room_1 = require("./Room");
+var Manages_1 = require("./Manages");
 var Main = (function () {
     function Main() {
         var _this = this;
@@ -20,30 +20,31 @@ var Main = (function () {
         this.onConnect = function (socket) {
             _this.count++;
             socket.on("login", function (username) {
-                if (_this.room == null) {
-                    console.log("first");
-                    _this.room = new Room_1.Room(_this.count, "room" + _this.count);
-                    _this.room.addUser(new User_1.User(username.toString(), socket));
-                }
-                else if (_this.room.isFull() == true) {
-                    _this.Rooms.push(_this.room);
-                    _this.room = new Room_1.Room(_this.count, "room" + _this.count);
-                    _this.room.addUser(new User_1.User(username.toString(), socket));
-                    console.log("Nguoi 1 zo");
-                }
-                else {
-                    _this.room.addUser(new User_1.User(username.toString(), socket));
-                    console.log("Nguoi 2 zo");
-                }
+                // if(this.room ==null){
+                //     console.log("first");
+                //     this.room = new Room(this.count, "room" + this.count);
+                //     this.room.addUser(new User(username.toString(),socket));
+                // }
+                // else if (this.room.isFull() == true) {
+                //     this.Rooms.push(this.room);
+                //     this.room = new Room(this.count, "room" + this.count);
+                //     this.room.addUser(new User(username.toString(), socket));
+                //     console.log("Nguoi 1 zo")
+                // }
+                //
+                // else {
+                //     this.room.addUser(new User(username.toString(),socket));
+                // }
+                _this.manages.addUser(new User_1.User(username.toString(), socket));
             });
         };
         this.onListen = function () {
             console.log('Server listening at port ' + _this.port);
         };
         this.app.use(express.static(__dirname + '/../dist'));
-        ;
         this.server.listen(this.port, this.onListen);
         this.io.on('connection', this.onConnect);
+        this.manages = new Manages_1.Manages();
     }
     return Main;
 }());

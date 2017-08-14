@@ -6,6 +6,7 @@ import "pixi.js"
 import Rectangle = PIXI.Rectangle;
 import {isNullOrUndefined} from "util";
 import {viewGame} from "../viewGame/viewGame";
+import {App} from "../Const/App";
 
 export class TextField extends PIXI.Container {
     get keyDown(): (e) => any {
@@ -26,7 +27,7 @@ export class TextField extends PIXI.Container {
     constructor(x: number, y: number, public size: number = 1, name?: string) {
 
         super();
-        let base = PIXI.BaseTexture.fromImage("../Picture/IU/textfield.png");
+        let base = PIXI.BaseTexture.fromImage(App.AssetDir + "Picture/IU/textfield.png");
 
         let left = new PIXI.Sprite(new PIXI.Texture(base, new Rectangle(0, 0, 50, 127)));
         left.anchor.set(0, 0.5);

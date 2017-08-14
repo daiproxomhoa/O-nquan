@@ -1,6 +1,7 @@
 import Rectangle = PIXI.Rectangle;
 import * as gsap from "gsap"
 import TweenMax = gsap.TweenMax;
+import {App} from "../Const/App";
 /**
  * Created by Administrator on 06/03/2017.
  */
@@ -17,7 +18,7 @@ export class ScrollPane extends PIXI.Container {
         super();
         let dx = wid - 22;
         let dy = hei - 24;
-        let base = PIXI.BaseTexture.fromImage("../Picture/IU/scrollpane.png");
+        let base = PIXI.BaseTexture.fromImage(App.AssetDir + "Picture/IU/scrollpane.png");
         let topLeft = new PIXI.Sprite(new PIXI.Texture(base, new Rectangle(0, 0, 10, 10)));
         topLeft.position.set(0, 0);
 

@@ -7,8 +7,9 @@ import Sprite = PIXI.Sprite;
 import {Utils} from "../Utils";
 import {clock} from  "../ObjectGame/Clock";
 import TweenMax = gsap.TweenMax;
+import {App} from "../Const/App";
 export class Game extends Container {
-    // gametable = [7 , 0, 0, 1, 0, 0, 7, 0, 0, 1, 0, 0, 7, 7];
+    // gametable = [7 , 0, 0, 1, 0, 0, 7, 0, 5, 0, 10, 0, 7, 7];
     private gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
     private broad_main;
     broad;
@@ -42,7 +43,7 @@ export class Game extends Container {
         this.createClock();
     }
     createBroadGame=()=> {
-        var background = PIXI.Sprite.fromImage('../Picture/background.png');
+        var background = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/background.png');
         background.width = 1200;
         background.height = 640;
         this.addChild(background);
@@ -107,7 +108,8 @@ export class Game extends Container {
         container.addChild(h1, h2);
         this.broad_main.addChild(this.broad);
         this.broad_main.addChild(container);
-        this.broad_main.position.set(200, 158);
+        this.broad_main.position.set(158 , 150)
+        this.broad_main.scale.set(1.1);
         this.addChild(this.broad_main);
     }
 }

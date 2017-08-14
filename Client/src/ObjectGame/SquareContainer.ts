@@ -26,6 +26,8 @@ export class Square extends Container {
     player: Player = viewGame.player;
     timeout = 0;
     ct;
+    Seq_Eat = false;
+    Poit = 0;
 
     constructor(public count = 0, type, index, ct) {
         super();
@@ -170,6 +172,7 @@ export class Square extends Container {
                     TweenMax.to(spread, 0.4, {x: arraySquare[count].x, y: arraySquare[count].y})
                     setTimeout(() => {
                         let box = <Box> Box[count];
+                        HowlerUtils.Stone.play();
                         arraySquare[count].addChild(Stone[0]);
                         box.setText(this.checkPoint(arraySquare[count]));
                         count++;
@@ -212,6 +215,7 @@ export class Square extends Container {
                     TweenMax.to(spread, 0.4, {x: arraySquare[count].x, y: arraySquare[count].y});
                     setTimeout(() => {
                         let box = <Box> Box[count];
+                        HowlerUtils.Stone.play();
                         arraySquare[count].addChild(Stone[0]);
                         box.setText(this.checkPoint(arraySquare[count]));
                         count++;
@@ -299,7 +303,6 @@ export class Square extends Container {
         let check;
         let one = arraySquare[0].children.length;
         let two = arraySquare[6].children.length;
-        this.timeout += 420;
         if (arraySquare[v].children.length == 0) {
             this.stop = true;
             let check = false;
@@ -308,17 +311,20 @@ export class Square extends Container {
                     this.pos = 6;
                     check = true;
                 }
-                else
-             return;
+                else {
+                    this.checkForRight(arraySquare, Box, v);
+                    return;
+                }
             }
             else if (this.pos == 10) {
                 if (one > 4) {
                     this.pos = 0;
                     check = true;
                 }
-                else
-                    return ;
-
+                else {
+                    this.checkForRight(arraySquare, Box, v);
+                    return;
+                }
             }
             else if (this.pos != 4 && this.pos != 10) {
                 this.pos = this.pos + 2;
@@ -327,6 +333,7 @@ export class Square extends Container {
                 if (this.pos == 12)
                     this.pos = 0;
                 if (arraySquare[this.pos].children.length == 0) {
+                    this.checkForRight(arraySquare, Box, v);
                     return;
                 }
                 check = true;
@@ -341,53 +348,72 @@ export class Square extends Container {
                     let square = arraySquare[13];
                     TweenMax.to(arraySquare[14], 0.4, {x: arraySquare[13].x, y: arraySquare[13].y});
                     setTimeout(() => {
-                        if (this.pos == 0 || this.pos == 6)
-                            HowlerUtils.AnQuan.play();
+                        if (this.pos == 0 || this.pos == 6 && this.Seq_Eat == false) {
+                            if (this.checkPoint(arraySquare[14]) < 18)
+                                HowlerUtils.AnQuan.play();
+                            else
+                                HowlerUtils.TrungLon.play();
+                        }
+                        else if (this.Seq_Eat == false && this.pos != 0 && this.pos != 6)
+                            HowlerUtils.An.play();
                         this.MoveEat(arraySquare[14], arraySquare[13]);
                         let box2 = <Box> Box[13];
                         box2.setText(this.checkPoint(square));
+                        this.Seq_Eat = true;
                     }, 400);
                 }
                 else {
                     let square = arraySquare[12];
                     TweenMax.to(arraySquare[14], 0.4, {x: arraySquare[12].x, y: arraySquare[12].y});
                     setTimeout(() => {
-                        if (this.pos == 0 || this.pos == 6)
-                            HowlerUtils.AnQuan.play();
+                        if (this.pos == 0 || this.pos == 6 && this.Seq_Eat == false) {
+                            if (this.checkPoint(arraySquare[14]) < 18)
+                                HowlerUtils.AnQuan.play();
+                            else
+                                HowlerUtils.TrungLon.play();
+                        }
+                        else if (this.Seq_Eat == false && this.pos != 0 && this.pos != 6)
+                            HowlerUtils.An.play();
                         this.MoveEat(arraySquare[14], arraySquare[12]);
                         let box2 = <Box> Box[12];
                         box2.setText(this.checkPoint(square));
+
+                        this.Seq_Eat = true;
                     }, 400);
                 }
 
                 v = this.pos + 1;
                 if (v == 12)
                     v = 0
-               setTimeout(()=>{this.onEatRight(arraySquare,Box,v)},400);
+                setTimeout(() => {
+                    this.onEatRight(arraySquare, Box, v)
+                }, 400);
             }
 
+            else {
+                this.checkForRight(arraySquare, Box, v);
+            }
         }
-
+        else {
+            this.checkForRight(arraySquare, Box, v);
+        }
     }
 
-    checkForRight(arraySquare: PIXI.Container[], v, Box, ct) {
-        this.onEatRight(arraySquare, Box, v);
-        setTimeout(() => {
-            this.timeout = 0;
-            if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 5 && this.pos != 11) {
-                this.onMoveRight(arraySquare[v]);
+    checkForRight(arraySquare: PIXI.Container[], Box, v) {
+        this.Seq_Eat = false;
+        this.timeout = 0;
+        if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 5 && this.pos != 11) {
+            this.onMoveRight(arraySquare[v]);
+        }
+        else {
+            this.checkEndGame(arraySquare, Box);
+            if (this.endgame == false)
+                this.checkStoneLast(arraySquare);
+            if (viewGame.game_turn != viewGame.turn) {
+                this.onStartMove(arraySquare[1]);
             }
-            else {
-                this.checkEndGame(arraySquare, Box);
-                if (this.endgame == false)
-                    this.checkStoneLast(arraySquare);
-                if (viewGame.game_turn != viewGame.turn) {
-                    this.onStartMove(arraySquare[1]);
-                }
-                this.emit("finish move");
-            }
-
-        }, this.timeout + 100);
+            this.emit("finish move");
+        }
 
     }
 
@@ -452,9 +478,7 @@ export class Square extends Container {
             this.pos = j;
             let v = j + 1;
             if (v == 12) v = 0;
-            this.checkForRight(arraySquare, v, Box, ct);
-
-
+            this.onEatRight(arraySquare, Box, v);
         }, n * 450);
     }
 
@@ -463,24 +487,27 @@ export class Square extends Container {
         let check;
         let one = arraySquare[0].children.length;
         let two = arraySquare[6].children.length;
-        this.timeout += 420;
-       if (arraySquare[v].children.length == 0) {
+        if (arraySquare[v].children.length == 0) {
             this.stop = true;
             if (this.pos == 8) {
                 if (two > 4) {
                     this.pos = 6;
                     check = true;
                 }
-                else
+                else {
+                    this.checkForLeft(arraySquare, Box, v);
                     return;
+                }
             }
             else if (this.pos == 2) {
                 if (one > 4) {
                     this.pos = 0;
                     check = true;
                 }
-                else
+                else {
+                    this.checkForLeft(arraySquare, Box, v);
                     return;
+                }
 
             }
             else if (this.pos != 2 && this.pos != 8) {
@@ -490,6 +517,7 @@ export class Square extends Container {
                 if (this.pos == -1)
                     this.pos = 11;
                 if (arraySquare[this.pos].children.length == 0) {
+                    this.checkForLeft(arraySquare, Box, v);
                     return;
                 }
                 check = true;
@@ -504,51 +532,69 @@ export class Square extends Container {
                     let square = arraySquare[13];
                     TweenMax.to(arraySquare[14], 0.4, {x: arraySquare[13].x, y: arraySquare[13].y});
                     setTimeout(() => {
-                        if (this.pos == 0 || this.pos == 6)
-                            HowlerUtils.AnQuan.play();
+                        if (this.pos == 0 || this.pos == 6 && this.Seq_Eat == false) {
+                            if (this.checkPoint(arraySquare[14]) < 18)
+                                HowlerUtils.AnQuan.play();
+                            else
+                                HowlerUtils.TrungLon.play();
+                        }
+                        else if (this.Seq_Eat == false && this.pos != 0 && this.pos != 6)
+                            HowlerUtils.An.play();
                         this.MoveEat(arraySquare[14], arraySquare[13]);
                         let box2 = <Box> Box[13];
                         box2.setText(this.checkPoint(square));
+
+                        this.Seq_Eat = true;
                     }, 400);
                 }
                 else {
                     let square = arraySquare[12];
                     TweenMax.to(arraySquare[14], 0.4, {x: arraySquare[12].x, y: arraySquare[12].y});
                     setTimeout(() => {
-                        if (this.pos == 0 || this.pos == 6)
-                            HowlerUtils.AnQuan.play();
+                        if (this.pos == 0 || this.pos == 6 && this.Seq_Eat == false) {
+                            if (this.checkPoint(arraySquare[14]) < 18)
+                                HowlerUtils.AnQuan.play();
+                            else
+                                HowlerUtils.TrungLon.play();
+                        }
+                        else if (this.Seq_Eat == false && this.pos != 0 && this.pos != 6)
+                            HowlerUtils.An.play();
                         this.MoveEat(arraySquare[14], arraySquare[12]);
                         let box2 = <Box> Box[12];
                         box2.setText(this.checkPoint(square));
+
+                        this.Seq_Eat = true;
                     }, 400);
                 }
                 v = this.pos - 1;
                 if (v == -1)
                     v = 11
-                setTimeout(()=>{this.onEatLeft(arraySquare,Box,v)},400);
-            }
-
-        }
-    }
-
-    checkForLeft(arraySquare: PIXI.Container[], v, Box, ct) {
-        this.onEatLeft(arraySquare, Box, v);
-        setTimeout(() => {
-            this.timeout = 0;
-            if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 7 && this.pos != 1) {
-                this.onMoveLeft(arraySquare[v]);
+                setTimeout(() => {
+                    this.onEatLeft(arraySquare, Box, v)
+                }, 400);
             }
             else {
-                this.checkEndGame(arraySquare, Box);
-                    if (this.endgame == false)
-                        this.checkStoneLast(arraySquare);
-                    if (viewGame.game_turn != viewGame.turn) {
-                        this.onStartMove(arraySquare[1]);
-                    }
-                    this.emit("finish move");
+                this.checkForLeft(arraySquare, Box, v);
             }
+        }
+        else
+            this.checkForLeft(arraySquare, Box, v);
+    }
 
-        }, this.timeout + 100);
+    checkForLeft(arraySquare: PIXI.Container[], Box, v) {
+        this.Seq_Eat = false;
+        if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 7 && this.pos != 1) {
+            this.onMoveLeft(arraySquare[v]);
+        }
+        else {
+            this.checkEndGame(arraySquare, Box);
+            if (this.endgame == false)
+                this.checkStoneLast(arraySquare);
+            if (viewGame.game_turn != viewGame.turn) {
+                this.onStartMove(arraySquare[1]);
+            }
+            this.emit("finish move");
+        }
     }
 
     onMoveLeft = (ct: PIXI.Container) => {
@@ -613,7 +659,7 @@ export class Square extends Container {
             this.pos = j;
             let v = j - 1;
             if (v == -1) v = 11;
-            this.checkForLeft(arraySquare, v, Box, ct);
+            this.onEatLeft(arraySquare, Box, v);
 
         }, n * 450);
     }
@@ -643,8 +689,14 @@ export class Square extends Container {
                 count++;
         }
         if (count == 2) {
-            this.countPoit(arraySquare, Box)
+            setTimeout(() => {
+                if (Math.random() * 2 > 1)
+                    HowlerUtils.TQKV.play();
+                else
+                    HowlerUtils.TQBR.play();
+            }, 1000);
             this.endgame = true;
+            this.countPoit(arraySquare, Box)
         }
     }
 
@@ -679,13 +731,14 @@ export class Square extends Container {
         setTimeout(() => {
             count1 = this.checkPoint(arraySquare[12]);
             count2 = this.checkPoint(arraySquare[13]);
-            if (count1 > count2)
-                viewGame.player.emit("end game", {team: viewGame.game_turn, result: 1});
-            else if (count1 < count2)
-                viewGame.player.emit("end game", {team: viewGame.game_turn, result: 3});
-            else
-                viewGame.player.emit("end game", {team: viewGame.game_turn, result: 2});
-            ;
+            if (viewGame.turn == viewGame.game_turn) {
+                if (count1 > count2)
+                    viewGame.player.emit("end game", {team: viewGame.game_turn, result: 1, src: count1 - count2});
+                else if (count1 < count2)
+                    viewGame.player.emit("end game", {team: viewGame.game_turn, result: 3, src: count2 - count1});
+                else
+                    viewGame.player.emit("end game", {team: viewGame.game_turn, result: 2, src: count1 - count2});
+            }
         }, 6 * 450);
     }
 }

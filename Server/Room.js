@@ -13,75 +13,55 @@ var Room = (function () {
             _this.users.push(user);
             user.socket.emit("join room success");
             if (_this.users.length == 1) {
-                _this.users[0].socket.emit("wait player");
-                // console.log(this.turnColor);
-                // this.users[0].on("disconnect", this.onUser0Left);
-                // this.users[0].on("left room", this.onUser0Left);
+                _this.users[0].emit("wait player");
+                _this.users[0].on("disconnect", _this.onUser0Left);
+                _this.users[0].on("left room", _this.onUser0Left);
             }
             else if (_this.users.length == 2) {
-                _this.users[0].socket.emit("set turn", _this.turnColor);
-                _this.users[1].socket.emit("set turn", !_this.turnColor);
-                // this.users[1].on("disconnect", this.onUser1Left);
-                // this.users[1].on("left room", this.onUser1Left);
+                _this.turnColor = true;
+                _this.users[0].emit("set turn", { gameturn: _this.turnColor });
+                _this.users[1].emit("set turn", { gameturn: !_this.turnColor });
+                _this.users[1].on("disconnect", _this.onUser1Left);
+                _this.users[1].on("left room", _this.onUser1Left);
                 _this.startgame();
+                console.log("Choi thoi");
             }
-            // console.log(this.users.length);
         };
         this.startgame = function () {
             _this.player0accept = false;
             _this.player1accept = false;
-            _this.turnColor = true;
-            _this.users[0].socket.emit("start game", { color: true, oppname: _this.users[1].getUserName });
-            _this.users[1].socket.emit("start game", { color: false, oppname: _this.users[0].getUserName });
+            _this.users[0].emit("start game", { color: true, oppname: _this.users[1].getUserName });
+            _this.users[1].emit("start game", { color: false, oppname: _this.users[0].getUserName });
+            _this.users[0].setCompatior(_this.users[1]);
+            _this.users[1].setCompatior(_this.users[0]);
             var _loop_1 = function (i) {
                 _this.users[i].on("End turn", function () {
-                    _this.users[i].socket.emit("End_turn");
+                    _this.users[i].emit("End_turn");
                 });
                 _this.users[i].on("move", function (data) {
-                    _this.users[1 - i].socket.emit("opponent move", data);
+                    _this.users[i].getCompatior().emit("opponent move", data);
                 });
-                _this.users[i].socket.on("change turn", function () {
+                _this.users[i].on("change turn", function () {
                     _this.turnColor = !_this.turnColor;
-                    console.log(_this.turnColor);
-                    _this.users[1 - i].socket.emit("turn color", _this.turnColor);
-                    _this.users[i].socket.emit("turn color", _this.turnColor);
+                    _this.users[i].getCompatior().emit("turn color", { turn: _this.turnColor });
+                    _this.users[i].emit("turn color", { turn: _this.turnColor });
                 });
                 _this.users[i].on("end game", function (data) {
-                    _this.users[1 - i].socket.emit("game_end", { result: 4 - data.result });
+                    _this.users[i].emit("game_end", data);
+                    _this.users[i].getCompatior().emit("game_end", { result: 4 - data.result, src: data.src });
                     if (data.result != 3)
-                        _this.users[i].socket.emit("restart");
+                        _this.users[i].emit("restart");
+                    else
+                        _this.users[i].getCompatior().emit("restart");
                 });
                 _this.users[i].on("send message", function (msg) {
-                    _this.users[i].socket.emit("new message", { playername: _this.users[i].getUserName, message: msg });
-                    _this.users[1 - i].socket.emit("new message", { playername: _this.users[i].getUserName, message: msg });
+                    _this.users[i].emit("new message", { playername: _this.users[i].getUserName, message: msg });
+                    _this.users[i].getCompatior().emit("new message", { playername: _this.users[i].getUserName, message: msg });
                 });
                 _this.users[i].on("reload", function (data) {
                     _this.turnColor = data;
-                    _this.users[1 - i].emit("reload game", data);
+                    _this.users[i].getCompatior().emit("reload game", data);
                 });
-                // this.users[i].on("restart", () => {
-                //     if (i == 0) this.player0accept = true;
-                //     else this.player1accept = true;
-                //     if (this.player1accept && this.player0accept) {
-                //         this.users[0].socket.emit("restart game");
-                //         this.users[1].socket.emit("restart game");
-                //     }
-                // });
-                // this.users[i].on("game finish", () => {
-                //     this.users[1 - i].socket.emit("finish");
-                // });
-                //
-                // this.users[i].on("left", () => {
-                //     this.users[1 - i].socket.emit("player left");
-                //     this.users.splice(i, 1);
-                // })
-                // this.users[i].on("send message", (msg: string) => {
-                //     this.users[i].socket.emit("new message", {playername: this.users[i].username, message: msg});
-                //     this.users[1 - i].socket.emit("new message", {playername: this.users[i].username, message: msg});
-                // });
-                // this.users[i].on("time out", () => {
-                //     this.users[1 - i].socket.emit("opponent timeout");
-                // });
             };
             for (var i = 0; i < 2; i++) {
                 _loop_1(i);
@@ -92,8 +72,10 @@ var Room = (function () {
                 _this.users = [];
             }
             else if (_this.users.length == 2) {
-                _this.users.splice(0, 1);
-                _this.users[0].socket.emit("user left");
+                var us = _this.users[1];
+                _this.users = [];
+                _this.addUser(us);
+                _this.users[0].emit("user left");
             }
         };
         this.onUser1Left = function () {
@@ -101,12 +83,20 @@ var Room = (function () {
                 _this.users = [];
             }
             else if (_this.users.length == 2) {
-                _this.users.splice(1, 1);
-                _this.users[0].socket.emit("user left");
+                var us = _this.users[0];
+                _this.users = [];
+                _this.addUser(us);
+                _this.users[0].emit("user left");
             }
         };
         this.isFull = function () {
             if (_this.users.length >= 2) {
+                return true;
+            }
+            return false;
+        };
+        this.isEmty = function () {
+            if (_this.users.length == 0) {
                 return true;
             }
             return false;

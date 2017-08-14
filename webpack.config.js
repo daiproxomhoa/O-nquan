@@ -14,8 +14,9 @@ module.exports = {
         main: path.resolve("Client/Main.ts")
     },
     output: {
-        path: __dirname + '/dist',
-        filename: 'bundle.js'
+        path: __dirname,
+        filename: 'dist/bundle.js'
+        // filename: 'Mobile/www/js/bundle.js'
     },
     devtool : "source-map",
     module: {

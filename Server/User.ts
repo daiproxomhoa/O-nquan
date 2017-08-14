@@ -5,14 +5,22 @@ import Socket = SocketIO.Socket;
 
 export class User {
     _username: string;
+    _compatior: User;
 
     constructor(userInfo: any, public socket: Socket) {
         this._username = userInfo;
-
     }
 
     get getUserName(): string {
         return this._username;
+    }
+
+    setCompatior(user: User) {
+        this._compatior = user;
+    }
+
+    getCompatior(): User {
+        return this._compatior;
     }
 
     on = (event: string, fn: Function, clear = true) => {

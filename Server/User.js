@@ -30,6 +30,12 @@ var User = (function () {
         enumerable: true,
         configurable: true
     });
+    User.prototype.setCompatior = function (user) {
+        this._compatior = user;
+    };
+    User.prototype.getCompatior = function () {
+        return this._compatior;
+    };
     return User;
 }());
 exports.User = User;

@@ -33,6 +33,8 @@ var Square = (function (_super) {
         _this.endgame = false;
         _this.player = viewGame_1.viewGame.player;
         _this.timeout = 0;
+        _this.Seq_Eat = false;
+        _this.Poit = 0;
         _this.onDragStart = function (event) {
             _this.data = event.data;
             _this.alpha = 0.5;
@@ -94,7 +96,6 @@ var Square = (function (_super) {
             var check;
             var one = arraySquare[0].children.length;
             var two = arraySquare[6].children.length;
-            _this.timeout += 420;
             if (arraySquare[v].children.length == 0) {
                 _this.stop = true;
                 var check_1 = false;
@@ -103,16 +104,20 @@ var Square = (function (_super) {
                         _this.pos = 6;
                         check_1 = true;
                     }
-                    else
+                    else {
+                        _this.checkForRight(arraySquare, Box, v);
                         return;
+                    }
                 }
                 else if (_this.pos == 10) {
                     if (one > 4) {
                         _this.pos = 0;
                         check_1 = true;
                     }
-                    else
+                    else {
+                        _this.checkForRight(arraySquare, Box, v);
                         return;
+                    }
                 }
                 else if (_this.pos != 4 && _this.pos != 10) {
                     _this.pos = _this.pos + 2;
@@ -121,6 +126,7 @@ var Square = (function (_super) {
                     if (_this.pos == 12)
                         _this.pos = 0;
                     if (arraySquare[_this.pos].children.length == 0) {
+                        _this.checkForRight(arraySquare, Box, v);
                         return;
                     }
                     check_1 = true;
@@ -135,29 +141,51 @@ var Square = (function (_super) {
                         var square_1 = arraySquare[13];
                         TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[13].x, y: arraySquare[13].y });
                         setTimeout(function () {
-                            if (_this.pos == 0 || _this.pos == 6)
-                                HowlerUtils_1.HowlerUtils.AnQuan.play();
+                            if (_this.pos == 0 || _this.pos == 6 && _this.Seq_Eat == false) {
+                                if (_this.checkPoint(arraySquare[14]) < 18)
+                                    HowlerUtils_1.HowlerUtils.AnQuan.play();
+                                else
+                                    HowlerUtils_1.HowlerUtils.TrungLon.play();
+                            }
+                            else if (_this.Seq_Eat == false && _this.pos != 0 && _this.pos != 6)
+                                HowlerUtils_1.HowlerUtils.An.play();
                             _this.MoveEat(arraySquare[14], arraySquare[13]);
                             var box2 = Box[13];
                             box2.setText(_this.checkPoint(square_1));
+                            _this.Seq_Eat = true;
                         }, 400);
                     }
                     else {
                         var square_2 = arraySquare[12];
                         TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[12].x, y: arraySquare[12].y });
                         setTimeout(function () {
-                            if (_this.pos == 0 || _this.pos == 6)
-                                HowlerUtils_1.HowlerUtils.AnQuan.play();
+                            if (_this.pos == 0 || _this.pos == 6 && _this.Seq_Eat == false) {
+                                if (_this.checkPoint(arraySquare[14]) < 18)
+                                    HowlerUtils_1.HowlerUtils.AnQuan.play();
+                                else
+                                    HowlerUtils_1.HowlerUtils.TrungLon.play();
+                            }
+                            else if (_this.Seq_Eat == false && _this.pos != 0 && _this.pos != 6)
+                                HowlerUtils_1.HowlerUtils.An.play();
                             _this.MoveEat(arraySquare[14], arraySquare[12]);
                             var box2 = Box[12];
                             box2.setText(_this.checkPoint(square_2));
+                            _this.Seq_Eat = true;
                         }, 400);
                     }
                     v = _this.pos + 1;
                     if (v == 12)
                         v = 0;
-                    setTimeout(function () { _this.onEatRight(arraySquare, Box, v); }, 400);
+                    setTimeout(function () {
+                        _this.onEatRight(arraySquare, Box, v);
+                    }, 400);
                 }
+                else {
+                    _this.checkForRight(arraySquare, Box, v);
+                }
+            }
+            else {
+                _this.checkForRight(arraySquare, Box, v);
             }
         };
         _this.onMoveRight = function (ct) {
@@ -221,14 +249,13 @@ var Square = (function (_super) {
                 var v = j + 1;
                 if (v == 12)
                     v = 0;
-                _this.checkForRight(arraySquare, v, Box, ct);
+                _this.onEatRight(arraySquare, Box, v);
             }, n * 450);
         };
         _this.onEatLeft = function (arraySquare, Box, v) {
             var check;
             var one = arraySquare[0].children.length;
             var two = arraySquare[6].children.length;
-            _this.timeout += 420;
             if (arraySquare[v].children.length == 0) {
                 _this.stop = true;
                 if (_this.pos == 8) {
@@ -236,16 +263,20 @@ var Square = (function (_super) {
                         _this.pos = 6;
                         check = true;
                     }
-                    else
+                    else {
+                        _this.checkForLeft(arraySquare, Box, v);
                         return;
+                    }
                 }
                 else if (_this.pos == 2) {
                     if (one > 4) {
                         _this.pos = 0;
                         check = true;
                     }
-                    else
+                    else {
+                        _this.checkForLeft(arraySquare, Box, v);
                         return;
+                    }
                 }
                 else if (_this.pos != 2 && _this.pos != 8) {
                     _this.pos = _this.pos - 2;
@@ -254,6 +285,7 @@ var Square = (function (_super) {
                     if (_this.pos == -1)
                         _this.pos = 11;
                     if (arraySquare[_this.pos].children.length == 0) {
+                        _this.checkForLeft(arraySquare, Box, v);
                         return;
                     }
                     check = true;
@@ -268,30 +300,51 @@ var Square = (function (_super) {
                         var square_3 = arraySquare[13];
                         TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[13].x, y: arraySquare[13].y });
                         setTimeout(function () {
-                            if (_this.pos == 0 || _this.pos == 6)
-                                HowlerUtils_1.HowlerUtils.AnQuan.play();
+                            if (_this.pos == 0 || _this.pos == 6 && _this.Seq_Eat == false) {
+                                if (_this.checkPoint(arraySquare[14]) < 18)
+                                    HowlerUtils_1.HowlerUtils.AnQuan.play();
+                                else
+                                    HowlerUtils_1.HowlerUtils.TrungLon.play();
+                            }
+                            else if (_this.Seq_Eat == false && _this.pos != 0 && _this.pos != 6)
+                                HowlerUtils_1.HowlerUtils.An.play();
                             _this.MoveEat(arraySquare[14], arraySquare[13]);
                             var box2 = Box[13];
                             box2.setText(_this.checkPoint(square_3));
+                            _this.Seq_Eat = true;
                         }, 400);
                     }
                     else {
                         var square_4 = arraySquare[12];
                         TweenMax.to(arraySquare[14], 0.4, { x: arraySquare[12].x, y: arraySquare[12].y });
                         setTimeout(function () {
-                            if (_this.pos == 0 || _this.pos == 6)
-                                HowlerUtils_1.HowlerUtils.AnQuan.play();
+                            if (_this.pos == 0 || _this.pos == 6 && _this.Seq_Eat == false) {
+                                if (_this.checkPoint(arraySquare[14]) < 18)
+                                    HowlerUtils_1.HowlerUtils.AnQuan.play();
+                                else
+                                    HowlerUtils_1.HowlerUtils.TrungLon.play();
+                            }
+                            else if (_this.Seq_Eat == false && _this.pos != 0 && _this.pos != 6)
+                                HowlerUtils_1.HowlerUtils.An.play();
                             _this.MoveEat(arraySquare[14], arraySquare[12]);
                             var box2 = Box[12];
                             box2.setText(_this.checkPoint(square_4));
+                            _this.Seq_Eat = true;
                         }, 400);
                     }
                     v = _this.pos - 1;
                     if (v == -1)
                         v = 11;
-                    setTimeout(function () { _this.onEatLeft(arraySquare, Box, v); }, 400);
+                    setTimeout(function () {
+                        _this.onEatLeft(arraySquare, Box, v);
+                    }, 400);
+                }
+                else {
+                    _this.checkForLeft(arraySquare, Box, v);
                 }
             }
+            else
+                _this.checkForLeft(arraySquare, Box, v);
         };
         _this.onMoveLeft = function (ct) {
             _this.stop = false;
@@ -354,7 +407,7 @@ var Square = (function (_super) {
                 var v = j - 1;
                 if (v == -1)
                     v = 11;
-                _this.checkForLeft(arraySquare, v, Box, ct);
+                _this.onEatLeft(arraySquare, Box, v);
             }, n * 450);
         };
         _this.ct = ct;
@@ -485,6 +538,7 @@ var Square = (function (_super) {
                     TweenMax.to(spread, 0.4, { x: arraySquare[count_1].x, y: arraySquare[count_1].y });
                     setTimeout(function () {
                         var box = Box[count_1];
+                        HowlerUtils_1.HowlerUtils.Stone.play();
                         arraySquare[count_1].addChild(Stone_2[0]);
                         box.setText(_this.checkPoint(arraySquare[count_1]));
                         count_1++;
@@ -526,6 +580,7 @@ var Square = (function (_super) {
                     TweenMax.to(spread, 0.4, { x: arraySquare[count_2].x, y: arraySquare[count_2].y });
                     setTimeout(function () {
                         var box = Box[count_2];
+                        HowlerUtils_1.HowlerUtils.Stone.play();
                         arraySquare[count_2].addChild(Stone_3[0]);
                         box.setText(_this.checkPoint(arraySquare[count_2]));
                         count_2++;
@@ -544,43 +599,36 @@ var Square = (function (_super) {
             ct2.addChild(ct1.children[0]);
         }
     };
-    Square.prototype.checkForRight = function (arraySquare, v, Box, ct) {
-        var _this = this;
-        this.onEatRight(arraySquare, Box, v);
-        setTimeout(function () {
-            _this.timeout = 0;
-            if (_this.stop == false && _this.pos != 0 && _this.pos != 6 && _this.pos != 5 && _this.pos != 11) {
-                _this.onMoveRight(arraySquare[v]);
+    Square.prototype.checkForRight = function (arraySquare, Box, v) {
+        this.Seq_Eat = false;
+        this.timeout = 0;
+        if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 5 && this.pos != 11) {
+            this.onMoveRight(arraySquare[v]);
+        }
+        else {
+            this.checkEndGame(arraySquare, Box);
+            if (this.endgame == false)
+                this.checkStoneLast(arraySquare);
+            if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
+                this.onStartMove(arraySquare[1]);
             }
-            else {
-                _this.checkEndGame(arraySquare, Box);
-                if (_this.endgame == false)
-                    _this.checkStoneLast(arraySquare);
-                if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
-                    _this.onStartMove(arraySquare[1]);
-                }
-                _this.emit("finish move");
-            }
-        }, this.timeout + 100);
+            this.emit("finish move");
+        }
     };
-    Square.prototype.checkForLeft = function (arraySquare, v, Box, ct) {
-        var _this = this;
-        this.onEatLeft(arraySquare, Box, v);
-        setTimeout(function () {
-            _this.timeout = 0;
-            if (_this.stop == false && _this.pos != 0 && _this.pos != 6 && _this.pos != 7 && _this.pos != 1) {
-                _this.onMoveLeft(arraySquare[v]);
+    Square.prototype.checkForLeft = function (arraySquare, Box, v) {
+        this.Seq_Eat = false;
+        if (this.stop == false && this.pos != 0 && this.pos != 6 && this.pos != 7 && this.pos != 1) {
+            this.onMoveLeft(arraySquare[v]);
+        }
+        else {
+            this.checkEndGame(arraySquare, Box);
+            if (this.endgame == false)
+                this.checkStoneLast(arraySquare);
+            if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
+                this.onStartMove(arraySquare[1]);
             }
-            else {
-                _this.checkEndGame(arraySquare, Box);
-                if (_this.endgame == false)
-                    _this.checkStoneLast(arraySquare);
-                if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
-                    _this.onStartMove(arraySquare[1]);
-                }
-                _this.emit("finish move");
-            }
-        }, this.timeout + 100);
+            this.emit("finish move");
+        }
     };
     Square.prototype.checkPoint = function (ct) {
         var stone = ct.children;
@@ -605,8 +653,14 @@ var Square = (function (_super) {
                 count++;
         }
         if (count == 2) {
-            this.countPoit(arraySquare, Box);
+            setTimeout(function () {
+                if (Math.random() * 2 > 1)
+                    HowlerUtils_1.HowlerUtils.TQKV.play();
+                else
+                    HowlerUtils_1.HowlerUtils.TQBR.play();
+            }, 1000);
             this.endgame = true;
+            this.countPoit(arraySquare, Box);
         }
     };
     Square.prototype.countPoit = function (arraySquare, Box) {
@@ -643,13 +697,14 @@ var Square = (function (_super) {
         setTimeout(function () {
             count1 = _this.checkPoint(arraySquare[12]);
             count2 = _this.checkPoint(arraySquare[13]);
-            if (count1 > count2)
-                viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 1 });
-            else if (count1 < count2)
-                viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 3 });
-            else
-                viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 2 });
-            ;
+            if (viewGame_1.viewGame.turn == viewGame_1.viewGame.game_turn) {
+                if (count1 > count2)
+                    viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 1, src: count1 - count2 });
+                else if (count1 < count2)
+                    viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 3, src: count2 - count1 });
+                else
+                    viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 2, src: count1 - count2 });
+            }
         }, 6 * 450);
     };
     return Square;
