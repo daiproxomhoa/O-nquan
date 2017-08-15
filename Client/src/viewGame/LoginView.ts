@@ -3,11 +3,14 @@ import {viewGame} from "./viewGame";
 import {Button} from "../IU/Button";
 import {HowlerUtils} from "../HowlerUtils";
 import {App} from "../Const/App";
+import {Panel} from "../IU/Panel";
+import {Player} from "../Player";
 /**
  * Created by Vu Tien Dai on 01/08/2017.
  */
 export class Login extends PIXI.Container {
-    private LoginSong;
+    private Connect;
+
     constructor() {
         super();
         this.createLogin();
@@ -25,16 +28,47 @@ export class Login extends PIXI.Container {
         Loginbtn.setSize(new PIXI.Point(100, 50));
         Loginbtn.onClick = () => {
             if (txtMessage.getText() != "") {
-                viewGame.player.username=txtMessage.getText();
+                viewGame.player.username = txtMessage.getText();
                 viewGame.player.emit("login", txtMessage.getText());
                 viewGame.player.emit("join room now")
                 txtMessage.setText("");
-                this.alpha = 0;
-                this.visible=false;
-                viewGame.Game.visible=true;
-                HowlerUtils.Login.stop();
+
+                if (App.IsWeb) {
+                    viewGame.player.on("join room success", () => {
+                        this.visible = false;
+                        viewGame.Game.visible = true;
+                        HowlerUtils.Login.stop();
+                        clearTimeout(this.Connect);
+
+                    });
+                    this.Connect = setTimeout(() => {
+                        Panel.showConfirmDialog("Can't connect to sever...", {
+                            text: "Cancel",
+                            action: () => {
+
+                            }
+                        }, {
+                            text: "Retry",
+                            action: () => {
+                                viewGame.player = new Player();
+                                viewGame.player.emit("login", txtMessage.getText());
+                                viewGame.player.emit("join room now")
+                            }
+                        });
+                    }, 2500);
+                }
+                else {
+                    this.visible = false;
+                    viewGame.Game.visible = true;
+                    HowlerUtils.Login.stop();
+                    clearTimeout(this.Connect);
+                }
             }
+
+
         };
+
         this.addChild(backgroud, txtMessage, Loginbtn)
+
     }
 }

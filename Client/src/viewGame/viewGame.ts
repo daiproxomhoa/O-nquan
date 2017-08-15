@@ -3,7 +3,6 @@
  */
 import * as PIXI from "pixi.js"
 import * as gsap from "gsap"
-import * as howler from 'howler';
 import Container = PIXI.Container;
 import Sprite = PIXI.Sprite;
 import {Player} from "../Player";
@@ -15,6 +14,7 @@ import {Chat} from "./Chat";
 import {Button} from "../IU/Button";
 import {HowlerUtils} from "../HowlerUtils";
 import {App} from "../Const/App";
+import {Panel} from "../IU/Panel";
 var screenfull = require('screenfull');
 // var StatusBar = require('cordova-plugin-statusbar');
 export class viewGame {
@@ -30,24 +30,21 @@ export class viewGame {
     login_broad: Login;
     chat_board: Chat;
     result: PIXI.Sprite;
-    last_turn;
     static Game: PIXI.Container;
 
-
     constructor() {
-        viewGame.player = new Player(this);;
+        viewGame.player = new Player();;
         this.app = new PIXI.Application(App.width, App.height, {backgroundColor: 0x1099bb});
         document.body.appendChild(this.app.view);
-        this.eventPlayer();
+        this.app.stage.addChild(Panel.panel);
         this.createLogin();
         this.createGame();
-        // if (!App.IsWeb) {
+        this.eventPlayer();
+        if (!App.IsWeb) {
             this.ReSize();
             this.app.stage.scale.set(App.W/App.width,App.H/App.height);
-        // }
-
+        }
     }
-
     // onDeviceReady = () => {
     //     if (StatusBar.isVisible = true) {
     //         StatusBar.hide();
@@ -58,7 +55,6 @@ export class viewGame {
         if(!App.IsWeb||screenfull.isFullScreen){
             App.W = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
             App.H = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
             if(App.IsWeb){
                 // let zoomBrowser = Math.round(window.devicePixelRatio * 100);
                 // if (zoomBrowser != 100) {
@@ -82,14 +78,9 @@ export class viewGame {
         this.chat_board = new Chat();
         this.resetGame = new Button(950, 50, "", App.AssetDir + "Picture/IU/refreshbtn.png")
         this.resetGame.scale.set(0.75);
-        this.resetGame.visible = false;
         this.resetGame.onClick = () => {
-            viewGame.player.emit("reload", viewGame.game_turn);
-            viewGame.turn = viewGame.game_turn;
-            this.game_broad.reloadGame();
-            this.game_broad.clock.restart();
-            TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460});
-            this.resetGame.visible = false;
+            viewGame.player.emit("Ready_continue");
+            Panel.showDialog("Đợi đối phương trả lời");
         };
         this.leftGame = new Button(1110, 50, "", App.AssetDir + "Picture/IU/outroom.png");
         this.leftGame.onClick = () => {
@@ -98,6 +89,7 @@ export class viewGame {
             this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
             viewGame.player.emit("left room");
             viewGame.player.emit("join room");
+
         }
         this.wait = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/wait.png');
         this.wait.scale.set(0.7);
@@ -119,31 +111,60 @@ export class viewGame {
             this.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
         });
         viewGame.player.on("End_turn", this.onAutoEndturn);
-        viewGame.player.on("restart", this.onRestart);
-        viewGame.player.on("reload game", this.onReLoad);
         viewGame.player.on("user left", this.onUserLeft);
+        viewGame.player.on("continue_game",this.onContinue);
+        viewGame.player.on("reload_first",this.onFirst);
+        viewGame.player.on("reload_last",this.onLast);
+
+    }
+    onFirst=()=>{
+        HowlerUtils.QueenGarden.stop();
+        HowlerUtils.Orbis.stop();
+        HowlerUtils.Orbis.play();
+        viewGame.game_turn=true;
+        viewGame.turn=true;
+        this.game_broad.reloadGame();
+        TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460});
+        this.game_broad.clock.restart();
+        this.FinishGame = false;
+
+    }
+    onLast=()=>{
+
+        HowlerUtils.QueenGarden.stop();
+        HowlerUtils.Orbis.stop();
+        HowlerUtils.Orbis.play();
+        viewGame.game_turn=false;
+        viewGame.turn=true;
+        this.game_broad.reloadGame();
+        TweenMax.to(this.game_broad.flag, 0.5, {x: 370, y: 90})
+        this.game_broad.clock.restart();
+        this.FinishGame = false;
+        this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
+    }
+
+    onContinue=()=>{
+        Panel.showConfirmDialog("Bạn muốn chơi lại chứ ? ", {
+            text: "Có",
+            action: () => {
+                viewGame.player.emit("accepted",true);
+            }
+        }, {
+            text: "Không",
+            action: () => {
+                viewGame.player.emit("accepted",false);
+            }
+        });
 
     }
     onUserLeft = () => {
         HowlerUtils.DiDau.play();
         viewGame.turn = true;
         this.game_broad.reloadGame();
+        TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460})
         this.FinishGame = false;
     }
-    onRestart = () => {
-        if (this.last_turn == true) {
-            this.resetGame.visible = true;
-            this.FinishGame = false;
-        }
-    }
-    onReLoad = (data: any) => {
-        this.game_broad.reloadGame();
-        this.game_broad.clock.restart();
-        viewGame.turn = data;
-        this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
-        this.FinishGame = false;
-        TweenMax.to(this.game_broad.flag, 0.5, {x: 370, y: 90})
-    }
+
     onAutoEndturn = () => {
         if (this.FinishGame == false) {
             let bool;
@@ -175,6 +196,8 @@ export class viewGame {
         this.game_broad.clock.restart();
     }
     onWait = () => {
+        HowlerUtils.Orbis.stop();
+        HowlerUtils.QueenGarden.stop();
         HowlerUtils.QueenGarden.play();
         this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
         this.wait.visible = true;
@@ -183,10 +206,11 @@ export class viewGame {
     }
     onEndGame = (data: any) => {
         HowlerUtils.Orbis.stop();
+        HowlerUtils.QueenGarden.stop();
+        HowlerUtils.QueenGarden.play();
         this.FinishGame = true;
         this.game_broad.clock.stop();
         this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
-        console.log(data.src);
         if (data.result == 1) {
             setTimeout(() => {
                 if (data.src > 10)
@@ -197,7 +221,6 @@ export class viewGame {
             this.result = new PIXI.Sprite(Utils.Win);
             this.result.position.set(520, 395);
             this.game_broad.addChild(this.result);
-            this.last_turn = true;
         }
         else if (data.result == 3) {
             setTimeout(() => {
@@ -209,11 +232,8 @@ export class viewGame {
             this.result = new PIXI.Sprite(Utils.Lose);
             this.result.position.set(520, 395);
             this.game_broad.addChild(this.result);
-            this.last_turn = false;
         }
         else if (data.result == 2) {
-            if (this.last_turn != false)
-                this.last_turn = true
             this.result = new PIXI.Sprite(Utils.Daw);
             this.result.position.set(520, 395);
             this.game_broad.addChild(this.result);
@@ -221,8 +241,8 @@ export class viewGame {
         }
     }
     onSetTurn = (data: any) => {
+        viewGame.turn=true;
         viewGame.game_turn = data.gameturn;
-        this.last_turn = data.gameturn;
         if (viewGame.game_turn == true) {
             this.game_broad.broad.getChildAt(1).onStartMove(this.game_broad.broad.getChildAt(1));
             TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460})
@@ -257,4 +277,3 @@ export class viewGame {
     }
 
 }
-// export let viewGame = new viewGame();

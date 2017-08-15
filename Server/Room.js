@@ -24,7 +24,6 @@ var Room = (function () {
                 _this.users[1].on("disconnect", _this.onUser1Left);
                 _this.users[1].on("left room", _this.onUser1Left);
                 _this.startgame();
-                console.log("Choi thoi");
             }
         };
         this.startgame = function () {
@@ -58,9 +57,37 @@ var Room = (function () {
                     _this.users[i].emit("new message", { playername: _this.users[i].getUserName, message: msg });
                     _this.users[i].getCompatior().emit("new message", { playername: _this.users[i].getUserName, message: msg });
                 });
-                _this.users[i].on("reload", function (data) {
-                    _this.turnColor = data;
-                    _this.users[i].getCompatior().emit("reload game", data);
+                _this.users[i].on("Ready_continue", function () {
+                    _this.users[i].getCompatior().emit("continue_game");
+                    if (i == 0) {
+                        _this.player0accept = true;
+                    }
+                    else {
+                        _this.player1accept = true;
+                    }
+                });
+                _this.users[i].on("accepted", function (data) {
+                    if (data == true) {
+                        if (i == 0) {
+                            _this.player0accept = true;
+                        }
+                        else
+                            _this.player1accept = true;
+                        if (_this.player0accept == _this.player1accept) {
+                            console.log("OK");
+                            _this.users[i].emit("reload_last");
+                            _this.users[i].getCompatior().emit("reload_first");
+                            var first = _this.users[i].getCompatior();
+                            var second = _this.users[i];
+                            _this.users = [];
+                            _this.addUser(first);
+                            _this.addUser(second);
+                        }
+                    }
+                    else {
+                        _this.player0accept = false;
+                        _this.player1accept = false;
+                    }
                 });
             };
             for (var i = 0; i < 2; i++) {

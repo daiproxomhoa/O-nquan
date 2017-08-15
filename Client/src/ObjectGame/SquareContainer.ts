@@ -6,6 +6,7 @@ import {viewGame} from "../viewGame/viewGame";
 import {Stone} from "./Stone";
 import {Player} from "../Player";
 import {HowlerUtils} from "../HowlerUtils";
+import {Game} from "../viewGame/Game";
 
 /**
  * Created by Vu Tien Dai on 21/06/2017.
@@ -22,7 +23,6 @@ export class Square extends Container {
     pos = 1;
     stop;
     seq = 0;
-    endgame = false;
     player: Player = viewGame.player;
     timeout = 0;
     ct;
@@ -255,7 +255,6 @@ export class Square extends Container {
     onStopMove = (ct: PIXI.Container) => {
         let arraySquare: PIXI.Container[] = <PIXI.Container[]>ct.parent.children;//12 ô
         for (let i = 0; i < arraySquare.length; i++) {
-            arraySquare[i].interactive = false;
             if (i < 12) {
                 (<Square> arraySquare[i]).rePos();
                 (<Square> arraySquare[i]).scale.set(1);
@@ -264,13 +263,12 @@ export class Square extends Container {
                 (<Square> arraySquare[i]).data = null;
             }
         }
+        arraySquare[0].parent.interactiveChildren = false;
 
     }
     onStartMove = (ct: PIXI.Container) => {
         let arraySquare: PIXI.Container[] = <PIXI.Container[]>ct.parent.children;//12 ô
-        for (let i = 0; i < arraySquare.length; i++) {
-            arraySquare[i].interactive = true;
-        }
+        arraySquare[0].parent.interactiveChildren = true;
     }
     onCanMove = (ct: PIXI.Container) => {
         let arraySquare: PIXI.Container[] = <PIXI.Container[]>ct.parent.children;//12 ô
@@ -407,7 +405,7 @@ export class Square extends Container {
         }
         else {
             this.checkEndGame(arraySquare, Box);
-            if (this.endgame == false)
+            if (Game.endgame == false)
                 this.checkStoneLast(arraySquare);
             if (viewGame.game_turn != viewGame.turn) {
                 this.onStartMove(arraySquare[1]);
@@ -588,7 +586,7 @@ export class Square extends Container {
         }
         else {
             this.checkEndGame(arraySquare, Box);
-            if (this.endgame == false)
+            if (Game.endgame == false)
                 this.checkStoneLast(arraySquare);
             if (viewGame.game_turn != viewGame.turn) {
                 this.onStartMove(arraySquare[1]);
@@ -695,7 +693,7 @@ export class Square extends Container {
                 else
                     HowlerUtils.TQBR.play();
             }, 1000);
-            this.endgame = true;
+            Game.endgame = true;
             this.countPoit(arraySquare, Box)
         }
     }

@@ -17,6 +17,7 @@ export class Game extends Container {
     clock;
     public static clock;
     private FinishGame = false;
+    static endgame = false;
 
     constructor() {
         super();
@@ -35,14 +36,15 @@ export class Game extends Container {
         this.clock.position.set(70, 205);
         this.addChild(this.clock);
     }
-    reloadGame=()=>{
+    reloadGame = () => {
+        Game.endgame = false;
         this.clock.stop();
         this.removeChildren();
         this.createBroadGame();
         this.createFlag();
         this.createClock();
     }
-    createBroadGame=()=> {
+    createBroadGame = () => {
         var background = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/background.png');
         background.width = 1200;
         background.height = 640;
@@ -54,7 +56,6 @@ export class Game extends Container {
     createBroad(table) {
         this.broad_main = new PIXI.Container();
         this.broad = new PIXI.Container();
-
         let container = new Container();
         let b;
 
@@ -108,7 +109,7 @@ export class Game extends Container {
         container.addChild(h1, h2);
         this.broad_main.addChild(this.broad);
         this.broad_main.addChild(container);
-        this.broad_main.position.set(158 , 150)
+        this.broad_main.position.set(158, 150)
         this.broad_main.scale.set(1.1);
         this.addChild(this.broad_main);
     }

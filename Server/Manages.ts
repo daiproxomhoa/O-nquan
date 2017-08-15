@@ -60,7 +60,7 @@ export class Manages {
                     break;
                 }
             }
-        })
+        });
         // user.on("broadcast message", (msg: string) => {
         //     user.emit("new broadcast message", {playername: user.username, message: msg});
         //     user.socket.broadcast.emit("new broadcast message", {playername: user.username, message: msg})

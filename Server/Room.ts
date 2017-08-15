@@ -23,12 +23,11 @@ export class Room {
             this.users[0].on("left room", this.onUser0Left);
         } else if (this.users.length == 2) {
             this.turnColor = true;
-            this.users[0].emit("set turn", {gameturn:this.turnColor})
-            this.users[1].emit("set turn", {gameturn:!this.turnColor});
+            this.users[0].emit("set turn", {gameturn: this.turnColor})
+            this.users[1].emit("set turn", {gameturn: !this.turnColor});
             this.users[1].on("disconnect", this.onUser1Left);
             this.users[1].on("left room", this.onUser1Left);
             this.startgame();
-            console.log("Choi thoi")
         }
 
     }
@@ -49,13 +48,13 @@ export class Room {
             });
             this.users[i].on("change turn", () => {
                 this.turnColor = !this.turnColor;
-                this.users[i].getCompatior().emit("turn color", {turn:this.turnColor});
-                this.users[i].emit("turn color",{turn:this.turnColor});
+                this.users[i].getCompatior().emit("turn color", {turn: this.turnColor});
+                this.users[i].emit("turn color", {turn: this.turnColor});
 
             });
             this.users[i].on("end game", (data: any) => {
-                this.users[i].emit("game_end",data);
-                this.users[i].getCompatior().emit("game_end", {result: 4 - data.result,src:data.src});
+                this.users[i].emit("game_end", data);
+                this.users[i].getCompatior().emit("game_end", {result: 4 - data.result, src: data.src});
                 if (data.result != 3)
                     this.users[i].emit("restart");
                 else
@@ -66,31 +65,59 @@ export class Room {
                 this.users[i].emit("new message", {playername: this.users[i].getUserName, message: msg});
                 this.users[i].getCompatior().emit("new message", {playername: this.users[i].getUserName, message: msg});
             });
+            this.users[i].on("Ready_continue", () => {
+                this.users[i].getCompatior().emit("continue_game");
+                if (i == 0) {
+                    this.player0accept = true;
+                }
+                else {
+                    this.player1accept = true;
+                }
+            });
+            this.users[i].on("accepted", (data: boolean) => {
+                if (data == true) {
+                    if (i == 0) {
+                        this.player0accept = true;
+                    }
+                    else
+                        this.player1accept = true;
 
-            this.users[i].on("reload", (data:any) => {
-                this.turnColor=data;
-                this.users[i].getCompatior().emit("reload game",data);
-            })
-
-
+                    if (this.player0accept == this.player1accept) {
+                        console.log("OK")
+                        this.users[i].emit("reload_last");
+                        this.users[i].getCompatior().emit("reload_first");
+                        let first = this.users[i].getCompatior();
+                        let second = this.users[i];
+                        this.users=[];
+                        this.addUser(first);
+                        this.addUser(second);
+                    }
+                }
+                else {
+                    this.player0accept = false;
+                    this.player1accept = false;
+                }
+            });
         }
     }
     onUser0Left = () => {
+
         if (this.users.length == 1) {
             this.users = [];
         } else if (this.users.length == 2) {
             let us = this.users[1];
-            this.users =[];
+            this.users = [];
             this.addUser(us);
             this.users[0].emit("user left");
         }
     }
     onUser1Left = () => {
+
         if (this.users.length == 1) {
             this.users = [];
         } else if (this.users.length == 2) {
             let us = this.users[0];
-            this.users =[];
+            this.users = [];
             this.addUser(us);
             this.users[0].emit("user left");
         }
@@ -102,8 +129,8 @@ export class Room {
         }
         return false;
     }
-    isEmty=()=>{
-        if(this.users.length==0){
+    isEmty = () => {
+        if (this.users.length == 0) {
             return true;
         }
         return false;

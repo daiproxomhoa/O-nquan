@@ -16,6 +16,7 @@ var TweenMax = gsap.TweenMax;
 var viewGame_1 = require("../viewGame/viewGame");
 var Stone_1 = require("./Stone");
 var HowlerUtils_1 = require("../HowlerUtils");
+var Game_1 = require("../viewGame/Game");
 /**
  * Created by Vu Tien Dai on 21/06/2017.
  */
@@ -30,7 +31,6 @@ var Square = (function (_super) {
         _this.minDis = 5;
         _this.pos = 1;
         _this.seq = 0;
-        _this.endgame = false;
         _this.player = viewGame_1.viewGame.player;
         _this.timeout = 0;
         _this.Seq_Eat = false;
@@ -62,7 +62,6 @@ var Square = (function (_super) {
         _this.onStopMove = function (ct) {
             var arraySquare = ct.parent.children; //12 ô
             for (var i = 0; i < arraySquare.length; i++) {
-                arraySquare[i].interactive = false;
                 if (i < 12) {
                     arraySquare[i].rePos();
                     arraySquare[i].scale.set(1);
@@ -71,12 +70,11 @@ var Square = (function (_super) {
                     arraySquare[i].data = null;
                 }
             }
+            arraySquare[0].parent.interactiveChildren = false;
         };
         _this.onStartMove = function (ct) {
             var arraySquare = ct.parent.children; //12 ô
-            for (var i = 0; i < arraySquare.length; i++) {
-                arraySquare[i].interactive = true;
-            }
+            arraySquare[0].parent.interactiveChildren = true;
         };
         _this.onCanMove = function (ct) {
             var arraySquare = ct.parent.children; //12 ô
@@ -607,7 +605,7 @@ var Square = (function (_super) {
         }
         else {
             this.checkEndGame(arraySquare, Box);
-            if (this.endgame == false)
+            if (Game_1.Game.endgame == false)
                 this.checkStoneLast(arraySquare);
             if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
                 this.onStartMove(arraySquare[1]);
@@ -622,7 +620,7 @@ var Square = (function (_super) {
         }
         else {
             this.checkEndGame(arraySquare, Box);
-            if (this.endgame == false)
+            if (Game_1.Game.endgame == false)
                 this.checkStoneLast(arraySquare);
             if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
                 this.onStartMove(arraySquare[1]);
@@ -659,7 +657,7 @@ var Square = (function (_super) {
                 else
                     HowlerUtils_1.HowlerUtils.TQBR.play();
             }, 1000);
-            this.endgame = true;
+            Game_1.Game.endgame = true;
             this.countPoit(arraySquare, Box);
         }
     };
