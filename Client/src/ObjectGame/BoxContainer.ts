@@ -11,12 +11,12 @@ export class Box extends Container {
      style = new PIXI.TextStyle({
     fontFamily: 'Arial',
     fontSize: 20,
-    fontStyle: 'italic',
-    fill: ['#BE3A11', '#FF902E'], // gradient
+    fontStyle: 'bold',
+    fill: [ '#FFBA44','#FF8642','#BE3A11'], // gradient
     stroke: '#000000',
     strokeThickness: 2,
     dropShadow: true,
-    dropShadowColor: '#000000',
+    dropShadowColor: '#be3a11',
     dropShadowAngle: Math.PI / 6,
     dropShadowDistance: 2,
     wordWrap: true,

@@ -5,7 +5,6 @@ import {Box} from "./BoxContainer";
 import {viewGame} from "../viewGame/viewGame";
 import {Stone} from "./Stone";
 import {Player} from "../Player";
-import {HowlerUtils} from "../HowlerUtils";
 import {Game} from "../viewGame/Game";
 
 /**
@@ -172,7 +171,7 @@ export class Square extends Container {
                     TweenMax.to(spread, 0.4, {x: arraySquare[count].x, y: arraySquare[count].y})
                     setTimeout(() => {
                         let box = <Box> Box[count];
-                        HowlerUtils.Stone.play();
+                        viewGame.sound.play_Voice("Stone")
                         arraySquare[count].addChild(Stone[0]);
                         box.setText(this.checkPoint(arraySquare[count]));
                         count++;
@@ -215,7 +214,7 @@ export class Square extends Container {
                     TweenMax.to(spread, 0.4, {x: arraySquare[count].x, y: arraySquare[count].y});
                     setTimeout(() => {
                         let box = <Box> Box[count];
-                        HowlerUtils.Stone.play();
+                        viewGame.sound.play_Voice("Stone")
                         arraySquare[count].addChild(Stone[0]);
                         box.setText(this.checkPoint(arraySquare[count]));
                         count++;
@@ -348,12 +347,12 @@ export class Square extends Container {
                     setTimeout(() => {
                         if (this.pos == 0 || this.pos == 6 && this.Seq_Eat == false) {
                             if (this.checkPoint(arraySquare[14]) < 18)
-                                HowlerUtils.AnQuan.play();
+                                viewGame.sound.play_Voice("AnQuan")
                             else
-                                HowlerUtils.TrungLon.play();
+                                viewGame.sound.play_Voice("TrungLon")
                         }
                         else if (this.Seq_Eat == false && this.pos != 0 && this.pos != 6)
-                            HowlerUtils.An.play();
+                            viewGame.sound.play_Voice("An")
                         this.MoveEat(arraySquare[14], arraySquare[13]);
                         let box2 = <Box> Box[13];
                         box2.setText(this.checkPoint(square));
@@ -366,12 +365,12 @@ export class Square extends Container {
                     setTimeout(() => {
                         if (this.pos == 0 || this.pos == 6 && this.Seq_Eat == false) {
                             if (this.checkPoint(arraySquare[14]) < 18)
-                                HowlerUtils.AnQuan.play();
+                                viewGame.sound.play_Voice("AnQuan")
                             else
-                                HowlerUtils.TrungLon.play();
+                                viewGame.sound.play_Voice("TrungLon")
                         }
                         else if (this.Seq_Eat == false && this.pos != 0 && this.pos != 6)
-                            HowlerUtils.An.play();
+                            viewGame.sound.play_Voice("An")
                         this.MoveEat(arraySquare[14], arraySquare[12]);
                         let box2 = <Box> Box[12];
                         box2.setText(this.checkPoint(square));
@@ -444,7 +443,7 @@ export class Square extends Container {
                     let x = arrayStone[0].x + 5;
                     TweenMax.to(spread, 0.4, {x: 113, y: 92});
                     setTimeout(() => {
-                        HowlerUtils.Stone.play();
+                        viewGame.sound.play_Voice("Stone")
                         arrayStone[0].position.set(x, y);
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
@@ -455,7 +454,7 @@ export class Square extends Container {
                     let y = arrayStone[0].y + 65;
                     TweenMax.to(spread, 0.4, {x: 575, y: 130});
                     setTimeout(() => {
-                        HowlerUtils.Stone.play();
+                        viewGame.sound.play_Voice("Stone")
                         arrayStone[0].position.y = y;
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
@@ -464,7 +463,7 @@ export class Square extends Container {
                 else {
                     TweenMax.to(spread, 0.4, {x: square.x, y: square.y});
                     setTimeout(() => {
-                        HowlerUtils.Stone.play();
+                        viewGame.sound.play_Voice("Stone")
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
                     }, 400);
@@ -532,12 +531,12 @@ export class Square extends Container {
                     setTimeout(() => {
                         if (this.pos == 0 || this.pos == 6 && this.Seq_Eat == false) {
                             if (this.checkPoint(arraySquare[14]) < 18)
-                                HowlerUtils.AnQuan.play();
+                                  viewGame.sound.play_Voice("AnQuan")
                             else
-                                HowlerUtils.TrungLon.play();
+                                  viewGame.sound.play_Voice("TrungLon");
                         }
                         else if (this.Seq_Eat == false && this.pos != 0 && this.pos != 6)
-                            HowlerUtils.An.play();
+                              viewGame.sound.play_Voice("An");
                         this.MoveEat(arraySquare[14], arraySquare[13]);
                         let box2 = <Box> Box[13];
                         box2.setText(this.checkPoint(square));
@@ -551,12 +550,12 @@ export class Square extends Container {
                     setTimeout(() => {
                         if (this.pos == 0 || this.pos == 6 && this.Seq_Eat == false) {
                             if (this.checkPoint(arraySquare[14]) < 18)
-                                HowlerUtils.AnQuan.play();
+                                  viewGame.sound.play_Voice("AnQuan");
                             else
-                                HowlerUtils.TrungLon.play();
+                                  viewGame.sound.play_Voice("TrungLon");
                         }
                         else if (this.Seq_Eat == false && this.pos != 0 && this.pos != 6)
-                            HowlerUtils.An.play();
+                              viewGame.sound.play_Voice("An");
                         this.MoveEat(arraySquare[14], arraySquare[12]);
                         let box2 = <Box> Box[12];
                         box2.setText(this.checkPoint(square));
@@ -624,7 +623,7 @@ export class Square extends Container {
                     let x = arrayStone[0].x + 5;
                     TweenMax.to(spread, 0.4, {x: 113, y: 92});
                     setTimeout(() => {
-                        HowlerUtils.Stone.play();
+                          viewGame.sound.play_Voice("Stone")
                         arrayStone[0].position.set(x, y);
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
@@ -635,7 +634,7 @@ export class Square extends Container {
                     let y = arrayStone[0].y + 50;
                     TweenMax.to(spread, 0.4, {x: 575, y: 130});
                     setTimeout(() => {
-                        HowlerUtils.Stone.play();
+                          viewGame.sound.play_Voice("Stone")
                         arrayStone[0].position.y = y;
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
@@ -644,7 +643,7 @@ export class Square extends Container {
                 else {
                     TweenMax.to(spread, 0.4, {x: square.x, y: square.y});
                     setTimeout(() => {
-                        HowlerUtils.Stone.play();
+                          viewGame.sound.play_Voice("Stone")
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
                     }, 400);
@@ -689,9 +688,9 @@ export class Square extends Container {
         if (count == 2) {
             setTimeout(() => {
                 if (Math.random() * 2 > 1)
-                    HowlerUtils.TQKV.play();
+                      viewGame.sound.play_Voice("TQKV");
                 else
-                    HowlerUtils.TQBR.play();
+                      viewGame.sound.play_Voice("TQBR")
             }, 1000);
             Game.endgame = true;
             this.countPoit(arraySquare, Box)

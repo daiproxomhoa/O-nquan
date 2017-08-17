@@ -8,6 +8,13 @@ import {Utils} from "../Utils";
 import {clock} from  "../ObjectGame/Clock";
 import TweenMax = gsap.TweenMax;
 import {App} from "../Const/App";
+import {Button} from "../IU/Button";
+import {Player} from "../Player";
+import {Panel} from "../IU/Panel";
+import {Wait} from "../ObjectGame/Wait";
+import {NamePlayer} from "../ObjectGame/NamePlayer";
+import {Chat} from "./Chat";
+import {viewGame} from "./viewGame";
 export class Game extends Container {
     // gametable = [7 , 0, 0, 1, 0, 0, 7, 0, 5, 0, 10, 0, 7, 7];
     private gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
@@ -18,9 +25,17 @@ export class Game extends Container {
     public static clock;
     private FinishGame = false;
     static endgame = false;
+    resetGame: Button;
+    leftGame: Button
+    player: Player;
+    wait: Wait;
+    My_name:NamePlayer;
+    Opp_name:NamePlayer;
+    chat_board: Chat;
 
-    constructor() {
+    constructor(player: Player) {
         super();
+        this.player = player;
         this.createBroadGame();
         this.createClock();
         this.createFlag();
@@ -49,10 +64,64 @@ export class Game extends Container {
         background.width = 1200;
         background.height = 640;
         this.addChild(background);
+        this.createOther();
         this.createBroad(this.gametable);
 
     }
+    createOther=()=>{
+        this.chat_board = new Chat();
+        this.resetGame = new Button(990, 45, "", App.AssetDir + "Picture/IU/refreshbtn.png")
+        this.resetGame.setSize(new PIXI.Point(120, 65));
+        this.resetGame.onClick = () => {
+            if(this.wait.visible==false) {
+                this.player.emit("Ready_continue");
+                Panel.showDialog("Đợi đối phương trả lời");
+            }
+            else {
+                Panel.showDialog("Không có ai trong phòng ");
+            }
+        };
+        this.leftGame = new Button(1125, 45, "", App.AssetDir + "Picture/IU/outroom.png");
+        this.leftGame.setSize(new PIXI.Point(120, 60));
+        this.leftGame.onClick = () => {
+            Panel.showConfirmDialog("Bạn muốn thoát chứ ?", {
+                text: "Có",
+                action: () => {
+                    this.reloadGame();
+                    this.onWait();
+                    this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
+                    this.player.emit("left room");
+                    viewGame.Game.visible=false;
+                    viewGame.Hall.visible=true;
 
+                }
+            }, {
+                text: "Không",
+                action: () => {
+                }
+            });
+
+        }
+        this.wait = new Wait();
+        this.wait.scale.set(0.7);
+        this.wait.stop();
+        this.wait.position.set(245, 165);
+        this.My_name = new NamePlayer("" + this.player.username);
+        this.My_name.position.set(505, 450);
+        this.addChild(this.My_name);
+        this.Opp_name = new NamePlayer("" + this.player.oppname);
+        this.Opp_name.position.set(505, 0);
+        this.addChild(this.chat_board, this.resetGame, this.leftGame, this.wait,this.My_name,this.Opp_name);
+    }
+    onWait = () => {
+        this.player.oppname="";
+        this.Opp_name.setName(""+this.player.oppname);
+          viewGame.sound.play_BG("Wait");
+        this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
+        this.wait.run();;
+        TweenMax.to(this.flag, 0.5, {x: 700, y: 460});
+
+    }
     createBroad(table) {
         this.broad_main = new PIXI.Container();
         this.broad = new PIXI.Container();

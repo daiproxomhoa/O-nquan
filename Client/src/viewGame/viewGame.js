@@ -3,23 +3,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Vu Tien Dai on 21/06/2017.
  */
-var PIXI = require("pixi.js");
-var gsap = require("gsap");
-var Player_1 = require("../Player");
-var Utils_1 = require("../Utils");
+const PIXI = require("pixi.js");
+const gsap = require("gsap");
+const Player_1 = require("../Player");
+const Utils_1 = require("../Utils");
 var TweenMax = gsap.TweenMax;
-var Game_1 = require("./Game");
-var LoginView_1 = require("./LoginView");
-var Chat_1 = require("./Chat");
-var Button_1 = require("../IU/Button");
-var HowlerUtils_1 = require("../HowlerUtils");
-var App_1 = require("../Const/App");
-var Panel_1 = require("../IU/Panel");
+const Game_1 = require("./Game");
+const LoginView_1 = require("./LoginView");
+const App_1 = require("../Const/App");
+const Panel_1 = require("../IU/Panel");
+const Hallview_1 = require("./Hallview");
+const Sound_1 = require("../Const/Sound");
 var screenfull = require('screenfull');
 // var StatusBar = require('cordova-plugin-statusbar');
-var viewGame = (function () {
-    function viewGame() {
-        var _this = this;
+class viewGame {
+    constructor() {
         this.FinishGame = false;
         // onDeviceReady = () => {
         //     if (StatusBar.isVisible = true) {
@@ -27,7 +25,7 @@ var viewGame = (function () {
         //     }
         //
         // }
-        this.ReSize = function () {
+        this.ReSize = () => {
             if (!App_1.App.IsWeb || screenfull.isFullScreen) {
                 App_1.App.W = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
                 App_1.App.H = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -43,215 +41,198 @@ var viewGame = (function () {
                 }
             }
         };
-        this.createLogin = function () {
-            _this.login_broad = new LoginView_1.Login();
-            _this.app.stage.addChild(_this.login_broad);
+        this.createLogin = () => {
+            viewGame.login_broad = new LoginView_1.Login();
+            this.app.stage.addChild(viewGame.login_broad);
         };
-        this.createGame = function () {
+        this.createHall = () => {
+            viewGame.Hall = new Hallview_1.Hall();
+            viewGame.Hall.visible = false;
+            this.app.stage.addChild(viewGame.Hall);
+        };
+        this.createGame = () => {
             viewGame.Game = new PIXI.Container();
-            _this.game_broad = new Game_1.Game();
-            _this.chat_board = new Chat_1.Chat();
-            _this.resetGame = new Button_1.Button(950, 50, "", App_1.App.AssetDir + "Picture/IU/refreshbtn.png");
-            _this.resetGame.scale.set(0.75);
-            _this.resetGame.onClick = function () {
-                viewGame.player.emit("Ready_continue");
-                Panel_1.Panel.showDialog("Đợi đối phương trả lời");
-            };
-            _this.leftGame = new Button_1.Button(1110, 50, "", App_1.App.AssetDir + "Picture/IU/outroom.png");
-            _this.leftGame.onClick = function () {
-                _this.game_broad.reloadGame();
-                _this.onWait();
-                _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
-                viewGame.player.emit("left room");
-                viewGame.player.emit("join room");
-            };
-            _this.wait = PIXI.Sprite.fromImage(App_1.App.AssetDir + 'Picture/wait.png');
-            _this.wait.scale.set(0.7);
-            _this.wait.visible = false;
-            _this.wait.position.set(330, 164);
-            viewGame.Game.addChild(_this.game_broad, _this.chat_board, _this.resetGame, _this.leftGame, _this.wait);
+            this.game_broad = new Game_1.Game(viewGame.player);
+            viewGame.Game.addChild(this.game_broad);
             viewGame.Game.visible = false;
-            _this.app.stage.addChild(viewGame.Game);
+            this.app.stage.addChild(viewGame.Game);
         };
-        this.eventPlayer = function () {
-            viewGame.player.on("start game", _this.onStartGame);
-            viewGame.player.on("turn color", _this.onTurnColor);
-            viewGame.player.on("set turn", _this.onSetTurn);
-            viewGame.player.on("opponent move", _this.onMove);
-            viewGame.player.on("game_end", _this.onEndGame);
-            viewGame.player.on("wait player", _this.onWait);
-            viewGame.player.on("new message", function (data) {
-                _this.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
+        this.eventPlayer = () => {
+            viewGame.player.on("start game", this.onStartGame);
+            viewGame.player.on("turn color", this.onTurnColor);
+            viewGame.player.on("set turn", this.onSetTurn);
+            viewGame.player.on("opponent move", this.onMove);
+            viewGame.player.on("game_end", this.onEndGame);
+            viewGame.player.on("wait player", this.game_broad.onWait);
+            viewGame.player.on("new message", (data) => {
+                this.game_broad.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
             });
-            viewGame.player.on("End_turn", _this.onAutoEndturn);
-            viewGame.player.on("user left", _this.onUserLeft);
-            viewGame.player.on("continue_game", _this.onContinue);
-            viewGame.player.on("reload_first", _this.onFirst);
-            viewGame.player.on("reload_last", _this.onLast);
+            viewGame.player.on("End_turn", this.onAutoEndturn);
+            viewGame.player.on("user left", this.onUserLeft);
+            viewGame.player.on("continue_game", this.onContinue);
+            viewGame.player.on("reload_first", this.onFirst);
+            viewGame.player.on("reload_last", this.onLast);
+            viewGame.player.on("OK", this.onOK);
         };
-        this.onFirst = function () {
-            HowlerUtils_1.HowlerUtils.QueenGarden.stop();
-            HowlerUtils_1.HowlerUtils.Orbis.stop();
-            HowlerUtils_1.HowlerUtils.Orbis.play();
+        this.onOK = () => {
+            viewGame.login_broad.visible = false;
+            viewGame.Hall.visible = true;
+            viewGame.sound.play_BG("Wait");
+            clearTimeout(viewGame.login_broad.Connect);
+            this.game_broad.My_name.setName("" + viewGame.player.username);
+        };
+        this.onFirst = () => {
+            viewGame.sound.play_BG("Play");
             viewGame.game_turn = true;
             viewGame.turn = true;
-            _this.game_broad.reloadGame();
-            TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
-            _this.game_broad.clock.restart();
-            _this.FinishGame = false;
+            this.game_broad.reloadGame();
+            TweenMax.to(this.game_broad.flag, 0.5, { x: 700, y: 460 });
+            this.game_broad.clock.restart();
+            this.FinishGame = false;
         };
-        this.onLast = function () {
-            HowlerUtils_1.HowlerUtils.QueenGarden.stop();
-            HowlerUtils_1.HowlerUtils.Orbis.stop();
-            HowlerUtils_1.HowlerUtils.Orbis.play();
+        this.onLast = () => {
+            viewGame.sound.play_BG("Play");
             viewGame.game_turn = false;
             viewGame.turn = true;
-            _this.game_broad.reloadGame();
-            TweenMax.to(_this.game_broad.flag, 0.5, { x: 370, y: 90 });
-            _this.game_broad.clock.restart();
-            _this.FinishGame = false;
-            _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
+            this.game_broad.reloadGame();
+            TweenMax.to(this.game_broad.flag, 0.5, { x: 370, y: 90 });
+            this.game_broad.clock.restart();
+            this.FinishGame = false;
+            this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
         };
-        this.onContinue = function () {
-            Panel_1.Panel.showConfirmDialog("Bạn muốn chơi lại chứ ? ", {
+        this.onContinue = () => {
+            Panel_1.Panel.showConfirmDialog("Bạn muốn chơi lại chứ ?", {
                 text: "Có",
-                action: function () {
+                action: () => {
                     viewGame.player.emit("accepted", true);
                 }
             }, {
                 text: "Không",
-                action: function () {
+                action: () => {
                     viewGame.player.emit("accepted", false);
                 }
             });
         };
-        this.onUserLeft = function () {
-            HowlerUtils_1.HowlerUtils.DiDau.play();
+        this.onUserLeft = () => {
+            viewGame.sound.play_Voice("DiDau");
             viewGame.turn = true;
-            _this.game_broad.reloadGame();
-            TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
-            _this.FinishGame = false;
+            this.game_broad.reloadGame();
+            this.game_broad.wait.run();
+            TweenMax.to(this.game_broad.flag, 0.5, { x: 700, y: 460 });
+            this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
+            this.FinishGame = false;
         };
-        this.onAutoEndturn = function () {
-            if (_this.FinishGame == false) {
-                var bool = void 0;
-                var rd = Math.round(Math.random());
+        this.onAutoEndturn = () => {
+            if (this.FinishGame == false) {
+                let bool;
+                let rd = Math.round(Math.random());
                 if (rd == 1)
                     bool = true;
                 else
                     bool = false;
-                var Square = _this.game_broad.broad.children;
-                for (var i = 1; i < 6; i++) {
+                let Square = this.game_broad.broad.children;
+                for (let i = 1; i < 6; i++) {
                     if (Square[i].children.length != 0) {
                         viewGame.player.emit("move", { posi: i + 6, dr: bool });
                         if (bool == false)
-                            _this.game_broad.broad.getChildAt(i).onMoveRight(_this.game_broad.broad.getChildAt(i));
+                            this.game_broad.broad.getChildAt(i).onMoveRight(this.game_broad.broad.getChildAt(i));
                         else
-                            _this.game_broad.broad.getChildAt(i).onMoveLeft(_this.game_broad.broad.getChildAt(i));
+                            this.game_broad.broad.getChildAt(i).onMoveLeft(this.game_broad.broad.getChildAt(i));
                         return;
                     }
                 }
             }
         };
-        this.onStartGame = function (data) {
-            HowlerUtils_1.HowlerUtils.QueenGarden.stop();
-            HowlerUtils_1.HowlerUtils.Orbis.play();
-            _this.wait.visible = false;
+        this.onStartGame = (data) => {
+            ;
+            viewGame.sound.play_BG("Play");
+            this.game_broad.wait.stop();
             viewGame.player.color = data.color;
             viewGame.player.oppname = data.oppname;
-            _this.game_broad.clock.restart();
+            this.game_broad.Opp_name.setName("" + viewGame.player.oppname);
+            this.game_broad.clock.restart();
         };
-        this.onWait = function () {
-            HowlerUtils_1.HowlerUtils.Orbis.stop();
-            HowlerUtils_1.HowlerUtils.QueenGarden.stop();
-            HowlerUtils_1.HowlerUtils.QueenGarden.play();
-            _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
-            _this.wait.visible = true;
-            TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
-        };
-        this.onEndGame = function (data) {
-            HowlerUtils_1.HowlerUtils.Orbis.stop();
-            HowlerUtils_1.HowlerUtils.QueenGarden.stop();
-            HowlerUtils_1.HowlerUtils.QueenGarden.play();
-            _this.FinishGame = true;
-            _this.game_broad.clock.stop();
-            _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
+        this.onEndGame = (data) => {
+            viewGame.sound.play_BG("Wait");
+            this.FinishGame = true;
+            this.game_broad.clock.stop();
+            this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
             if (data.result == 1) {
-                setTimeout(function () {
+                setTimeout(() => {
                     if (data.src > 10)
-                        HowlerUtils_1.HowlerUtils.TRBT.play();
+                        viewGame.sound.play_Voice("TRBT");
                     else
-                        HowlerUtils_1.HowlerUtils.ConGa.play();
+                        viewGame.sound.play_Voice("ConGa");
                 }, 2500);
-                _this.result = new PIXI.Sprite(Utils_1.Utils.Win);
-                _this.result.position.set(520, 395);
-                _this.game_broad.addChild(_this.result);
+                this.result = new PIXI.Sprite(Utils_1.Utils.Win);
+                this.result.position.set(520, 395);
+                this.game_broad.addChild(this.result);
             }
             else if (data.result == 3) {
-                setTimeout(function () {
+                setTimeout(() => {
                     if (data.src > 10)
-                        HowlerUtils_1.HowlerUtils.Hazz.play();
+                        viewGame.sound.play_Voice("Hazz");
                     else
-                        HowlerUtils_1.HowlerUtils.Othua.play();
+                        viewGame.sound.play_Voice("Othua");
                 }, 2500);
-                _this.result = new PIXI.Sprite(Utils_1.Utils.Lose);
-                _this.result.position.set(520, 395);
-                _this.game_broad.addChild(_this.result);
+                this.result = new PIXI.Sprite(Utils_1.Utils.Lose);
+                this.result.position.set(520, 395);
+                this.game_broad.addChild(this.result);
             }
             else if (data.result == 2) {
-                _this.result = new PIXI.Sprite(Utils_1.Utils.Daw);
-                _this.result.position.set(520, 395);
-                _this.game_broad.addChild(_this.result);
+                this.result = new PIXI.Sprite(Utils_1.Utils.Daw);
+                this.result.position.set(520, 395);
+                this.game_broad.addChild(this.result);
             }
         };
-        this.onSetTurn = function (data) {
+        this.onSetTurn = (data) => {
             viewGame.turn = true;
             viewGame.game_turn = data.gameturn;
             if (viewGame.game_turn == true) {
-                _this.game_broad.broad.getChildAt(1).onStartMove(_this.game_broad.broad.getChildAt(1));
-                TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
+                this.game_broad.broad.getChildAt(1).onStartMove(this.game_broad.broad.getChildAt(1));
+                TweenMax.to(this.game_broad.flag, 0.5, { x: 700, y: 460 });
             }
             else {
-                _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
-                TweenMax.to(_this.game_broad.flag, 0.5, { x: 370, y: 90 });
+                this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
+                TweenMax.to(this.game_broad.flag, 0.5, { x: 370, y: 90 });
             }
         };
-        this.onTurnColor = function (data) {
+        this.onTurnColor = (data) => {
             viewGame.turn = data.turn;
-            _this.game_broad.clock.restart();
+            this.game_broad.clock.restart();
             if (viewGame.turn == viewGame.game_turn) {
-                _this.game_broad.broad.getChildAt(1).onStartMove(_this.game_broad.broad.getChildAt(1));
-                TweenMax.to(_this.game_broad.flag, 0.5, { x: 700, y: 460 });
+                this.game_broad.broad.getChildAt(1).onStartMove(this.game_broad.broad.getChildAt(1));
+                TweenMax.to(this.game_broad.flag, 0.5, { x: 700, y: 460 });
             }
             else {
-                _this.game_broad.broad.getChildAt(1).onStopMove(_this.game_broad.broad.getChildAt(1));
-                TweenMax.to(_this.game_broad.flag, 0.5, { x: 370, y: 90 });
+                this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
+                TweenMax.to(this.game_broad.flag, 0.5, { x: 370, y: 90 });
             }
         };
-        this.onMove = function (data) {
-            _this.game_broad.clock.stop();
+        this.onMove = (data) => {
+            this.game_broad.clock.stop();
             if (data.dr == false) {
-                _this.game_broad.broad.getChildAt(data.posi).onMoveRight(_this.game_broad.broad.getChildAt(data.posi));
+                this.game_broad.broad.getChildAt(data.posi).onMoveRight(this.game_broad.broad.getChildAt(data.posi));
             }
             else {
-                _this.game_broad.broad.getChildAt(data.posi).onMoveLeft(_this.game_broad.broad.getChildAt(data.posi));
+                this.game_broad.broad.getChildAt(data.posi).onMoveLeft(this.game_broad.broad.getChildAt(data.posi));
             }
         };
         viewGame.player = new Player_1.Player();
-        ;
         this.app = new PIXI.Application(App_1.App.width, App_1.App.height, { backgroundColor: 0x1099bb });
         document.body.appendChild(this.app.view);
         this.app.stage.addChild(Panel_1.Panel.panel);
         this.createLogin();
         this.createGame();
+        this.createHall();
         this.eventPlayer();
         if (!App_1.App.IsWeb) {
             this.ReSize();
             this.app.stage.scale.set(App_1.App.W / App_1.App.width, App_1.App.H / App_1.App.height);
         }
     }
-    return viewGame;
-}());
+}
 viewGame.turn = true;
+viewGame.sound = new Sound_1.Sound();
 exports.viewGame = viewGame;
 //# sourceMappingURL=viewGame.js.map

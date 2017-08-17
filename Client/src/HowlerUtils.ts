@@ -65,7 +65,8 @@ export class HowlerUtils {
         volume: 0.5
     });
     public static Stone = new Howl({
-        src: [App.AssetDir + 'SoundTrack/Stone.wav']
+        src: [App.AssetDir + 'SoundTrack/Stone.wav'],
+        volume: 0.7
     });
     public static Login = new Howl({
         src: [App.AssetDir + 'SoundTrack/LoginMaple.mp3'],

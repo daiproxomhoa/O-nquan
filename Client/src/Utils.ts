@@ -12,6 +12,9 @@ export class Utils {
     public static Lose = PIXI.Texture.from(App.AssetDir + "Picture/lose.png");
     public static Daw = PIXI.Texture.from(App.AssetDir + "Picture/daw.png");
     public static Clock = PIXI.Texture.from(App.AssetDir + "Picture/shape/clock.png");
+    public static Wait = PIXI.Texture.from(App.AssetDir + "Picture/wait.png");
+    public static WaitBack = PIXI.Texture.from(App.AssetDir + "Picture/waitback.png");
+
     // public static Stone1;
     // public static Quan1;
     // public static Quan2;

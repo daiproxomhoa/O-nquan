@@ -8,12 +8,12 @@ import {App} from "../Const/App";
 
 export class Button extends PIXI.Sprite {
 
-    text: PIXI.Text;
+    text;
     private _size: Point;
 
     constructor(x: number, y: number, text: string, url?: string) {
         super();
-        this.on("pointerdown",()=>{
+        this.on("pointerdown", () => {
             HowlerUtils.MouseClick.play();
         });
         if (url) {
@@ -33,13 +33,35 @@ export class Button extends PIXI.Sprite {
 
         this.interactive = true;
 
-        this.text = new PIXI.Text(text);
-        this.text.style = new PIXI.TextStyle({
-            fontFamily: 'Comic Sans Ms',
-            fontSize: 24,
-            fontWeight: 'bold',
-            fill: '#003a0a',
-        });
+        if (App.IsWeb) {
+            this.text = new PIXI.Text(text);
+            this.text.style = new PIXI.TextStyle({
+                fontFamily: 'UTM French Vanilla',
+                fontSize: 24,
+                fontWeight: 'bold',
+                fill: '#51301b',
+            });
+        }
+        else {
+            if (text === "Có") {
+                this.text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/co.png');
+                this.text.scale.set(0.8);
+            }
+            else if (text == "Không") {
+                this.text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/khong.png');
+                this.text.scale.set(0.8);
+            }
+            else  {
+                this.text = new PIXI.Text(text);
+                this.text.style = new PIXI.TextStyle({
+                    fontFamily: 'Arial',
+                    fontSize: 24,
+                    fontWeight: 'bold',
+                    fill: '#51301b',
+                });
+            }
+
+        }
         this.text.anchor.set(0.5);
         this.addChild(this.text);
         this.on("pointerdown", () => {
@@ -70,10 +92,10 @@ export class Button extends PIXI.Sprite {
         }
     }
 
-    onClick : Function;
+    onClick: Function;
 
 
-    setSize = (size : PIXI.Point)=>{
+    setSize = (size: PIXI.Point) => {
         this._size = size;
         this.width = this._size.x;
         this.height = this._size.y;

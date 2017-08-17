@@ -2,6 +2,7 @@ import Rectangle = PIXI.Rectangle;
 import * as gsap from "gsap"
 import TweenMax = gsap.TweenMax;
 import {App} from "../Const/App";
+import {viewGame} from "../viewGame/viewGame";
 /**
  * Created by Administrator on 06/03/2017.
  */
@@ -13,6 +14,9 @@ export class ScrollPane extends PIXI.Container {
     mouseOver = false;
     anim: boolean = false;
     head: number;
+    pointerData;
+    mouseY;
+    oldPos;
 
     constructor(public wid: number = 382,public hei: number = 134, ...heads) {
         super();
@@ -59,7 +63,7 @@ export class ScrollPane extends PIXI.Container {
             area.drawRect(-30, 50, dx + 80, dy - 40);
             this.content.hitArea = new PIXI.Rectangle(10, 40, dx, dy - 30);
             this.content.y = 20;
-            this.head = 30;
+            this.head = 4;
         } else {
             area.drawRect(10, 10, dx, dy);
             this.content.hitArea = new PIXI.Rectangle(10, 10, dx, dy);
@@ -82,24 +86,36 @@ export class ScrollPane extends PIXI.Container {
         }
 
         this.interactive = true;
-        this.on("pointerover", () => this.mouseOver = true);
-        this.on("pointerout", () => this.mouseOver = false);
-        document.addEventListener("mousewheel", this.scroll, false);
+        this.on("pointerdown", this.onMouseDown);
+        this.on("pointermove", this.onMouseMove);
+        this.on("pointerup", this.onMouseUp);
+        this.on("pointerupoutside", this.onMouseUp);
+
     }
 
-    scroll = (e: WheelEvent) => {
+    onMouseDown = (e) => {
+        this.pointerData = e.data;
+        this.mouseY = e.data.global.y;
+        this.oldPos = e.data.global.y;
+    };
+
+    onMouseMove = (e) => {
         if (this.content.height < this.height) return;
-        if (this.mouseOver) {
+        if (this.pointerData != null) {
+            let delta = App.IsWeb ? e.data.global.y - this.mouseY : (e.data.global.y - this.mouseY)/(App.W/App.width);
+            if (Math.abs(e.data.global.y - this.oldPos) > 10) this.interactiveChildren = false;
+            this.mouseY = e.data.global.y;
+
             if (!this.anim) {
-                this.content.y += e.wheelDelta / this.smooth;
+                this.content.y += delta;
             }
 
-            if (this.content.y + e.wheelDelta / this.smooth > this.height / 5 + this.head) {
+            if (this.content.y + delta > this.height / 5 + this.head) {
                 this.anim = true;
                 TweenMax.to(this.content, 0.5, {y: this.head, onComplete: () => this.anim = false});
                 return;
             }
-            if (this.content.y + e.wheelDelta / this.smooth < -((this.content.height - this.height + 10 + this.head) + this.height / 5)) {
+            if (this.content.y + delta < -((this.content.height - this.height + 10 + this.head) + this.height / 5)) {
                 this.anim = true;
                 TweenMax.to(this.content, 0.5, {
                     y: -(this.content.height - this.height + 80),
@@ -108,7 +124,15 @@ export class ScrollPane extends PIXI.Container {
                 return;
             }
         }
-    }
+    };
+
+    onMouseUp = () => {
+        this.pointerData = null;
+        this.interactiveChildren = true;
+        for(let child of this.content.children){
+            child.emit("pointerout");
+        }
+    };
 
     addChildrent = (child, pos: string = "left") => {
         if (child instanceof PIXI.Text) {

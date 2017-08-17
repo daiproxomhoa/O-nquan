@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var viewGame_1 = require("./src/viewGame/viewGame");
+const viewGame_1 = require("./src/viewGame/viewGame");
 /**
  * Created by Vu Tien Dai on 21/06/2017.
  */
