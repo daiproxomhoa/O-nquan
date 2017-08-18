@@ -4,13 +4,27 @@ import Socket = SocketIO.Socket;
  */
 
 export class User {
+    get isPlaying(): boolean {
+        return this._isPlaying;
+    }
+
+    set isPlaying(value: boolean) {
+        this._isPlaying = value;
+    }
     _username: string;
     _compatior: User;
-
+    private _isPlaying = false;
+    private _idroom : number;
     constructor(userInfo: any, public socket: Socket) {
         this._username = userInfo;
     }
 
+    set idroom(value: number) {
+        this._idroom = value;
+    }
+    get idroom(): number {
+        return this._idroom;
+    }
     get getUserName(): string {
         return this._username;
     }

@@ -14,6 +14,8 @@ const App_1 = require("../Const/App");
 const Panel_1 = require("../IU/Panel");
 const Hallview_1 = require("./Hallview");
 const Sound_1 = require("../Const/Sound");
+const Setting_1 = require("../IU/Setting");
+const Invite_1 = require("../IU/Invite");
 var screenfull = require('screenfull');
 // var StatusBar = require('cordova-plugin-statusbar');
 class viewGame {
@@ -73,6 +75,8 @@ class viewGame {
             viewGame.player.on("reload_first", this.onFirst);
             viewGame.player.on("reload_last", this.onLast);
             viewGame.player.on("OK", this.onOK);
+            viewGame.player.on("NO", this.onNO);
+            viewGame.player.on("Ẹnjoy", this.onEnjoy);
         };
         this.onOK = () => {
             viewGame.login_broad.visible = false;
@@ -81,11 +85,26 @@ class viewGame {
             clearTimeout(viewGame.login_broad.Connect);
             this.game_broad.My_name.setName("" + viewGame.player.username);
         };
+        this.onNO = () => {
+            Panel_1.Panel.showMessageDialog("Tên đã tồn tại :(", 1500);
+        };
+        this.onEnjoy = (data) => {
+            Panel_1.Panel.showConfirmDialog("Người chơi " + data.key + " muốn bạn chơi cùng ? ", {
+                text: "Có",
+                action: () => {
+                    viewGame.player.emit("join room", data.id);
+                }
+            }, {
+                text: "Không",
+                action: () => {
+                }
+            });
+        };
         this.onFirst = () => {
             viewGame.sound.play_BG("Play");
             viewGame.game_turn = true;
             viewGame.turn = true;
-            this.game_broad.reloadGame();
+            this.game_broad.reloadGame2();
             TweenMax.to(this.game_broad.flag, 0.5, { x: 700, y: 460 });
             this.game_broad.clock.restart();
             this.FinishGame = false;
@@ -94,7 +113,7 @@ class viewGame {
             viewGame.sound.play_BG("Play");
             viewGame.game_turn = false;
             viewGame.turn = true;
-            this.game_broad.reloadGame();
+            this.game_broad.reloadGame2();
             TweenMax.to(this.game_broad.flag, 0.5, { x: 370, y: 90 });
             this.game_broad.clock.restart();
             this.FinishGame = false;
@@ -226,6 +245,9 @@ class viewGame {
         this.createGame();
         this.createHall();
         this.eventPlayer();
+        viewGame.Setting = new Setting_1.Setting();
+        viewGame.Invite = new Invite_1.Invite();
+        this.app.stage.addChild(viewGame.Setting, viewGame.Invite);
         if (!App_1.App.IsWeb) {
             this.ReSize();
             this.app.stage.scale.set(App_1.App.W / App_1.App.width, App_1.App.H / App_1.App.height);

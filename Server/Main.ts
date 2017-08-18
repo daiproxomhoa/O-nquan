@@ -29,22 +29,6 @@ class Main {
     onConnect = (socket: Socket) => {
         this.count++;
         socket.on("login", (username : string) => {
-            // if(this.room ==null){
-            //     console.log("first");
-            //     this.room = new Room(this.count, "room" + this.count);
-            //     this.room.addUser(new User(username.toString(),socket));
-            // }
-            // else if (this.room.isFull() == true) {
-            //     this.Rooms.push(this.room);
-            //     this.room = new Room(this.count, "room" + this.count);
-            //     this.room.addUser(new User(username.toString(), socket));
-            //     console.log("Nguoi 1 zo")
-            // }
-            //
-            // else {
-            //     this.room.addUser(new User(username.toString(),socket));
-
-            // }
             this.manages.addUser(new User(username.toString(), socket));
         });
 

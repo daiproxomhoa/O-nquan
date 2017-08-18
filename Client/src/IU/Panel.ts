@@ -19,6 +19,7 @@ export class Panel extends Sprite {
     contentPane: PIXI.Container;
     messageBox: PIXI.Container;
     buttonBox: PIXI.Container;
+    textTB: PIXI.Text;
 
     constructor() {
         super(PIXI.Texture.fromImage(App.AssetDir + "Picture/IU/panel.png"));
@@ -34,10 +35,10 @@ export class Panel extends Sprite {
         this.buttonBox = new PIXI.Container();
         this.buttonBox.y = 260 * 0.9;
         if (App.IsWeb) {
-            let text = new PIXI.Text("Thông báo");
-            text.anchor.set(0.5);
-            text.y = -203;
-            text.style = new PIXI.TextStyle({
+            this.textTB = new PIXI.Text("Thông báo");
+            this.textTB.anchor.set(0.5);
+            this.textTB.y = -203;
+            this.textTB.style = new PIXI.TextStyle({
                 fontFamily: 'UTM French Vanilla',
                 fontSize: 40,
                 fontWeight: 'bold',
@@ -46,12 +47,12 @@ export class Panel extends Sprite {
                 wordWrap: true,
                 wordWrapWidth: 500
             });
-            this.contentPane.addChild(text);
+            this.contentPane.addChild(this.textTB);
         } else {
             let text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/thongbao.png');
             text.anchor.set(0.5);
             // text.position.set(-75,-220)
-            text.y=-198
+            text.y = -198
             this.contentPane.addChild(text);
         }
         this.contentPane.addChild(this.buttonBox);
@@ -70,7 +71,7 @@ export class Panel extends Sprite {
         Panel.panel.y = -500;
         Panel.panel.x = Math.random() * 1280;
         let text;
-        if(App.IsWeb) {
+        if (App.IsWeb) {
             text = new PIXI.Text(message);
             text.anchor.set(0.5);
             text.y = -20;
@@ -86,12 +87,13 @@ export class Panel extends Sprite {
 
         }
         else {
-            if( message==="Đợi đối phương trả lời") {
+            if (message === "Đợi đối phương trả lời") {
                 text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/traloi.png');
                 text.anchor.set(0.5);
                 text.y = -20;
             }
-            else{
+
+            else {
                 text = new PIXI.Text(message);
                 text.anchor.set(0.5);
                 text.y = -20;
@@ -128,18 +130,18 @@ export class Panel extends Sprite {
         Panel.panel.y = -500;
         Panel.panel.x = Math.random() * 1280;
         let text;
-            text = new PIXI.Text(message);
-            text.anchor.set(0.5);
-            text.y = -20;
-            text.style = new PIXI.TextStyle({
-                fontFamily: 'UTM French Vanilla',
-                fontSize: 42,
-                fontWeight: 'bold',
-                fill: '#51301b',
-                align: "center",
-                wordWrap: true,
-                wordWrapWidth: 500
-            });
+        text = new PIXI.Text(message);
+        text.anchor.set(0.5);
+        text.y = -20;
+        text.style = new PIXI.TextStyle({
+            fontFamily: 'UTM French Vanilla',
+            fontSize: 42,
+            fontWeight: 'bold',
+            fill: '#51301b',
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 500
+        });
         Panel.panel.messageBox.removeChildren();
         Panel.panel.buttonBox.removeChildren();
         Panel.panel.messageBox.addChild(text);
@@ -168,7 +170,7 @@ export class Panel extends Sprite {
         Panel.panel.y = -500;
         Panel.panel.x = Math.random() * 1280;
         let text;
-        if(App.IsWeb) {
+        if (App.IsWeb) {
             text = new PIXI.Text(msg);
             text.anchor.set(0.5);
             text.y = -20;
@@ -183,14 +185,31 @@ export class Panel extends Sprite {
             });
         }
         else {
-            if(msg === "Bạn muốn chơi lại chứ ?"){
+            if (msg === "Bạn muốn chơi lại chứ ?") {
                 text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/choilai.png');
                 text.anchor.set(0.5);
-                text.y=-20;
+                text.y = -20;
                 Panel.panel.messageBox.addChild(text);
-                console.log("HAHA")
             }
-            else{
+            else if (msg === "Bạn muốn thoát chứ ?") {
+                text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/thoatphong.png');
+                text.anchor.set(0.5);
+                text.y = -20;
+                Panel.panel.messageBox.addChild(text);
+            }
+            else if (msg === "Đợi đối phương trả lời") {
+                text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/doidp.png');
+                text.anchor.set(0.5);
+                text.y = -20;
+                Panel.panel.messageBox.addChild(text);
+            }
+            else if (msg === "Không có ai trong phòng !") {
+                text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/emty.png');
+                text.anchor.set(0.5);
+                text.y = -20;
+                Panel.panel.messageBox.addChild(text);
+            }
+            else {
                 text = new PIXI.Text(msg);
                 text.anchor.set(0.5);
                 text.y = -20;

@@ -90,7 +90,31 @@ export class ScrollPane extends PIXI.Container {
         this.on("pointermove", this.onMouseMove);
         this.on("pointerup", this.onMouseUp);
         this.on("pointerupoutside", this.onMouseUp);
+        this.on("pointerover", () => this.mouseOver = true);
+        this.on("pointerout", () => this.mouseOver = false);
+        document.addEventListener("mousewheel", this.scroll, false);
+    }
+    scroll = (e: WheelEvent) => {
+        if (this.content.height < this.height) return;
+        if (this.mouseOver) {
+            if (!this.anim) {
+                this.content.y += e.wheelDelta / this.smooth;
+            }
 
+            if (this.content.y + e.wheelDelta / this.smooth > this.height / 5 + this.head) {
+                this.anim = true;
+                TweenMax.to(this.content, 0.5, {y: this.head, onComplete: () => this.anim = false});
+                return;
+            }
+            if (this.content.y + e.wheelDelta / this.smooth < -((this.content.height - this.height + 10 + this.head) + this.height / 5)) {
+                this.anim = true;
+                TweenMax.to(this.content, 0.5, {
+                    y: -(this.content.height - this.height + 80),
+                    onComplete: () => this.anim = false
+                });
+                return;
+            }
+        }
     }
 
     onMouseDown = (e) => {

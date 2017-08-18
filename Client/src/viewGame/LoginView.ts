@@ -23,7 +23,7 @@ export class Login extends PIXI.Container {
         backgroud.width = 1200;
         backgroud.height = 640;
         this.txtMessage = new TextField(385, 400);
-        this.txtMessage.setText('User name');
+        this.txtMessage.setText('User name'+Math.floor(Math.random()*1000));
         this.txtMessage.scale.set(0.4);
         let Loginbtn = new Button(750, 400, "", App.AssetDir + "Picture/IU/loginbtn.png");
         Loginbtn.setSize(new PIXI.Point(100, 50));
@@ -35,22 +35,9 @@ export class Login extends PIXI.Container {
                 this.txtMessage.setText("");
                 viewGame.player.emit("get room list");
                 this.Connect = setTimeout(() => {
-                    Panel.showConfirmDialog("Can't connect to sever...", {
-                        text: "Cancel",
-                        action: () => {
-
-                        }
-                    }, {
-                        text: "Retry",
-                        action: () => {
-                            viewGame.player = new Player();
-                            viewGame.player.emit("login", this.txtMessage.getText());
-                        }
-                    });
+                   Panel.showMessageDialog("Can not connecting to server @@! ...")
                 }, 2500);
             }
-
-
         };
 
         this.addChild(backgroud, this.txtMessage, Loginbtn)

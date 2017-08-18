@@ -2,14 +2,13 @@
 import {Utils} from "../Utils";
 import Container = PIXI.Container;
 import {viewGame} from "../viewGame/viewGame";
-import {HowlerUtils} from "../HowlerUtils";
 /**
  * Created by Vu Tien Dai on 25/07/2017.
  */
 export class clock extends Container {
     private _number;
     time;
-    timedisplay =15;
+    timedisplay =60;
     timecount = 0;
     i;
     countdown;
@@ -44,8 +43,8 @@ export class clock extends Container {
             if (this.timedisplay - this.timecount > -1) {
                 this.setTime(this.timedisplay - this.timecount);
                 this.timecount++;
-                if(this.timecount==12 && Math.random()*10 > 7&&viewGame.turn==viewGame.game_turn){
-                    HowlerUtils.HetGio.play();
+                if(this.timecount==55 && Math.random()*10 > 7&&viewGame.turn==viewGame.game_turn){
+                    viewGame.sound.play_Voice("HetGio");
                 }
             }
             else {

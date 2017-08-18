@@ -474,11 +474,15 @@ class Square extends Container {
                 }
             }
         }
+        let time = 0;
         if (team1 == 5) {
             this.SpeardStone(arraySquare, 1);
+            time = 450 * 5;
         }
         if (team2 == 5) {
-            this.SpeardStone(arraySquare, 2);
+            setTimeout(() => {
+                this.SpeardStone(arraySquare, 2);
+            }, time);
         }
     }
     SpeardStone(arraySquare, team) {

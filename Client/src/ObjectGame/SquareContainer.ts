@@ -120,11 +120,15 @@ export class Square extends Container {
                 }
             }
         }
+        let time = 0;
         if (team1 == 5) {
             this.SpeardStone(arraySquare, 1);
+            time = 450 * 5;
         }
         if (team2 == 5) {
-            this.SpeardStone(arraySquare, 2);
+            setTimeout(() => {
+                this.SpeardStone(arraySquare, 2);
+            }, time);
         }
 
     }
@@ -531,12 +535,12 @@ export class Square extends Container {
                     setTimeout(() => {
                         if (this.pos == 0 || this.pos == 6 && this.Seq_Eat == false) {
                             if (this.checkPoint(arraySquare[14]) < 18)
-                                  viewGame.sound.play_Voice("AnQuan")
+                                viewGame.sound.play_Voice("AnQuan")
                             else
-                                  viewGame.sound.play_Voice("TrungLon");
+                                viewGame.sound.play_Voice("TrungLon");
                         }
                         else if (this.Seq_Eat == false && this.pos != 0 && this.pos != 6)
-                              viewGame.sound.play_Voice("An");
+                            viewGame.sound.play_Voice("An");
                         this.MoveEat(arraySquare[14], arraySquare[13]);
                         let box2 = <Box> Box[13];
                         box2.setText(this.checkPoint(square));
@@ -550,12 +554,12 @@ export class Square extends Container {
                     setTimeout(() => {
                         if (this.pos == 0 || this.pos == 6 && this.Seq_Eat == false) {
                             if (this.checkPoint(arraySquare[14]) < 18)
-                                  viewGame.sound.play_Voice("AnQuan");
+                                viewGame.sound.play_Voice("AnQuan");
                             else
-                                  viewGame.sound.play_Voice("TrungLon");
+                                viewGame.sound.play_Voice("TrungLon");
                         }
                         else if (this.Seq_Eat == false && this.pos != 0 && this.pos != 6)
-                              viewGame.sound.play_Voice("An");
+                            viewGame.sound.play_Voice("An");
                         this.MoveEat(arraySquare[14], arraySquare[12]);
                         let box2 = <Box> Box[12];
                         box2.setText(this.checkPoint(square));
@@ -623,7 +627,7 @@ export class Square extends Container {
                     let x = arrayStone[0].x + 5;
                     TweenMax.to(spread, 0.4, {x: 113, y: 92});
                     setTimeout(() => {
-                          viewGame.sound.play_Voice("Stone")
+                        viewGame.sound.play_Voice("Stone")
                         arrayStone[0].position.set(x, y);
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
@@ -634,7 +638,7 @@ export class Square extends Container {
                     let y = arrayStone[0].y + 50;
                     TweenMax.to(spread, 0.4, {x: 575, y: 130});
                     setTimeout(() => {
-                          viewGame.sound.play_Voice("Stone")
+                        viewGame.sound.play_Voice("Stone")
                         arrayStone[0].position.y = y;
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
@@ -643,7 +647,7 @@ export class Square extends Container {
                 else {
                     TweenMax.to(spread, 0.4, {x: square.x, y: square.y});
                     setTimeout(() => {
-                          viewGame.sound.play_Voice("Stone")
+                        viewGame.sound.play_Voice("Stone")
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
                     }, 400);
@@ -688,9 +692,9 @@ export class Square extends Container {
         if (count == 2) {
             setTimeout(() => {
                 if (Math.random() * 2 > 1)
-                      viewGame.sound.play_Voice("TQKV");
+                    viewGame.sound.play_Voice("TQKV");
                 else
-                      viewGame.sound.play_Voice("TQBR")
+                    viewGame.sound.play_Voice("TQBR")
             }, 1000);
             Game.endgame = true;
             this.countPoit(arraySquare, Box)

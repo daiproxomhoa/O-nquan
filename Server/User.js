@@ -3,41 +3,47 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Administrator on 25/02/2017.
  */
-var User = (function () {
-    function User(userInfo, socket) {
-        var _this = this;
+class User {
+    constructor(userInfo, socket) {
         this.socket = socket;
-        this.on = function (event, fn, clear) {
-            if (clear === void 0) { clear = true; }
+        this._isPlaying = false;
+        this.on = (event, fn, clear = true) => {
             if (clear)
-                _this.socket.removeAllListeners(event);
-            _this.socket.on(event, fn);
+                this.socket.removeAllListeners(event);
+            this.socket.on(event, fn);
         };
-        this.emit = function (event, data) {
+        this.emit = (event, data) => {
             if (data) {
-                _this.socket.emit(event, data);
+                this.socket.emit(event, data);
             }
             else {
-                _this.socket.emit(event);
+                this.socket.emit(event);
             }
         };
         this._username = userInfo;
     }
-    Object.defineProperty(User.prototype, "getUserName", {
-        get: function () {
-            return this._username;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    User.prototype.setCompatior = function (user) {
+    get isPlaying() {
+        return this._isPlaying;
+    }
+    set isPlaying(value) {
+        this._isPlaying = value;
+    }
+    set idroom(value) {
+        this._idroom = value;
+    }
+    get idroom() {
+        return this._idroom;
+    }
+    get getUserName() {
+        return this._username;
+    }
+    setCompatior(user) {
         this._compatior = user;
-    };
-    User.prototype.getCompatior = function () {
+    }
+    getCompatior() {
         return this._compatior;
-    };
-    return User;
-}());
+    }
+}
 exports.User = User;
 /**
  * Created by Vu Tien Dai on 05/07/2017.

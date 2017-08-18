@@ -14,6 +14,8 @@ import {App} from "../Const/App";
 import {Panel} from "../IU/Panel";
 import {Hall} from "./Hallview";
 import {Sound} from "../Const/Sound";
+import {Setting} from "../IU/Setting";
+import {Invite} from "../IU/Invite";
 var screenfull = require('screenfull');
 // var StatusBar = require('cordova-plugin-statusbar');
 export class viewGame {
@@ -23,11 +25,14 @@ export class viewGame {
     public static player: Player;
     private FinishGame = false;
     static login_broad: Login;
-    static Hall:Hall;
+    static Hall: Hall;
     static Game: PIXI.Container;
-    game_broad:Game;
+    game_broad: Game;
     result: PIXI.Sprite;
-    static sound:Sound = new Sound();
+    static sound: Sound = new Sound();
+    static Setting: Setting;
+    static Invite: Invite;
+
     constructor() {
         viewGame.player = new Player();
         this.app = new PIXI.Application(App.width, App.height, {backgroundColor: 0x1099bb});
@@ -37,9 +42,12 @@ export class viewGame {
         this.createGame();
         this.createHall();
         this.eventPlayer();
-        if (!App.IsWeb) {
+        viewGame.Setting = new Setting();
+        viewGame.Invite = new Invite();
+        this.app.stage.addChild(viewGame.Setting, viewGame.Invite);
+        if (!App.IsWeb){
             this.ReSize();
-            this.app.stage.scale.set(App.W/App.width,App.H/App.height);
+            this.app.stage.scale.set(App.W / App.width, App.H / App.height);
         }
     }
 
@@ -70,9 +78,9 @@ export class viewGame {
         viewGame.login_broad = new Login();
         this.app.stage.addChild(viewGame.login_broad);
     }
-    createHall=()=>{
-        viewGame.Hall= new Hall();
-        viewGame.Hall.visible=false;
+    createHall = () => {
+        viewGame.Hall = new Hall();
+        viewGame.Hall.visible = false;
         this.app.stage.addChild(viewGame.Hall);
     }
     createGame = () => {
@@ -82,7 +90,6 @@ export class viewGame {
         viewGame.Game.visible = false;
         this.app.stage.addChild(viewGame.Game);
     }
-
 
 
     eventPlayer = () => {
@@ -100,20 +107,37 @@ export class viewGame {
         viewGame.player.on("continue_game", this.onContinue);
         viewGame.player.on("reload_first", this.onFirst);
         viewGame.player.on("reload_last", this.onLast);
-        viewGame.player.on("OK",this.onOK);
+        viewGame.player.on("OK", this.onOK);
+        viewGame.player.on("NO", this.onNO);
+        viewGame.player.on("Ẹnjoy", this.onEnjoy);
     }
-    onOK=()=>{
+    onOK = () => {
         viewGame.login_broad.visible = false;
         viewGame.Hall.visible = true;
         viewGame.sound.play_BG("Wait");
         clearTimeout(viewGame.login_broad.Connect);
-        this.game_broad.My_name.setName(""+viewGame.player.username);
+        this.game_broad.My_name.setName("" + viewGame.player.username);
+    }
+    onNO = () => {
+        Panel.showMessageDialog("Tên đã tồn tại :(", 1500);
+    }
+    onEnjoy = (data: any) => {
+        Panel.showConfirmDialog("Người chơi " + data.key + " muốn bạn chơi cùng ? ", {
+            text: "Có",
+            action: () => {
+                viewGame.player.emit("join room", data.id);
+            }
+        }, {
+            text: "Không",
+            action: () => {
+            }
+        })
     }
     onFirst = () => {
         viewGame.sound.play_BG("Play");
         viewGame.game_turn = true;
         viewGame.turn = true;
-        this.game_broad.reloadGame();
+        this.game_broad.reloadGame2();
         TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460});
         this.game_broad.clock.restart();
         this.FinishGame = false;
@@ -123,7 +147,7 @@ export class viewGame {
         viewGame.sound.play_BG("Play");
         viewGame.game_turn = false;
         viewGame.turn = true;
-        this.game_broad.reloadGame();
+        this.game_broad.reloadGame2();
         TweenMax.to(this.game_broad.flag, 0.5, {x: 370, y: 90})
         this.game_broad.clock.restart();
         this.FinishGame = false;
@@ -176,12 +200,13 @@ export class viewGame {
         }
 
     }
-    onStartGame = (data: any) => {;
+    onStartGame = (data: any) => {
+        ;
         viewGame.sound.play_BG("Play");
         this.game_broad.wait.stop();
         viewGame.player.color = data.color;
         viewGame.player.oppname = data.oppname;
-        this.game_broad.Opp_name.setName(""+viewGame.player.oppname);
+        this.game_broad.Opp_name.setName("" + viewGame.player.oppname);
         this.game_broad.clock.restart();
     }
     onEndGame = (data: any) => {
@@ -194,7 +219,7 @@ export class viewGame {
                 if (data.src > 10)
                     viewGame.sound.play_Voice("TRBT");
                 else
-                viewGame.sound.play_Voice("ConGa");
+                    viewGame.sound.play_Voice("ConGa");
 
             }, 2500);
             this.result = new PIXI.Sprite(Utils.Win);
