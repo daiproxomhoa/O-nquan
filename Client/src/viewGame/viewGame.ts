@@ -26,16 +26,22 @@ export class viewGame {
     private FinishGame = false;
     static login_broad: Login;
     static Hall: Hall;
-    static Game: PIXI.Container;
-    game_broad: Game;
+    static Game: Game;
     result: PIXI.Sprite;
     static sound: Sound = new Sound();
     static Setting: Setting;
     static Invite: Invite;
-
+    static Avatar_ID:number = Math.floor(Math.random() * 15) ;
     constructor() {
         viewGame.player = new Player();
-        this.app = new PIXI.Application(App.width, App.height, {backgroundColor: 0x1099bb});
+        if (!App.IsWeb){
+            this.ReSize();
+            this.app = new PIXI.Application(App.W, App.H);
+            this.app.stage.scale.set(App.W / App.width, App.H / App.height);
+
+        }
+        else
+        this.app = new PIXI.Application(App.width, App.height);
         document.body.appendChild(this.app.view);
         this.app.stage.addChild(Panel.panel);
         this.createLogin();
@@ -45,10 +51,7 @@ export class viewGame {
         viewGame.Setting = new Setting();
         viewGame.Invite = new Invite();
         this.app.stage.addChild(viewGame.Setting, viewGame.Invite);
-        if (!App.IsWeb){
-            this.ReSize();
-            this.app.stage.scale.set(App.W / App.width, App.H / App.height);
-        }
+
     }
 
     // onDeviceReady = () => {
@@ -84,9 +87,7 @@ export class viewGame {
         this.app.stage.addChild(viewGame.Hall);
     }
     createGame = () => {
-        viewGame.Game = new PIXI.Container();
-        this.game_broad = new Game(viewGame.player);
-        viewGame.Game.addChild(this.game_broad);
+        viewGame.Game = new Game(viewGame.player);
         viewGame.Game.visible = false;
         this.app.stage.addChild(viewGame.Game);
     }
@@ -98,9 +99,9 @@ export class viewGame {
         viewGame.player.on("set turn", this.onSetTurn);
         viewGame.player.on("opponent move", this.onMove);
         viewGame.player.on("game_end", this.onEndGame);
-        viewGame.player.on("wait player", this.game_broad.onWait);
+        viewGame.player.on("wait player", viewGame.Game.onWait);
         viewGame.player.on("new message", (data: any) => {
-            this.game_broad.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
+            viewGame.Game.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
         });
         viewGame.player.on("End_turn", this.onAutoEndturn);
         viewGame.player.on("user left", this.onUserLeft);
@@ -113,10 +114,11 @@ export class viewGame {
     }
     onOK = () => {
         viewGame.login_broad.visible = false;
+        viewGame.Hall.avatar.show(viewGame.Avatar_ID);
         viewGame.Hall.visible = true;
         viewGame.sound.play_BG("Wait");
         clearTimeout(viewGame.login_broad.Connect);
-        this.game_broad.My_name.setName("" + viewGame.player.username);
+        viewGame.Game.My_name.setName("" + viewGame.player.username);
     }
     onNO = () => {
         Panel.showMessageDialog("Tên đã tồn tại :(", 1500);
@@ -137,9 +139,9 @@ export class viewGame {
         viewGame.sound.play_BG("Play");
         viewGame.game_turn = true;
         viewGame.turn = true;
-        this.game_broad.reloadGame2();
-        TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460});
-        this.game_broad.clock.restart();
+        viewGame.Game.reloadGame2();
+        TweenMax.to(viewGame.Game.flag, 0.5, {x: 350, y: 485});
+        viewGame.Game.clock.restart();
         this.FinishGame = false;
 
     }
@@ -147,11 +149,11 @@ export class viewGame {
         viewGame.sound.play_BG("Play");
         viewGame.game_turn = false;
         viewGame.turn = true;
-        this.game_broad.reloadGame2();
-        TweenMax.to(this.game_broad.flag, 0.5, {x: 370, y: 90})
-        this.game_broad.clock.restart();
+        viewGame.Game.reloadGame2();
+        TweenMax.to(viewGame.Game.flag, 0.5, {x: 700, y: 30})
+        viewGame.Game.clock.restart();
         this.FinishGame = false;
-        this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
+        viewGame.Game.broad.getChildAt(1).onStopMove(viewGame.Game.broad.getChildAt(1));
     }
 
     onContinue = () => {
@@ -171,10 +173,10 @@ export class viewGame {
     onUserLeft = () => {
         viewGame.sound.play_Voice("DiDau");
         viewGame.turn = true;
-        this.game_broad.reloadGame();
-        this.game_broad.wait.run();
-        TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460})
-        this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
+        viewGame.Game.reloadGame();
+        viewGame.Game.wait.run();
+        TweenMax.to(viewGame.Game.flag, 0.5, {x: 350, y: 485})
+        viewGame.Game.broad.getChildAt(1).onStopMove(viewGame.Game.broad.getChildAt(1));
         this.FinishGame = false;
     }
 
@@ -186,14 +188,14 @@ export class viewGame {
                 bool = true;
             else
                 bool = false;
-            let Square = this.game_broad.broad.children;
+            let Square = viewGame.Game.broad.children;
             for (let i = 1; i < 6; i++) {
                 if (Square[i].children.length != 0) {
                     viewGame.player.emit("move", {posi: i + 6, dr: bool});
                     if (bool == false)
-                        this.game_broad.broad.getChildAt(i).onMoveRight(this.game_broad.broad.getChildAt(i))
+                        viewGame.Game.broad.getChildAt(i).onMoveRight(viewGame.Game.broad.getChildAt(i))
                     else
-                        this.game_broad.broad.getChildAt(i).onMoveLeft(this.game_broad.broad.getChildAt(i))
+                        viewGame.Game.broad.getChildAt(i).onMoveLeft(viewGame.Game.broad.getChildAt(i))
                     return;
                 }
             }
@@ -201,19 +203,18 @@ export class viewGame {
 
     }
     onStartGame = (data: any) => {
-        ;
         viewGame.sound.play_BG("Play");
-        this.game_broad.wait.stop();
+        viewGame.Game.wait.stop();
         viewGame.player.color = data.color;
         viewGame.player.oppname = data.oppname;
-        this.game_broad.Opp_name.setName("" + viewGame.player.oppname);
-        this.game_broad.clock.restart();
+        viewGame.Game.Opp_name.setName("" + viewGame.player.oppname);
+        viewGame.Game.clock.restart();
     }
     onEndGame = (data: any) => {
         viewGame.sound.play_BG("Wait");
         this.FinishGame = true;
-        this.game_broad.clock.stop();
-        this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
+        viewGame.Game.clock.stop();
+        viewGame.Game.broad.getChildAt(1).onStopMove(viewGame.Game.broad.getChildAt(1));
         if (data.result == 1) {
             setTimeout(() => {
                 if (data.src > 10)
@@ -224,7 +225,7 @@ export class viewGame {
             }, 2500);
             this.result = new PIXI.Sprite(Utils.Win);
             this.result.position.set(520, 395);
-            this.game_broad.addChild(this.result);
+            viewGame.Game.addChild(this.result);
         }
         else if (data.result == 3) {
             setTimeout(() => {
@@ -235,12 +236,12 @@ export class viewGame {
             }, 2500)
             this.result = new PIXI.Sprite(Utils.Lose);
             this.result.position.set(520, 395);
-            this.game_broad.addChild(this.result);
+            viewGame.Game.addChild(this.result);
         }
         else if (data.result == 2) {
             this.result = new PIXI.Sprite(Utils.Daw);
             this.result.position.set(520, 395);
-            this.game_broad.addChild(this.result);
+            viewGame.Game.addChild(this.result);
 
         }
     }
@@ -248,35 +249,35 @@ export class viewGame {
         viewGame.turn = true;
         viewGame.game_turn = data.gameturn;
         if (viewGame.game_turn == true) {
-            this.game_broad.broad.getChildAt(1).onStartMove(this.game_broad.broad.getChildAt(1));
-            TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460})
+            viewGame.Game.broad.getChildAt(1).onStartMove(viewGame.Game.broad.getChildAt(1));
+            TweenMax.to(viewGame.Game.flag, 0.5, {x: 350, y: 485})
 
         }
         else {
-            this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
-            TweenMax.to(this.game_broad.flag, 0.5, {x: 370, y: 90})
+            viewGame.Game.broad.getChildAt(1).onStopMove(viewGame.Game.broad.getChildAt(1));
+            TweenMax.to(viewGame.Game.flag, 0.5, {x: 700, y: 30})
         }
     }
     onTurnColor = (data: any) => {
         viewGame.turn = data.turn;
-        this.game_broad.clock.restart();
+        viewGame.Game.clock.restart();
         if (viewGame.turn == viewGame.game_turn) {
-            this.game_broad.broad.getChildAt(1).onStartMove(this.game_broad.broad.getChildAt(1));
-            TweenMax.to(this.game_broad.flag, 0.5, {x: 700, y: 460})
+            viewGame.Game.broad.getChildAt(1).onStartMove(viewGame.Game.broad.getChildAt(1));
+            TweenMax.to(viewGame.Game.flag, 0.5, {x: 350, y: 485})
         }
         else {
-            this.game_broad.broad.getChildAt(1).onStopMove(this.game_broad.broad.getChildAt(1));
-            TweenMax.to(this.game_broad.flag, 0.5, {x: 370, y: 90})
+            viewGame.Game.broad.getChildAt(1).onStopMove(viewGame.Game.broad.getChildAt(1));
+            TweenMax.to(viewGame.Game.flag, 0.5, {x: 700, y: 30})
         }
 
     }
     onMove = (data: any) => {
-        this.game_broad.clock.stop();
+        viewGame.Game.clock.stop();
         if (data.dr == false) {
-            this.game_broad.broad.getChildAt(data.posi).onMoveRight(this.game_broad.broad.getChildAt(data.posi));
+            viewGame.Game.broad.getChildAt(data.posi).onMoveRight(viewGame.Game.broad.getChildAt(data.posi));
         }
         else {
-            this.game_broad.broad.getChildAt(data.posi).onMoveLeft(this.game_broad.broad.getChildAt(data.posi));
+            viewGame.Game.broad.getChildAt(data.posi).onMoveLeft(viewGame.Game.broad.getChildAt(data.posi));
         }
     }
 

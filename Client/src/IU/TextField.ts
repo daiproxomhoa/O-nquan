@@ -28,7 +28,6 @@ export class TextField extends PIXI.Container {
 
         super();
         let base = PIXI.BaseTexture.fromImage(App.AssetDir + "Picture/IU/textfield.png");
-
         let left = new PIXI.Sprite(new PIXI.Texture(base, new Rectangle(0, 0, 50, 127)));
         left.anchor.set(0, 0.5);
         let center = new PIXI.Sprite(new PIXI.Texture(base, new Rectangle(50, 0, 650, 127)));
@@ -95,13 +94,14 @@ export class TextField extends PIXI.Container {
             }
             TextField.indexFocus = this.index;
             TextField.elements[TextField.indexFocus].displayText.text += "|";
+            console.log("NHU CC")
+            // document.getElementById("textbox").focus();
         });
     }
 
     private _keyDown = (e) => {
         if (TextField.indexFocus != -1) {
             let textField = TextField.elements[TextField.indexFocus];
-
             let text = textField.text;
             if (e.which == 8 || e.which == 46) {
                 text = text.substring(0, text.length - 1);
@@ -109,7 +109,6 @@ export class TextField extends PIXI.Container {
                 text = text + e.key;
             }
             textField.text = text;
-
             textField.displayText.text = text + "|";
             if (textField.displayText.width * textField.scale.x > textField.width * 0.95) {
                 textField.displayText.x = (textField.width * 0.95

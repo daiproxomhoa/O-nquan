@@ -41,9 +41,7 @@ export class Game extends Container {
         super();
         this.player = player;
         this.createBroadGame();
-        this.createIU();
-        this.createClock();
-        this.createFlag();
+
     }
 
     reloadGame = () => {
@@ -51,20 +49,16 @@ export class Game extends Container {
         this.clock.stop();
         this.removeChildren();
         this.createBroadGame();
-        this.createIU();
-        this.createClock();
-        this.createFlag();
+
     }
     reloadGame2 = () => {
         Game.endgame = false;
         this.clock.stop();
-        let chat = this.chat_board;
-        this.removeChildren();
-        this.createBroadGame2();
-        this.addChild(chat);
-        this.createIU();
+        this.removeChildren(9,this.children.length);
         this.createClock();
         this.createFlag();
+        this.createBroad(this.gametable);
+
     }
     createBroadGame = () => {
         var background = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/background.png');
@@ -72,16 +66,12 @@ export class Game extends Container {
         background.height = 640;
         this.addChild(background);
         this.createChat();
+        this.createIU();
+        this.createClock();
+        this.createFlag();
         this.createBroad(this.gametable);
     }
-    createBroadGame2 = () => {
-        var background = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/background.png');
-        background.width = 1200;
-        background.height = 640;
-        this.addChild(background);
-        this.createBroad(this.gametable);
 
-    }
     createFlag = () => {
         this.flag = new PIXI.Sprite(Utils.Flag);
         this.flag.scale.set(0.65);
