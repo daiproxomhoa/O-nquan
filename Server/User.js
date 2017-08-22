@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Created by Administrator on 25/02/2017.
  */
 class User {
-    constructor(userInfo, socket) {
+    constructor(userInfo, sex, socket) {
         this.socket = socket;
         this._isPlaying = false;
         this.on = (event, fn, clear = true) => {
@@ -20,7 +20,21 @@ class User {
                 this.socket.emit(event);
             }
         };
+        this._sex = sex;
         this._username = userInfo;
+        this._avatarID = Math.floor(Math.random() * 14 + 1);
+    }
+    get sex() {
+        return this._sex;
+    }
+    set sex(value) {
+        this._sex = value;
+    }
+    get avatarID() {
+        return this._avatarID;
+    }
+    set avatarID(value) {
+        this._avatarID = value;
     }
     get isPlaying() {
         return this._isPlaying;

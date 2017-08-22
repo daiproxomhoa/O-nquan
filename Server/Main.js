@@ -18,8 +18,8 @@ class Main {
         this.Rooms = [];
         this.onConnect = (socket) => {
             this.count++;
-            socket.on("login", (username) => {
-                this.manages.addUser(new User_1.User(username.toString(), socket));
+            socket.on("login", (data) => {
+                this.manages.addUser(new User_1.User(data.name, data.sex, socket));
             });
         };
         this.onListen = () => {

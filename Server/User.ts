@@ -4,6 +4,20 @@ import Socket = SocketIO.Socket;
  */
 
 export class User {
+    get sex(): boolean {
+        return this._sex;
+    }
+
+    set sex(value: boolean) {
+        this._sex = value;
+    }
+    get avatarID(): number {
+        return this._avatarID;
+    }
+
+    set avatarID(value: number) {
+        this._avatarID = value;
+    }
     get isPlaying(): boolean {
         return this._isPlaying;
     }
@@ -12,11 +26,15 @@ export class User {
         this._isPlaying = value;
     }
     _username: string;
+    private _avatarID:number;
     _compatior: User;
     private _isPlaying = false;
     private _idroom : number;
-    constructor(userInfo: any, public socket: Socket) {
+    private _sex:boolean;
+    constructor(userInfo: any,sex :boolean, public socket: Socket) {
+        this._sex = sex;
         this._username = userInfo;
+        this._avatarID=Math.floor(Math.random()*14+1);
     }
 
     set idroom(value: number) {

@@ -16,30 +16,35 @@ import {NamePlayer} from "../ObjectGame/NamePlayer";
 import {Chat} from "./Chat";
 import {viewGame} from "./viewGame";
 import {Invite} from "../IU/Invite";
+import {Avatar} from "../ObjectGame/Avatar";
 export class Game extends Container {
-    // gametable = [7 , 1, 0, 0, 0, 0, 7, 0, 0,0 , 1, 0, 7, 7];
+    // gametable = [7 ,0 , 0, 1, 0, 0, 7, 0, 0,1 , 0, 0, 7, 7];
     private gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
     private broad_main;
     broad;
     flag;
     clock;
     public static clock;
-    private FinishGame = false;
     static endgame = false;
-    resetGame: Button;
-    leftGame: Button;
-    Setting: Button;
-    Invite: Button
+    buttonBox: Container;
     player: Player;
     wait: Wait;
-    My_name: NamePlayer;
-    Opp_name: NamePlayer;
+    My_name: Avatar;
+    Opp_name: Avatar;
     chat_board: Chat;
 
 
     constructor(player: Player) {
         super();
         this.player = player;
+        var background = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/background.png');
+        background.width = 1200;
+        background.height = 640;
+        this.buttonBox= new PIXI.Container();
+        this.addChild(background);
+        this.createIU();
+        this.createAvatar();
+        this.createChat();
         this.createBroadGame();
 
     }
@@ -47,31 +52,41 @@ export class Game extends Container {
     reloadGame = () => {
         Game.endgame = false;
         this.clock.stop();
-        this.removeChildren();
+        this.removeChildren(4,this.children.length);
+        this.createChat();
         this.createBroadGame();
-
     }
     reloadGame2 = () => {
         Game.endgame = false;
         this.clock.stop();
-        this.removeChildren(9,this.children.length);
-        this.createClock();
-        this.createFlag();
-        this.createBroad(this.gametable);
+        this.removeChildren(5,this.children.length);
+        this.createBroadGame();
 
     }
     createBroadGame = () => {
-        var background = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/background.png');
-        background.width = 1200;
-        background.height = 640;
-        this.addChild(background);
-        this.createChat();
-        this.createIU();
         this.createClock();
         this.createFlag();
+        this.createWait();
         this.createBroad(this.gametable);
-    }
 
+    }
+    createWait = () => {
+         this.wait = new Wait();
+        this.wait.scale.set(0.7);
+        this.wait.stop();
+        this.wait.position.set(245, 165);
+        this.addChild(this.wait);
+
+    }
+    createAvatar=()=>{
+        this.My_name = new Avatar();
+        this.My_name.scale.set(0.6);
+        this.My_name.position.set(710,435);
+        this.Opp_name= new Avatar();
+        this.Opp_name.scale.set(0.6);
+        this.Opp_name.position.set(275,15);
+        this.addChild(this.My_name,this.Opp_name);
+    }
     createFlag = () => {
         this.flag = new PIXI.Sprite(Utils.Flag);
         this.flag.scale.set(0.65);
@@ -87,9 +102,9 @@ export class Game extends Container {
         this.addChild(this.chat_board);
     }
     createIU = () => {
-        this.resetGame = new Button(1125, 115, "", App.AssetDir + "Picture/IU/refreshbtn.png")
-        this.resetGame.setSize(new PIXI.Point(120, 65));
-        this.resetGame.onClick = () => {
+        let resetGame = new Button(0, 115, "", App.AssetDir + "Picture/IU/refreshbtn.png")
+        resetGame.setSize(new PIXI.Point(117, 60));
+        resetGame.onClick = () => {
             if (this.wait.visible == false) {
                 this.player.emit("Ready_continue");
                 Panel.showDialog("Đợi đối phương trả lời");
@@ -98,9 +113,9 @@ export class Game extends Container {
                 Panel.showDialog("Không có ai trong phòng !");
             }
         };
-        this.leftGame = new Button(1125, 45, "", App.AssetDir + "Picture/IU/outroom.png");
-        this.leftGame.setSize(new PIXI.Point(120, 60));
-        this.leftGame.onClick = () => {
+        let leftGame = new Button(0, 45, "", App.AssetDir + "Picture/IU/outroom.png");
+        leftGame.setSize(new PIXI.Point(117, 60));
+        leftGame.onClick = () => {
             Panel.showConfirmDialog("Bạn muốn thoát chứ ?", {
                 text: "Có",
                 action: () => {
@@ -118,35 +133,30 @@ export class Game extends Container {
                 }
             });
         }
-        this.Setting = new Button(1125, 255, "", App.AssetDir + "Picture/IU/setting.png");
-        this.Setting.setSize(new PIXI.Point(117, 60));
-        this.Setting.onClick = () => {
+        let Setting = new Button(0, 255, "", App.AssetDir + "Picture/IU/setting.png");
+        Setting.setSize(new PIXI.Point(117, 60));
+        Setting.onClick = () => {
             viewGame.Setting.show();
         }
-        this.Invite = new Button(1125, 185, "", App.AssetDir + "Picture/IU/invite.png");
-        this.Invite.setSize(new PIXI.Point(117, 60));
-        this.Invite.onClick = () => {
+        let Invite = new Button(0, 185, "", App.AssetDir + "Picture/IU/invite.png");
+        Invite.setSize(new PIXI.Point(117, 60));
+        Invite.onClick = () => {
             viewGame.Invite.show();
         }
-        this.wait = new Wait();
-        this.wait.scale.set(0.7);
-        this.wait.stop();
-        this.wait.position.set(245, 165);
-        this.My_name = new NamePlayer("" + this.player.username);
-        this.My_name.position.set(505, 450);
-        this.addChild(this.My_name);
-        this.Opp_name = new NamePlayer("" + this.player.oppname);
-        this.Opp_name.position.set(505, 0);
-        this.addChild(this.resetGame, this.leftGame, this.Setting, this.Invite, this.wait, this.My_name, this.Opp_name);
+        this.buttonBox.addChild(resetGame, leftGame,Setting, Invite);
+        this.addChild(this.buttonBox);
+        this.buttonBox.position.set(1125,-10);
+
     }
+
     onWait = () => {
+        console.log("Doi di")
         this.player.oppname = "";
-        this.Opp_name.setName("" + this.player.oppname);
+        this.Opp_name.show();
         viewGame.sound.play_BG("Wait");
         this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
         this.wait.run();
-        ;
-        TweenMax.to(this.flag, 0.5, {x: 700, y: 460});
+        TweenMax.to(this.flag, 0.5, {x: 350, y: 485});
 
     }
 
@@ -161,7 +171,6 @@ export class Game extends Container {
             let box;
             if (i == 0) {
                 box = new Box(table[i] + 9, 0);
-                // box.height = 157;
                 square = new Square(table[i], 1, 0, this);
                 box.position.set(102, 73);
                 square.position.set(102, 73);

@@ -16,6 +16,7 @@ import {Hall} from "./Hallview";
 import {Sound} from "../Const/Sound";
 import {Setting} from "../IU/Setting";
 import {Invite} from "../IU/Invite";
+
 var screenfull = require('screenfull');
 // var StatusBar = require('cordova-plugin-statusbar');
 export class viewGame {
@@ -27,30 +28,27 @@ export class viewGame {
     static login_broad: Login;
     static Hall: Hall;
     static Game: Game;
-    result: PIXI.Sprite;
     static sound: Sound = new Sound();
     static Setting: Setting;
     static Invite: Invite;
-    static Avatar_ID:number = Math.floor(Math.random() * 15) ;
+
     constructor() {
         viewGame.player = new Player();
-        if (!App.IsWeb){
+        if (!App.IsWeb) {
             this.ReSize();
+            // this.onDeviceReady();
             this.app = new PIXI.Application(App.W, App.H);
             this.app.stage.scale.set(App.W / App.width, App.H / App.height);
 
         }
         else
-        this.app = new PIXI.Application(App.width, App.height);
+            this.app = new PIXI.Application(App.width, App.height);
         document.body.appendChild(this.app.view);
         this.app.stage.addChild(Panel.panel);
         this.createLogin();
-        this.createGame();
-        this.createHall();
         this.eventPlayer();
         viewGame.Setting = new Setting();
-        viewGame.Invite = new Invite();
-        this.app.stage.addChild(viewGame.Setting, viewGame.Invite);
+        this.app.stage.addChild(viewGame.Setting);
 
     }
 
@@ -90,38 +88,54 @@ export class viewGame {
         viewGame.Game = new Game(viewGame.player);
         viewGame.Game.visible = false;
         this.app.stage.addChild(viewGame.Game);
+
     }
 
 
     eventPlayer = () => {
+        viewGame.player.on("OK", this.onOK);
+        viewGame.player.on("NO", this.onNO);
+
+    }
+    eventGame = () => {
+        viewGame.player.on("wait player", viewGame.Game.onWait);
         viewGame.player.on("start game", this.onStartGame);
         viewGame.player.on("turn color", this.onTurnColor);
         viewGame.player.on("set turn", this.onSetTurn);
         viewGame.player.on("opponent move", this.onMove);
         viewGame.player.on("game_end", this.onEndGame);
-        viewGame.player.on("wait player", viewGame.Game.onWait);
-        viewGame.player.on("new message", (data: any) => {
-            viewGame.Game.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
-        });
         viewGame.player.on("End_turn", this.onAutoEndturn);
         viewGame.player.on("user left", this.onUserLeft);
         viewGame.player.on("continue_game", this.onContinue);
         viewGame.player.on("reload_first", this.onFirst);
         viewGame.player.on("reload_last", this.onLast);
-        viewGame.player.on("OK", this.onOK);
-        viewGame.player.on("NO", this.onNO);
         viewGame.player.on("Ẹnjoy", this.onEnjoy);
+        viewGame.player.on("setInfo", this.onSetInfo);
+        viewGame.player.on("new message", (data: any) => {
+            viewGame.Game.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
+        });
     }
     onOK = () => {
+        viewGame.player.emit("getInfo");
         viewGame.login_broad.visible = false;
-        viewGame.Hall.avatar.show(viewGame.Avatar_ID);
+        this.createGame();
+        this.createHall();
+        this.eventGame();
+        viewGame.Invite = new Invite();
+        this.app.stage.addChild(viewGame.Invite);
         viewGame.Hall.visible = true;
         viewGame.sound.play_BG("Wait");
         clearTimeout(viewGame.login_broad.Connect);
-        viewGame.Game.My_name.setName("" + viewGame.player.username);
+        // viewGame.Game.My_name.setName("" + viewGame.player.username);
     }
     onNO = () => {
         Panel.showMessageDialog("Tên đã tồn tại :(", 1500);
+    }
+    onSetInfo = (data: any) => {
+        viewGame.player.username = data.name;
+        viewGame.player.avatar = data.avatar;
+        viewGame.player.sex =data.sex;
+        viewGame.Hall.avatar.show(viewGame.player.sex,viewGame.player.avatar,viewGame.player.username);
     }
     onEnjoy = (data: any) => {
         Panel.showConfirmDialog("Người chơi " + data.key + " muốn bạn chơi cùng ? ", {
@@ -207,7 +221,9 @@ export class viewGame {
         viewGame.Game.wait.stop();
         viewGame.player.color = data.color;
         viewGame.player.oppname = data.oppname;
-        viewGame.Game.Opp_name.setName("" + viewGame.player.oppname);
+        viewGame.player.oppAvatar=data.avatar;
+        viewGame.player.oppsex=data.sex;
+        viewGame.Game.Opp_name.show(viewGame.player.oppsex,viewGame.player.oppAvatar,viewGame.player.oppname);
         viewGame.Game.clock.restart();
     }
     onEndGame = (data: any) => {
@@ -215,6 +231,8 @@ export class viewGame {
         this.FinishGame = true;
         viewGame.Game.clock.stop();
         viewGame.Game.broad.getChildAt(1).onStopMove(viewGame.Game.broad.getChildAt(1));
+        let result1:PIXI.Sprite;
+        let result2:PIXI.Sprite;
         if (data.result == 1) {
             setTimeout(() => {
                 if (data.src > 10)
@@ -223,9 +241,16 @@ export class viewGame {
                     viewGame.sound.play_Voice("ConGa");
 
             }, 2500);
-            this.result = new PIXI.Sprite(Utils.Win);
-            this.result.position.set(520, 395);
-            viewGame.Game.addChild(this.result);
+            result1 = new PIXI.Sprite(Utils.Win);
+            result2 = new PIXI.Sprite(Utils.Lose);
+            result1.anchor.set(0.5);
+            result1.scale.set(1.34);
+            result2.anchor.set(0.5);
+            result2.scale.set(1.3)
+            result1.position.set(585 , 447);
+            result2.position.set(600 , 188);
+            viewGame.Game.addChild(result2);
+            viewGame.Game.addChild(result1);
         }
         else if (data.result == 3) {
             setTimeout(() => {
@@ -234,16 +259,26 @@ export class viewGame {
                 else
                     viewGame.sound.play_Voice("Othua")
             }, 2500)
-            this.result = new PIXI.Sprite(Utils.Lose);
-            this.result.position.set(520, 395);
-            viewGame.Game.addChild(this.result);
+            result1 = new PIXI.Sprite(Utils.Lose);
+            result2 = new PIXI.Sprite(Utils.Win)
+            result1.anchor.set(0.5);
+            result1.scale.set(1.3)
+            result2.anchor.set(0.5);
+            result2.scale.set(1.34)
+            result1.position.set(600 , 447);
+            result2.position.set(585 , 190);
+            viewGame.Game.addChild(result2);
+            viewGame.Game.addChild(result1);
         }
         else if (data.result == 2) {
-            this.result = new PIXI.Sprite(Utils.Daw);
-            this.result.position.set(520, 395);
-            viewGame.Game.addChild(this.result);
-
+            result1 = new PIXI.Sprite(Utils.Daw);
+            result1.anchor.set(0.5);
+            result1.scale.set(1.3);
+            result1.position.set(600,315);
+            viewGame.Game.addChild(result1);
         }
+
+
     }
     onSetTurn = (data: any) => {
         viewGame.turn = true;

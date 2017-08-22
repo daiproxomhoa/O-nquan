@@ -1,32 +1,25 @@
 /**
+ * Created by Vu Tien Dai on 20/08/2017.
+ */
+/**
  * Created by Administrator on 26/02/2017.
  */
 
 import "pixi.js"
 import Rectangle = PIXI.Rectangle;
-import {isNullOrUndefined} from "util";
-import {viewGame} from "../viewGame/viewGame";
+import * as Input from "./TextInput";
 import {App} from "../Const/App";
-
 export class TextField extends PIXI.Container {
-    get keyDown(): (e) => any {
-        return this._keyDown;
-    }
 
-    set keyDown(value: (e) => any) {
-        this._keyDown = value;
-    }
-
-    static indexFocus = -1;
-    static elements = [];
-    displayText: PIXI.Text;
     displayName: PIXI.Text;
-    index: number;
-    text: string;
+    private input;
+    private style;
+    _index;
 
     constructor(x: number, y: number, public size: number = 1, name?: string) {
 
         super();
+
         let base = PIXI.BaseTexture.fromImage(App.AssetDir + "Picture/IU/textfield.png");
         let left = new PIXI.Sprite(new PIXI.Texture(base, new Rectangle(0, 0, 50, 127)));
         left.anchor.set(0, 0.5);
@@ -42,22 +35,11 @@ export class TextField extends PIXI.Container {
         this.addChild(right);
         right.x = 50 + center.width;
 
-        TextField.elements.push(this);
-        this.index = TextField.elements.length - 1;
-
-        if (this.index == 0) {
-            window.onkeydown = this._keyDown;
-        }
-
-        this.displayText = new PIXI.Text();
-        this.displayText.anchor.set(0, 0.5);
-        this.displayText.x = 20;
-        this.displayText.style = new PIXI.TextStyle({
-            fontFamily: 'Segoe UI',
+        this.style = new PIXI.TextStyle({
+            fontFamily: 'Segoe ui',
             fontSize: 42,
             fill: '#ffffff',
         });
-
         if (name) {
             this.displayName = new PIXI.Text(name);
             this.displayName.style = new PIXI.TextStyle({
@@ -73,62 +55,63 @@ export class TextField extends PIXI.Container {
         this.x = x;
         this.y = y;
 
-        let contentPane = new PIXI.Container();
-        let area = new PIXI.Graphics();
-        area.drawRect(15, -64, 700, 128);
-        contentPane.addChild(area);
-        contentPane.mask = area;
-        contentPane.addChild(this.displayText);
-        this.addChild(contentPane);
-        this.interactive = true;
-        this.text = "";
-        this.on("pointerdown", () => {
-            if (this.getText().localeCompare('User name')==1) {
-                this.setText('')
-            }
-            for (let i = 0; i < TextField.elements.length; i++) {
-                let text = TextField.elements[i].displayText;
-                if (text.text.endsWith("|")) {
-                    text.text = text.text.substring(0, text.text.length - 1);
-                }
-            }
-            TextField.indexFocus = this.index;
-            TextField.elements[TextField.indexFocus].displayText.text += "|";
-            console.log("NHU CC")
-            // document.getElementById("textbox").focus();
+        this.x = x;
+        this.y = y;
+        this.style = new PIXI.TextStyle({
+            fontFamily: 'Segoe ui',
+            fontSize: 48,
+            fill: '#ffffff',
         });
+
+        this.input = new Input.PixiTextInput("", this.style);
+        this.input.background = false;
+        this.input.width = center.width;
+        this.input.caretColor = 0xffffff;
+        this.input.x = 20;
+        this.input.y = -this.input.height / 2;
+        this.addChild(this.input);
+        if(!App.IsWeb)
+        document.addEventListener("pointerup", this.onPointerUp);
     }
 
-    private _keyDown = (e) => {
-        if (TextField.indexFocus != -1) {
-            let textField = TextField.elements[TextField.indexFocus];
-            let text = textField.text;
-            if (e.which == 8 || e.which == 46) {
-                text = text.substring(0, text.length - 1);
-            } else if ((e.which > 47 && e.which < 123) || e.which == 32) {
-                text = text + e.key;
-            }
-            textField.text = text;
-            textField.displayText.text = text + "|";
-            if (textField.displayText.width * textField.scale.x > textField.width * 0.95) {
-                textField.displayText.x = (textField.width * 0.95
-                    - textField.displayText.width * textField.scale.x) / textField.scale.x;
-            } else {
-                textField.displayText.x = 20;
-            }
+    private onPointerUp = () => {
+        this.input.blur();
+        if (this.getText().localeCompare('User name') == 1) {
+            this.setText('')
         }
+        let item: any = document.getElementById("textbox");
+        item.focus();
+        console.log('this.getText()', this.getText());
+        item.value = this.getText();
+        item.addEventListener("keypress", (e) => {
+            if (e.which == 13) {
+                this.input.setText(item.value);
+                item.blur();
+                document.getElementById("canvas").style.alignItems= "top" ;
+                console.log("Chay roi ")
+            }
+            else {
+                this.setText(item.value);
+            }
+        });
     };
+
+    focus = () => {
+        this.input.focus();
+    };
+
+    blur = () => {
+        this.input.blur();
+    }
+
+    set onEnterPress(fn: Function) {
+        this.input.onEnterPress = fn;
+    }
 
     getText = (): string => {
-        return this.text;
+        return this.input.text;
     };
     setText = (text: string) => {
-        this.displayText.text = text;
-        this.text = text;
+        this.input.setText(text);
     }
-
-    onClick: Function;
 }
-/**
- * Created by Vu Tien Dai on 24/07/2017.
- */

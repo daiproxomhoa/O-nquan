@@ -34,27 +34,11 @@ export class Panel extends Sprite {
         this.contentPane.addChild(this.messageBox);
         this.buttonBox = new PIXI.Container();
         this.buttonBox.y = 260 * 0.9;
-        if (App.IsWeb) {
-            this.textTB = new PIXI.Text("Thông báo");
-            this.textTB.anchor.set(0.5);
-            this.textTB.y = -203;
-            this.textTB.style = new PIXI.TextStyle({
-                fontFamily: 'UTM French Vanilla',
-                fontSize: 40,
-                fontWeight: 'bold',
-                fill: '#51301b',
-                align: "center",
-                wordWrap: true,
-                wordWrapWidth: 500
-            });
-            this.contentPane.addChild(this.textTB);
-        } else {
-            let text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/thongbao.png');
-            text.anchor.set(0.5);
-            // text.position.set(-75,-220)
-            text.y = -198
-            this.contentPane.addChild(text);
-        }
+        let text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/thongbao.png');
+        text.anchor.set(0.5);
+        // text.position.set(-75,-220)
+        text.y = -198
+        this.contentPane.addChild(text);
         this.contentPane.addChild(this.buttonBox);
 
     }
@@ -71,28 +55,18 @@ export class Panel extends Sprite {
         Panel.panel.y = -500;
         Panel.panel.x = Math.random() * 1280;
         let text;
-        if (App.IsWeb) {
-            text = new PIXI.Text(message);
-            text.anchor.set(0.5);
-            text.y = -20;
-            text.style = new PIXI.TextStyle({
-                fontFamily: 'UTM French Vanilla',
-                fontSize: 42,
-                fontWeight: 'bold',
-                fill: '#51301b',
-                align: "center",
-                wordWrap: true,
-                wordWrapWidth: 500
-            });
 
-        }
-        else {
             if (message === "Đợi đối phương trả lời") {
                 text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/traloi.png');
                 text.anchor.set(0.5);
                 text.y = -20;
             }
-
+            else if (message === "Không có ai trong phòng !") {
+                text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/emty.png');
+                text.anchor.set(0.5);
+                text.y = -20;
+                Panel.panel.messageBox.addChild(text);
+            }
             else {
                 text = new PIXI.Text(message);
                 text.anchor.set(0.5);
@@ -106,7 +80,6 @@ export class Panel extends Sprite {
                     wordWrap: true,
                     wordWrapWidth: 500
                 });
-            }
         }
         Panel.panel.messageBox.removeChildren();
         Panel.panel.buttonBox.removeChildren();
@@ -170,21 +143,6 @@ export class Panel extends Sprite {
         Panel.panel.y = -500;
         Panel.panel.x = Math.random() * 1280;
         let text;
-        if (App.IsWeb) {
-            text = new PIXI.Text(msg);
-            text.anchor.set(0.5);
-            text.y = -20;
-            text.style = new PIXI.TextStyle({
-                fontFamily: 'UTM French Vanilla',
-                fontSize: 42,
-                fontWeight: 'bold',
-                fill: '#51301b',
-                align: "center",
-                wordWrap: true,
-                wordWrapWidth: 500
-            });
-        }
-        else {
             if (msg === "Bạn muốn chơi lại chứ ?") {
                 text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/choilai.png');
                 text.anchor.set(0.5);
@@ -203,12 +161,7 @@ export class Panel extends Sprite {
                 text.y = -20;
                 Panel.panel.messageBox.addChild(text);
             }
-            else if (msg === "Không có ai trong phòng !") {
-                text = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/IU/emty.png');
-                text.anchor.set(0.5);
-                text.y = -20;
-                Panel.panel.messageBox.addChild(text);
-            }
+
             else {
                 text = new PIXI.Text(msg);
                 text.anchor.set(0.5);
@@ -222,7 +175,6 @@ export class Panel extends Sprite {
                     wordWrap: true,
                     wordWrapWidth: 500
                 });
-            }
         }
         Panel.panel.messageBox.removeChildren();
         Panel.panel.buttonBox.removeChildren();

@@ -28,8 +28,8 @@ class Main {
 
     onConnect = (socket: Socket) => {
         this.count++;
-        socket.on("login", (username : string) => {
-            this.manages.addUser(new User(username.toString(), socket));
+        socket.on("login", (data) => {
+            this.manages.addUser(new User(data.name,data.sex, socket));
         });
 
     }

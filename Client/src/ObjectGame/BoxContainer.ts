@@ -1,7 +1,6 @@
 import Container = PIXI.Container;
-import {runInThisContext} from "vm";
 import {Utils} from "../Utils";
-import {Player} from "./Player";
+
 /**
  * Created by Vu Tien Dai on 22/06/2017.
  */

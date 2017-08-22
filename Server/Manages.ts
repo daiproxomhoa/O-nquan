@@ -10,13 +10,13 @@ export class Manages {
     constructor() {
         this.users = [];
         this.rooms = [];
-        for (let i = 0; i < 50; i++) {
-            this.rooms.push(new Room(i, "Room " + i));
+        for (let i = 0; i < 30; i++) {
+            this.rooms.push(new Room(i + 1, "Room " + i));
         }
     }
 
     addUser = (user: User) => {
-        if(this.isOnline(user._username)==false) {
+        if (this.isOnline(user._username) == false) {
             this.users.push(user);
             user.emit("OK");
             this.initPlayerEvent(user);
@@ -30,6 +30,9 @@ export class Manages {
         user.on("getInviteList", () => {
             user.emit("InviteList", this.getInvite());
         });
+        user.on("getInfo", () => {
+            user.emit("setInfo", {name: user._username, avatar: user.avatarID, sex: user.sex});
+        })
         user.on("join room", (roomID) => {
             let findRoom = false;
             for (let i = 0; i < this.rooms.length; i++) {
@@ -46,18 +49,20 @@ export class Manages {
             if (!findRoom) user.emit("cannot find room");
         });
         user.on("disconnect", () => {
+            user.isPlaying = false;
+            user.idroom = null;
             let index = this.users.findIndex((element): boolean => {
                 return element == user;
             });
-            user.isPlaying=false;
-            user.idroom = null;
             console.log("Out roi")
             this.users.splice(index, 1);
         }, false);
-        user.on("invited",(data:any)=>{
+        user.on("invited", (data: any) => {
             for (let i = 0; i < this.users.length; i++) {
-                if (this.users[i]._username == data.guest)
-                    this.users[i].emit("Ẹnjoy",{key:data.key,id:user.idroom});
+                if (this.users[i]._username == data.guest) {
+                    this.users[i].emit("Ẹnjoy", {key: data.key, id: user.idroom});
+                    break;
+                }
             }
         })
         user.on("get room list", () => {
@@ -79,30 +84,15 @@ export class Manages {
         return invite;
     }
     getRoomList = () => {
-        let k = 1;
         let roomArr = [];
-        for (let i = 0; i < 20; i++) {
-            let done = false;
-            while (this.rooms[k].isFull()) {
-                k++;
-                if (k >= this.rooms.length) {
-                    done = true;
-                    break;
-                }
-            }
-            if (!done) {
-                roomArr.push({
-                    id: this.rooms[k].id,
-                    name: this.rooms[k].name,
-                    key: this.rooms[k].key,
-                    playerNumber: this.rooms[k].users.length
-                });
-                k++;
-            }
-            else break;
+        for (let i = 0; i < this.rooms.length; i++) {
+            roomArr.push({
+                id: this.rooms[i].id,
+                key: this.rooms[i].key,
+                playerNumber: this.rooms[i].users.length
+            });
         }
         return roomArr;
-
     }
 
 }

@@ -18,11 +18,13 @@ export class ScrollPane extends PIXI.Container {
     mouseY;
     oldPos;
 
-    constructor(public wid: number = 382,public hei: number = 134, ...heads) {
+    constructor(public wid: number = 382, public hei: number = 134, ...heads) {
         super();
         let dx = wid - 22;
         let dy = hei - 24;
-        let base = PIXI.BaseTexture.fromImage(App.AssetDir + "Picture/IU/scrollpane.png");
+        let base;
+
+            base = PIXI.BaseTexture.fromImage(App.AssetDir + "Picture/IU/scrollpane.png");
         let topLeft = new PIXI.Sprite(new PIXI.Texture(base, new Rectangle(0, 0, 10, 10)));
         topLeft.position.set(0, 0);
 
@@ -94,6 +96,7 @@ export class ScrollPane extends PIXI.Container {
         this.on("pointerout", () => this.mouseOver = false);
         document.addEventListener("mousewheel", this.scroll, false);
     }
+
     scroll = (e: WheelEvent) => {
         if (this.content.height < this.height) return;
         if (this.mouseOver) {
@@ -126,7 +129,7 @@ export class ScrollPane extends PIXI.Container {
     onMouseMove = (e) => {
         if (this.content.height < this.height) return;
         if (this.pointerData != null) {
-            let delta = App.IsWeb ? e.data.global.y - this.mouseY : (e.data.global.y - this.mouseY)/(App.W/App.width);
+            let delta = App.IsWeb ? e.data.global.y - this.mouseY : (e.data.global.y - this.mouseY) / (App.W / App.width);
             if (Math.abs(e.data.global.y - this.oldPos) > 10) this.interactiveChildren = false;
             this.mouseY = e.data.global.y;
 
@@ -153,7 +156,7 @@ export class ScrollPane extends PIXI.Container {
     onMouseUp = () => {
         this.pointerData = null;
         this.interactiveChildren = true;
-        for(let child of this.content.children){
+        for (let child of this.content.children) {
             child.emit("pointerout");
         }
     };
@@ -177,7 +180,7 @@ export class ScrollPane extends PIXI.Container {
         }
     }
 
-    removeAllChild = ()=>{
+    removeAllChild = () => {
         this.content.removeChildren();
     }
 

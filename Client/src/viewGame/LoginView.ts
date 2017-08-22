@@ -33,7 +33,7 @@ export class Login extends PIXI.Container {
             if (this.txtMessage.getText() != "") {
                 viewGame.player.username = this.txtMessage.getText();
                 viewGame.player.sex = this.sex.sex;
-                viewGame.player.emit("login", this.txtMessage.getText());
+                viewGame.player.emit("login", {name :this.txtMessage.getText(),sex:viewGame.player.sex});
                 viewGame.player.username = this.txtMessage.getText();
                 this.txtMessage.setText("");
                 viewGame.player.emit("get room list");

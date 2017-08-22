@@ -15,7 +15,8 @@ export class Room {
     }
 
     addUser = (user: User) => {
-        if (this.users.length == 2)return false;
+        if (this.users.length == 2)
+            return false;
         this.users.push(user);
         user.idroom = this.id;
         user.isPlaying = true;
@@ -54,10 +55,21 @@ export class Room {
     startgame = () => {
         this.player0accept = false;
         this.player1accept = false;
-        this.users[0].emit("start game", {gameturn: true, oppname: this.users[1].getUserName});
-        this.users[1].emit("start game", {gameturn: false, oppname: this.users[0].getUserName});
         this.users[0].setCompatior(this.users[1]);
         this.users[1].setCompatior(this.users[0]);
+        this.users[0].emit("start game", {
+            gameturn: true,
+            oppname: this.users[0].getCompatior().getUserName,
+            avatar: this.users[0].getCompatior().avatarID,
+            sex: this.users[0].getCompatior().sex
+        });
+        this.users[1].emit("start game", {
+            gameturn: false,
+            oppname: this.users[1].getCompatior().getUserName,
+            avatar: this.users[1].getCompatior().avatarID,
+            sex: this.users[1].getCompatior().sex
+        });
+
         for (let i = 0; i < 2; i++) {
             this.users[i].on("End turn", () => {
                 this.users[i].emit("End_turn")
@@ -201,10 +213,5 @@ export class Room {
         }
         return false;
     }
-    isEmty = () => {
-        if (this.users.length == 0) {
-            return true;
-        }
-        return false;
-    }
+
 }
