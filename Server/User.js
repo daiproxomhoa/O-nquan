@@ -22,7 +22,7 @@ class User {
         };
         this._sex = sex;
         this._username = userInfo;
-        this._avatarID = Math.floor(Math.random() * 14 + 1);
+        this._avatarID = Math.floor(Math.random() * 14) + 1;
     }
     get sex() {
         return this._sex;

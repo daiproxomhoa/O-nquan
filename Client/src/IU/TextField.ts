@@ -70,32 +70,7 @@ export class TextField extends PIXI.Container {
         this.input.x = 20;
         this.input.y = -this.input.height / 2;
         this.addChild(this.input);
-        if(!App.IsWeb)
-        document.addEventListener("pointerup", this.onPointerUp);
     }
-
-    private onPointerUp = () => {
-        this.input.blur();
-        if (this.getText().localeCompare('User name') == 1) {
-            this.setText('')
-        }
-        let item: any = document.getElementById("textbox");
-        item.focus();
-        console.log('this.getText()', this.getText());
-        item.value = this.getText();
-        item.addEventListener("keypress", (e) => {
-            if (e.which == 13) {
-                this.input.setText(item.value);
-                item.blur();
-                document.getElementById("canvas").style.alignItems= "top" ;
-                console.log("Chay roi ")
-            }
-            else {
-                this.setText(item.value);
-            }
-        });
-    };
-
     focus = () => {
         this.input.focus();
     };

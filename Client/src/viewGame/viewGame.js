@@ -17,16 +17,15 @@ const Sound_1 = require("../Const/Sound");
 const Setting_1 = require("../IU/Setting");
 const Invite_1 = require("../IU/Invite");
 var screenfull = require('screenfull');
-// var StatusBar = require('cordova-plugin-statusbar');
+///<preference name="StatusBarOverlaysWebView" value="true" />
 class viewGame {
     constructor() {
         this.FinishGame = false;
-        // onDeviceReady = () => {
-        //     if (StatusBar.isVisible = true) {
-        //         StatusBar.hide();
-        //     }
-        //
-        // }
+        this.onDeviceReady = () => {
+            if (StatusBar.isVisible = true) {
+                StatusBar.hide();
+            }
+        };
         this.ReSize = () => {
             if (!App_1.App.IsWeb || screenfull.isFullScreen) {
                 App_1.App.W = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -68,16 +67,16 @@ class viewGame {
             viewGame.player.on("set turn", this.onSetTurn);
             viewGame.player.on("opponent move", this.onMove);
             viewGame.player.on("game_end", this.onEndGame);
-            viewGame.player.on("End_turn", this.onAutoEndturn);
+            viewGame.Game.on("End turn", this.onAutoEndturn);
             viewGame.player.on("user left", this.onUserLeft);
             viewGame.player.on("continue_game", this.onContinue);
-            viewGame.player.on("reload_first", this.onFirst);
-            viewGame.player.on("reload_last", this.onLast);
-            viewGame.player.on("Ẹnjoy", this.onEnjoy);
+            viewGame.player.on("Reset", this.onReset);
+            viewGame.player.on("enjoy", this.onEnjoy);
             viewGame.player.on("setInfo", this.onSetInfo);
             viewGame.player.on("new message", (data) => {
                 viewGame.Game.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
             });
+            viewGame.player.on("score", this.onScore);
         };
         this.onOK = () => {
             viewGame.player.emit("getInfo");
@@ -90,7 +89,6 @@ class viewGame {
             viewGame.Hall.visible = true;
             viewGame.sound.play_BG("Wait");
             clearTimeout(viewGame.login_broad.Connect);
-            // viewGame.Game.My_name.setName("" + viewGame.player.username);
         };
         this.onNO = () => {
             Panel_1.Panel.showMessageDialog("Tên đã tồn tại :(", 1500);
@@ -100,6 +98,10 @@ class viewGame {
             viewGame.player.avatar = data.avatar;
             viewGame.player.sex = data.sex;
             viewGame.Hall.avatar.show(viewGame.player.sex, viewGame.player.avatar, viewGame.player.username);
+        };
+        this.onScore = (data) => {
+            viewGame.Game.score1.text = data.x.toString() + "";
+            viewGame.Game.score2.text = data.y.toString() + "";
         };
         this.onEnjoy = (data) => {
             Panel_1.Panel.showConfirmDialog("Người chơi " + data.key + " muốn bạn chơi cùng ? ", {
@@ -113,24 +115,13 @@ class viewGame {
                 }
             });
         };
-        this.onFirst = () => {
+        this.onReset = () => {
             viewGame.sound.play_BG("Play");
             viewGame.game_turn = true;
             viewGame.turn = true;
             viewGame.Game.reloadGame2();
-            TweenMax.to(viewGame.Game.flag, 0.5, { x: 350, y: 485 });
             viewGame.Game.clock.restart();
             this.FinishGame = false;
-        };
-        this.onLast = () => {
-            viewGame.sound.play_BG("Play");
-            viewGame.game_turn = false;
-            viewGame.turn = true;
-            viewGame.Game.reloadGame2();
-            TweenMax.to(viewGame.Game.flag, 0.5, { x: 700, y: 30 });
-            viewGame.Game.clock.restart();
-            this.FinishGame = false;
-            viewGame.Game.broad.getChildAt(1).onStopMove(viewGame.Game.broad.getChildAt(1));
         };
         this.onContinue = () => {
             Panel_1.Panel.showConfirmDialog("Bạn muốn chơi lại chứ ?", {
@@ -212,7 +203,7 @@ class viewGame {
             }
             else if (data.result == 3) {
                 setTimeout(() => {
-                    if (data.src > 10)
+                    if (data.src > -10)
                         viewGame.sound.play_Voice("Hazz");
                     else
                         viewGame.sound.play_Voice("Othua");
@@ -229,6 +220,9 @@ class viewGame {
                 viewGame.Game.addChild(result1);
             }
             else if (data.result == 2) {
+                setTimeout(() => {
+                    viewGame.sound.play_Voice("Hoa");
+                }, 2500);
                 result1 = new PIXI.Sprite(Utils_1.Utils.Daw);
                 result1.anchor.set(0.5);
                 result1.scale.set(1.3);
@@ -272,7 +266,7 @@ class viewGame {
         viewGame.player = new Player_1.Player();
         if (!App_1.App.IsWeb) {
             this.ReSize();
-            // this.onDeviceReady();
+            this.onDeviceReady();
             this.app = new PIXI.Application(App_1.App.W, App_1.App.H);
             this.app.stage.scale.set(App_1.App.W / App_1.App.width, App_1.App.H / App_1.App.height);
         }

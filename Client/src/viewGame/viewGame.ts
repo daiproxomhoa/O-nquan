@@ -16,9 +16,8 @@ import {Hall} from "./Hallview";
 import {Sound} from "../Const/Sound";
 import {Setting} from "../IU/Setting";
 import {Invite} from "../IU/Invite";
-
 var screenfull = require('screenfull');
-// var StatusBar = require('cordova-plugin-statusbar');
+///<preference name="StatusBarOverlaysWebView" value="true" />
 export class viewGame {
     app;
     static turn = true;
@@ -36,7 +35,7 @@ export class viewGame {
         viewGame.player = new Player();
         if (!App.IsWeb) {
             this.ReSize();
-            // this.onDeviceReady();
+            this.onDeviceReady();
             this.app = new PIXI.Application(App.W, App.H);
             this.app.stage.scale.set(App.W / App.width, App.H / App.height);
 
@@ -52,12 +51,11 @@ export class viewGame {
 
     }
 
-    // onDeviceReady = () => {
-    //     if (StatusBar.isVisible = true) {
-    //         StatusBar.hide();
-    //     }
-    //
-    // }
+    onDeviceReady = () => {
+        if (StatusBar.isVisible = true) {
+            StatusBar.hide();
+        }
+    }
     ReSize = () => {
         if (!App.IsWeb || screenfull.isFullScreen) {
             App.W = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -104,16 +102,16 @@ export class viewGame {
         viewGame.player.on("set turn", this.onSetTurn);
         viewGame.player.on("opponent move", this.onMove);
         viewGame.player.on("game_end", this.onEndGame);
-        viewGame.player.on("End_turn", this.onAutoEndturn);
+        viewGame.Game.on("End turn", this.onAutoEndturn);
         viewGame.player.on("user left", this.onUserLeft);
         viewGame.player.on("continue_game", this.onContinue);
-        viewGame.player.on("reload_first", this.onFirst);
-        viewGame.player.on("reload_last", this.onLast);
-        viewGame.player.on("Ẹnjoy", this.onEnjoy);
+        viewGame.player.on("Reset", this.onReset);
+        viewGame.player.on("enjoy", this.onEnjoy);
         viewGame.player.on("setInfo", this.onSetInfo);
         viewGame.player.on("new message", (data: any) => {
             viewGame.Game.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
         });
+        viewGame.player.on("score",this.onScore);
     }
     onOK = () => {
         viewGame.player.emit("getInfo");
@@ -126,7 +124,6 @@ export class viewGame {
         viewGame.Hall.visible = true;
         viewGame.sound.play_BG("Wait");
         clearTimeout(viewGame.login_broad.Connect);
-        // viewGame.Game.My_name.setName("" + viewGame.player.username);
     }
     onNO = () => {
         Panel.showMessageDialog("Tên đã tồn tại :(", 1500);
@@ -136,6 +133,10 @@ export class viewGame {
         viewGame.player.avatar = data.avatar;
         viewGame.player.sex =data.sex;
         viewGame.Hall.avatar.show(viewGame.player.sex,viewGame.player.avatar,viewGame.player.username);
+    }
+    onScore=(data)=>{
+            viewGame.Game.score1.text = data.x.toString() + "";
+            viewGame.Game.score2.text = data.y.toString() + "";
     }
     onEnjoy = (data: any) => {
         Panel.showConfirmDialog("Người chơi " + data.key + " muốn bạn chơi cùng ? ", {
@@ -149,27 +150,14 @@ export class viewGame {
             }
         })
     }
-    onFirst = () => {
+    onReset = () => {
         viewGame.sound.play_BG("Play");
         viewGame.game_turn = true;
         viewGame.turn = true;
         viewGame.Game.reloadGame2();
-        TweenMax.to(viewGame.Game.flag, 0.5, {x: 350, y: 485});
         viewGame.Game.clock.restart();
         this.FinishGame = false;
-
     }
-    onLast = () => {
-        viewGame.sound.play_BG("Play");
-        viewGame.game_turn = false;
-        viewGame.turn = true;
-        viewGame.Game.reloadGame2();
-        TweenMax.to(viewGame.Game.flag, 0.5, {x: 700, y: 30})
-        viewGame.Game.clock.restart();
-        this.FinishGame = false;
-        viewGame.Game.broad.getChildAt(1).onStopMove(viewGame.Game.broad.getChildAt(1));
-    }
-
     onContinue = () => {
         Panel.showConfirmDialog("Bạn muốn chơi lại chứ ?", {
             text: "Có",
@@ -254,7 +242,7 @@ export class viewGame {
         }
         else if (data.result == 3) {
             setTimeout(() => {
-                if (data.src > 10)
+                if (data.src > -10)
                     viewGame.sound.play_Voice("Hazz")
                 else
                     viewGame.sound.play_Voice("Othua")
@@ -271,6 +259,9 @@ export class viewGame {
             viewGame.Game.addChild(result1);
         }
         else if (data.result == 2) {
+            setTimeout(() => {
+                    viewGame.sound.play_Voice("Hoa")
+            }, 2500)
             result1 = new PIXI.Sprite(Utils.Daw);
             result1.anchor.set(0.5);
             result1.scale.set(1.3);

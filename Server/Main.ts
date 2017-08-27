@@ -8,6 +8,7 @@ import Socket = SocketIO.Socket;
 import {User} from "./User";
 import Manager = SocketIOClient.Manager;
 import {Manages} from "./Manages";
+import {isNullOrUndefined} from "util";
 
 class Main {
 
@@ -17,7 +18,6 @@ class Main {
     count = 0;
     port = process.env.PORT || 3000;
     manages : Manages;
-    Rooms = [];
 
     constructor() {
         this.app.use(express.static(__dirname + '/../dist'));
@@ -29,6 +29,7 @@ class Main {
     onConnect = (socket: Socket) => {
         this.count++;
         socket.on("login", (data) => {
+            if (!isNullOrUndefined(data))
             this.manages.addUser(new User(data.name,data.sex, socket));
         });
 

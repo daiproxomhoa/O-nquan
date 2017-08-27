@@ -18,7 +18,7 @@ import {viewGame} from "./viewGame";
 import {Invite} from "../IU/Invite";
 import {Avatar} from "../ObjectGame/Avatar";
 export class Game extends Container {
-    // gametable = [7 ,0 , 0, 1, 0, 0, 7, 0, 0,1 , 0, 0, 7, 7];
+    // gametable = [7 ,0 , 0, 1, 0, 0, 7, 0, 0,1 , 0, 0, 3, 7];
     private gametable = [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 0, 0];
     private broad_main;
     broad;
@@ -32,7 +32,13 @@ export class Game extends Container {
     My_name: Avatar;
     Opp_name: Avatar;
     chat_board: Chat;
-
+    score1;
+    score2;
+    private style = new PIXI.TextStyle({
+        fontFamily: 'Segoe UI',
+        fontSize: 32,
+        fill: '#ffe98a',
+    });
 
     constructor(player: Player) {
         super();
@@ -40,11 +46,12 @@ export class Game extends Container {
         var background = PIXI.Sprite.fromImage(App.AssetDir + 'Picture/background.png');
         background.width = 1200;
         background.height = 640;
-        this.buttonBox= new PIXI.Container();
+        this.buttonBox = new PIXI.Container();
         this.addChild(background);
         this.createIU();
         this.createAvatar();
         this.createChat();
+        this.createScore();
         this.createBroadGame();
 
     }
@@ -52,17 +59,19 @@ export class Game extends Container {
     reloadGame = () => {
         Game.endgame = false;
         this.clock.stop();
-        this.removeChildren(4,this.children.length);
+        this.removeChildren(7, this.children.length);
         this.createChat();
         this.createBroadGame();
+        this.score1.text=0;
+        this.score2.text="";
     }
     reloadGame2 = () => {
         Game.endgame = false;
         this.clock.stop();
-        this.removeChildren(5,this.children.length);
+        this.removeChildren(8, this.children.length);
         this.createBroadGame();
-
     }
+
     createBroadGame = () => {
         this.createClock();
         this.createFlag();
@@ -70,22 +79,31 @@ export class Game extends Container {
         this.createBroad(this.gametable);
 
     }
+    createScore = () => {
+        this.score1 = new PIXI.Text("0", this.style);
+        this.score2 = new PIXI.Text("0", this.style);
+        this.score1.anchor.set(0.5);
+        this.score1.position.set(582, 620);
+        this.score2.anchor.set(0.5);
+        this.score2.position.set(582, 20);
+        this.addChild(this.score1, this.score2);
+    }
     createWait = () => {
-         this.wait = new Wait();
+        this.wait = new Wait();
         this.wait.scale.set(0.7);
         this.wait.stop();
         this.wait.position.set(245, 165);
         this.addChild(this.wait);
 
     }
-    createAvatar=()=>{
+    createAvatar = () => {
         this.My_name = new Avatar();
         this.My_name.scale.set(0.6);
-        this.My_name.position.set(710,435);
-        this.Opp_name= new Avatar();
+        this.My_name.position.set(710, 435);
+        this.Opp_name = new Avatar();
         this.Opp_name.scale.set(0.6);
-        this.Opp_name.position.set(275,15);
-        this.addChild(this.My_name,this.Opp_name);
+        this.Opp_name.position.set(275, 15);
+        this.addChild(this.My_name, this.Opp_name);
     }
     createFlag = () => {
         this.flag = new PIXI.Sprite(Utils.Flag);
@@ -125,6 +143,7 @@ export class Game extends Container {
                     this.player.emit("left room");
                     viewGame.Game.visible = false;
                     viewGame.Hall.visible = true;
+                    this.player.emit("get room list");
 
                 }
             }, {
@@ -143,14 +162,13 @@ export class Game extends Container {
         Invite.onClick = () => {
             viewGame.Invite.show();
         }
-        this.buttonBox.addChild(resetGame, leftGame,Setting, Invite);
+        this.buttonBox.addChild(resetGame, leftGame, Setting, Invite);
         this.addChild(this.buttonBox);
-        this.buttonBox.position.set(1125,-10);
+        this.buttonBox.position.set(1125, -10);
 
     }
 
     onWait = () => {
-        console.log("Doi di")
         this.player.oppname = "";
         this.Opp_name.show();
         viewGame.sound.play_BG("Wait");

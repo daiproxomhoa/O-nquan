@@ -10,14 +10,14 @@ export class ScrollPane extends PIXI.Container {
 
     smooth = 6;
     content: PIXI.Container;
-    lineBreak = 10;
+    lineBreak = 5;
     mouseOver = false;
     anim: boolean = false;
     head: number;
     pointerData;
     mouseY;
     oldPos;
-
+    lastline=12;
     constructor(public wid: number = 382, public hei: number = 134, ...heads) {
         super();
         let dx = wid - 22;
@@ -167,13 +167,13 @@ export class ScrollPane extends PIXI.Container {
             child.style.wordWrapWidth = this.width - 30;
             child.style.fontSize = 12;
             child.style.fill = "#ffffff";
-            child.anchor.y = 0.5;
         }
         child.x = 15;
         if (pos == "center") {
             child.x = this.wid / 2;
         }
-        child.y = (child.height + this.lineBreak) * (this.content.children.length + 1);
+        child.y = this.lastline+this.lineBreak;
+        this.lastline= child.y +child.height;
         this.content.addChild(child);
         if (child.y > this.height - 70) {
             this.content.y = -(child.y - this.height + 70);

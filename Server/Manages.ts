@@ -49,18 +49,18 @@ export class Manages {
             if (!findRoom) user.emit("cannot find room");
         });
         user.on("disconnect", () => {
-            user.isPlaying = false;
+            user.isPlaying = null;
             user.idroom = null;
             let index = this.users.findIndex((element): boolean => {
                 return element == user;
             });
-            console.log("Out roi")
             this.users.splice(index, 1);
         }, false);
         user.on("invited", (data: any) => {
             for (let i = 0; i < this.users.length; i++) {
                 if (this.users[i]._username == data.guest) {
-                    this.users[i].emit("Ẹnjoy", {key: data.key, id: user.idroom});
+                    console.log("Moi ");
+                    this.users[i].emit("enjoy", {key: data.key, id: user.idroom});
                     break;
                 }
             }
@@ -69,6 +69,7 @@ export class Manages {
             user.emit("room list", this.getRoomList());
         });
     }
+
     isOnline = (userName: string) => {
         for (let i = 0; i < this.users.length; i++) {
             if (this.users[i]._username == userName) return true;
@@ -89,6 +90,7 @@ export class Manages {
             roomArr.push({
                 id: this.rooms[i].id,
                 key: this.rooms[i].key,
+                guest:this.rooms[i].guest,
                 playerNumber: this.rooms[i].users.length
             });
         }

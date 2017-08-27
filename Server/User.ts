@@ -34,7 +34,7 @@ export class User {
     constructor(userInfo: any,sex :boolean, public socket: Socket) {
         this._sex = sex;
         this._username = userInfo;
-        this._avatarID=Math.floor(Math.random()*14+1);
+        this._avatarID=Math.floor(Math.random()*14)+1;
     }
 
     set idroom(value: number) {

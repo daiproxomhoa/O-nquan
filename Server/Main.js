@@ -8,6 +8,7 @@ const http = require("http");
 const SocketIO = require("socket.io");
 const User_1 = require("./User");
 const Manages_1 = require("./Manages");
+const util_1 = require("util");
 class Main {
     constructor() {
         this.app = express();
@@ -15,11 +16,11 @@ class Main {
         this.io = SocketIO(this.server);
         this.count = 0;
         this.port = process.env.PORT || 3000;
-        this.Rooms = [];
         this.onConnect = (socket) => {
             this.count++;
             socket.on("login", (data) => {
-                this.manages.addUser(new User_1.User(data.name, data.sex, socket));
+                if (!util_1.isNullOrUndefined(data))
+                    this.manages.addUser(new User_1.User(data.name, data.sex, socket));
             });
         };
         this.onListen = () => {

@@ -48,6 +48,10 @@ export class HowlerUtils {
         src: [App.AssetDir + 'SoundTrack/Game/othuaa.m4a'],
         volume: 0.5
     });
+    public static Hoa = new Howl({
+        src: [App.AssetDir + 'SoundTrack/Game/hoa.mp3'],
+        volume: 0.5
+    });
     public static TQKV = new Howl({
         src: [App.AssetDir + 'SoundTrack/Game/TQKV.m4a'],
         volume: 0.5

@@ -161,7 +161,6 @@ export class Panel extends Sprite {
                 text.y = -20;
                 Panel.panel.messageBox.addChild(text);
             }
-
             else {
                 text = new PIXI.Text(msg);
                 text.anchor.set(0.5);
@@ -175,6 +174,7 @@ export class Panel extends Sprite {
                     wordWrap: true,
                     wordWrapWidth: 500
                 });
+                Panel.panel.messageBox.addChild(text)
         }
         Panel.panel.messageBox.removeChildren();
         Panel.panel.buttonBox.removeChildren();

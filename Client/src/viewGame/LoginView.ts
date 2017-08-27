@@ -27,6 +27,18 @@ export class Login extends PIXI.Container {
         this.txtMessage = new TextField(385, 400);
         this.txtMessage.setText('User name' + Math.floor(Math.random() * 1000));
         this.txtMessage.scale.set(0.4);
+        this.txtMessage.onEnterPress=()=>{
+            viewGame.player.username = this.txtMessage.getText();
+            viewGame.player.sex = this.sex.sex;
+            viewGame.player.emit("login", {name :this.txtMessage.getText(),sex:viewGame.player.sex});
+            viewGame.player.username = this.txtMessage.getText();
+            this.txtMessage.setText("");
+            viewGame.player.emit("get room list");
+            this.Connect = setTimeout(() => {
+                Panel.showMessageDialog("Can not connecting to server @@! ...")
+            }, 2500);
+            console.log("nhu cc");
+        }
         let Loginbtn = new Button(750, 400, "", App.AssetDir + "Picture/IU/loginbtn.png");
         Loginbtn.setSize(new PIXI.Point(100, 50));
         Loginbtn.onClick = () => {
