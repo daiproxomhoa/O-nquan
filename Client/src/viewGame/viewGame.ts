@@ -111,7 +111,8 @@ export class viewGame {
         viewGame.player.on("new message", (data: any) => {
             viewGame.Game.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
         });
-        viewGame.player.on("score",this.onScore);
+        viewGame.player.on("score", this.onScore);
+        viewGame.player.on("room list", viewGame.Hall.getRoomList);
     }
     onOK = () => {
         viewGame.player.emit("getInfo");
@@ -122,6 +123,7 @@ export class viewGame {
         viewGame.Invite = new Invite();
         this.app.stage.addChild(viewGame.Invite);
         viewGame.Hall.visible = true;
+        viewGame.player.emit("get room list");
         viewGame.sound.play_BG("Wait");
         clearTimeout(viewGame.login_broad.Connect);
     }
@@ -131,12 +133,12 @@ export class viewGame {
     onSetInfo = (data: any) => {
         viewGame.player.username = data.name;
         viewGame.player.avatar = data.avatar;
-        viewGame.player.sex =data.sex;
-        viewGame.Hall.avatar.show(viewGame.player.sex,viewGame.player.avatar,viewGame.player.username);
+        viewGame.player.sex = data.sex;
+        viewGame.Hall.avatar.show(viewGame.player.sex, viewGame.player.avatar, viewGame.player.username);
     }
-    onScore=(data)=>{
-            viewGame.Game.score1.text = data.x.toString() + "";
-            viewGame.Game.score2.text = data.y.toString() + "";
+    onScore = (data) => {
+        viewGame.Game.score1.text = data.x.toString() + "";
+        viewGame.Game.score2.text = data.y.toString() + "";
     }
     onEnjoy = (data: any) => {
         Panel.showConfirmDialog("Người chơi " + data.key + " muốn bạn chơi cùng ? ", {
@@ -209,9 +211,9 @@ export class viewGame {
         viewGame.Game.wait.stop();
         viewGame.player.color = data.color;
         viewGame.player.oppname = data.oppname;
-        viewGame.player.oppAvatar=data.avatar;
-        viewGame.player.oppsex=data.sex;
-        viewGame.Game.Opp_name.show(viewGame.player.oppsex,viewGame.player.oppAvatar,viewGame.player.oppname);
+        viewGame.player.oppAvatar = data.avatar;
+        viewGame.player.oppsex = data.sex;
+        viewGame.Game.Opp_name.show(viewGame.player.oppsex, viewGame.player.oppAvatar, viewGame.player.oppname);
         viewGame.Game.clock.restart();
     }
     onEndGame = (data: any) => {
@@ -219,8 +221,8 @@ export class viewGame {
         this.FinishGame = true;
         viewGame.Game.clock.stop();
         viewGame.Game.broad.getChildAt(1).onStopMove(viewGame.Game.broad.getChildAt(1));
-        let result1:PIXI.Sprite;
-        let result2:PIXI.Sprite;
+        let result1: PIXI.Sprite;
+        let result2: PIXI.Sprite;
         if (data.result == 1) {
             setTimeout(() => {
                 if (data.src > 10)
@@ -235,8 +237,8 @@ export class viewGame {
             result1.scale.set(1.34);
             result2.anchor.set(0.5);
             result2.scale.set(1.3)
-            result1.position.set(585 , 447);
-            result2.position.set(600 , 188);
+            result1.position.set(585, 447);
+            result2.position.set(600, 188);
             viewGame.Game.addChild(result2);
             viewGame.Game.addChild(result1);
         }
@@ -253,19 +255,19 @@ export class viewGame {
             result1.scale.set(1.3)
             result2.anchor.set(0.5);
             result2.scale.set(1.34)
-            result1.position.set(600 , 447);
-            result2.position.set(585 , 190);
+            result1.position.set(600, 447);
+            result2.position.set(585, 190);
             viewGame.Game.addChild(result2);
             viewGame.Game.addChild(result1);
         }
         else if (data.result == 2) {
             setTimeout(() => {
-                    viewGame.sound.play_Voice("Hoa")
+                viewGame.sound.play_Voice("Hoa")
             }, 2500)
             result1 = new PIXI.Sprite(Utils.Daw);
             result1.anchor.set(0.5);
             result1.scale.set(1.3);
-            result1.position.set(600,315);
+            result1.position.set(600, 315);
             viewGame.Game.addChild(result1);
         }
 

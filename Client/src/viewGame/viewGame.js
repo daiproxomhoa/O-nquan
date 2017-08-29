@@ -77,6 +77,7 @@ class viewGame {
                 viewGame.Game.chat_board.messageBox.addChildrent(new PIXI.Text(data.playername + " : " + data.message));
             });
             viewGame.player.on("score", this.onScore);
+            viewGame.player.on("room list", viewGame.Hall.getRoomList);
         };
         this.onOK = () => {
             viewGame.player.emit("getInfo");
@@ -87,6 +88,7 @@ class viewGame {
             viewGame.Invite = new Invite_1.Invite();
             this.app.stage.addChild(viewGame.Invite);
             viewGame.Hall.visible = true;
+            viewGame.player.emit("get room list");
             viewGame.sound.play_BG("Wait");
             clearTimeout(viewGame.login_broad.Connect);
         };

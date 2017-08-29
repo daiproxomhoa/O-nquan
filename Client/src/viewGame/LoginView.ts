@@ -48,7 +48,6 @@ export class Login extends PIXI.Container {
                 viewGame.player.emit("login", {name :this.txtMessage.getText(),sex:viewGame.player.sex});
                 viewGame.player.username = this.txtMessage.getText();
                 this.txtMessage.setText("");
-                viewGame.player.emit("get room list");
                 this.Connect = setTimeout(() => {
                     Panel.showMessageDialog("Can not connecting to server @@! ...")
                 }, 2500);

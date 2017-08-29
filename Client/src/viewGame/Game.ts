@@ -81,7 +81,7 @@ export class Game extends Container {
     }
     createScore = () => {
         this.score1 = new PIXI.Text("0", this.style);
-        this.score2 = new PIXI.Text("0", this.style);
+        this.score2 = new PIXI.Text("", this.style);
         this.score1.anchor.set(0.5);
         this.score1.position.set(582, 620);
         this.score2.anchor.set(0.5);
@@ -144,7 +144,6 @@ export class Game extends Container {
                     viewGame.Game.visible = false;
                     viewGame.Hall.visible = true;
                     this.player.emit("get room list");
-
                 }
             }, {
                 text: "Không",
