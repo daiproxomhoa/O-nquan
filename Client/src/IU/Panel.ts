@@ -96,8 +96,12 @@ export class Panel extends Sprite {
         }
     }
 
-    static showMessageDialog = (message: string, action?: any) => {
-        viewGame.Game.interactiveChildren = false;
+    static showMessageDialog = (message: string, action?: any,isgame?) => {
+        if(isgame==false){
+
+        }
+        else
+        Panel.panel.parent.interactiveChildren = false;
         Panel.panel.texture = PIXI.Texture.fromImage(App.AssetDir + "Picture/IU/panel.png");
         Panel.panel.scale.set(0.7);
         Panel.panel.y = -500;

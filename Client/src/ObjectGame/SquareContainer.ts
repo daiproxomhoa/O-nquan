@@ -6,6 +6,7 @@ import {viewGame} from "../viewGame/viewGame";
 import {Stone} from "./Stone";
 import {Player} from "../Player";
 import {Game} from "../viewGame/Game";
+import {isNullOrUndefined} from "util";
 
 /**
  * Created by Vu Tien Dai on 21/06/2017.
@@ -168,7 +169,7 @@ export class Square extends Container {
             let m = Stone.length;
             count = 1;
             if (m == 0) {
-                viewGame.player.emit("end game", {team: viewGame.game_turn, result: 3});
+                viewGame.player.emit("end game", {team: viewGame.game_turn, result: 3,src:0,src1:0});
             }
             for (let i = 0; i < m; i++) {
                 setTimeout(() => {
@@ -360,6 +361,11 @@ export class Square extends Container {
                         let box2 = <Box> Box[13];
                         box2.setText(this.checkPoint(square));
                         this.Seq_Eat = true;
+                        v = this.pos + 1;
+                        if (v == 12)
+                            v = 0
+                        this.onEatRight(arraySquare, Box, v)
+                        return;
                     }, 400);
                 }
                 else {
@@ -378,23 +384,23 @@ export class Square extends Container {
                         let box2 = <Box> Box[12];
                         box2.setText(this.checkPoint(square));
                         this.Seq_Eat = true;
+                        v = this.pos + 1;
+                        if (v == 12)
+                            v = 0
+                        this.onEatRight(arraySquare, Box, v)
+                        return;
                     }, 400);
                 }
-
-                v = this.pos + 1;
-                if (v == 12)
-                    v = 0
-                setTimeout(() => {
-                    this.onEatRight(arraySquare, Box, v)
-                }, 450);
             }
 
             else {
                 this.checkForRight(arraySquare, Box, v);
+                return;
             }
         }
         else {
             this.checkForRight(arraySquare, Box, v);
+            return;
         }
     }
 
@@ -411,7 +417,7 @@ export class Square extends Container {
             if (viewGame.game_turn != viewGame.turn) {
                 this.onStartMove(arraySquare[1]);
             }
-            setTimeout( this.emit("finish move"),500);
+            setTimeout( this.emit("finish move"),1000);
         }
 
     }
@@ -431,6 +437,7 @@ export class Square extends Container {
         (<Box> Box[j]).setText("0");
         this.onStopMove(ct);
         for (let i = 0; i < n; i++) {
+
             setTimeout(() => {
                 j++;
                 if (j >= 12) j = 0;
@@ -440,41 +447,51 @@ export class Square extends Container {
                     let y = arrayStone[0].y + 20;
                     let x = arrayStone[0].x + 5;
                     TweenMax.to(spread, 0.4, {x: 113, y: 92});
-                    setTimeout(() => {
-                        viewGame.sound.play_Voice("Stone")
-                        arrayStone[0].position.set(x, y);
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
+                    // setTimeout(() => {
+                    //     if(!isNullOrUndefined(arrayStone[0])){
 
-                    }, 400);
+                                viewGame.sound.play_Voice("Stone")
+                                arrayStone[0].position.set(x, y);
+                                square.addChild(arrayStone[0]);
+                                box.setText(this.checkPoint(square));
+                            // }
+
+                    // }, 400);
                 }
                 else if (j == 6) {
                     let y = arrayStone[0].y + 65;
                     TweenMax.to(spread, 0.4, {x: 575, y: 130});
-                    setTimeout(() => {
-                        viewGame.sound.play_Voice("Stone")
-                        arrayStone[0].position.y = y;
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
-                    }, 400);
+                    // setTimeout(() => {
+                    //     if(!isNullOrUndefined(arrayStone[0])) {
+                            viewGame.sound.play_Voice("Stone")
+                            arrayStone[0].position.y = y;
+                            square.addChild(arrayStone[0]);
+                            box.setText(this.checkPoint(square));
+                        // }
+                    // }, 400);
                 }
                 else {
+
                     TweenMax.to(spread, 0.4, {x: square.x, y: square.y});
-                    setTimeout(() => {
+                    // setTimeout(() =>{
+                    // if(!isNullOrUndefined(arrayStone[0])) {
                         viewGame.sound.play_Voice("Stone")
                         square.addChild(arrayStone[0]);
                         box.setText(this.checkPoint(square));
-                    }, 400);
+                    // }
+                    // }, 400);
                 }
 
-            }, i * 500);
+            }
+            , i * 600);
+
         }
         setTimeout(() => {
             this.pos = j;
             let v = j + 1;
             if (v == 12) v = 0;
             this.onEatRight(arraySquare, Box, v);
-        }, n * 510);
+        }, n * 700);
     }
 
 
@@ -540,6 +557,11 @@ export class Square extends Container {
                         box2.setText(this.checkPoint(square));
 
                         this.Seq_Eat = true;
+                        v = this.pos - 1;
+                        if (v == -1)
+                            v = 11
+                            this.onEatLeft(arraySquare, Box, v)
+                        return;
                     }, 400);
                 }
                 else {
@@ -559,21 +581,24 @@ export class Square extends Container {
                         box2.setText(this.checkPoint(square));
 
                         this.Seq_Eat = true;
+                        v = this.pos - 1;
+                        if (v == -1)
+                            v = 11
+                            this.onEatLeft(arraySquare, Box, v)
+                        return;
                     }, 400);
                 }
-                v = this.pos - 1;
-                if (v == -1)
-                    v = 11
-                setTimeout(() => {
-                    this.onEatLeft(arraySquare, Box, v)
-                }, 450);
+
             }
             else {
                 this.checkForLeft(arraySquare, Box, v);
+                return;
             }
         }
-        else
+        else {
             this.checkForLeft(arraySquare, Box, v);
+            return;
+        }
     }
 
     checkForLeft(arraySquare: PIXI.Container[], Box, v) {
@@ -588,7 +613,7 @@ export class Square extends Container {
             if (viewGame.game_turn != viewGame.turn) {
                 this.onStartMove(arraySquare[1]);
             }
-            setTimeout( this.emit("finish move"),500);
+            setTimeout( this.emit("finish move"),1000);
 
         }
     }
@@ -608,43 +633,50 @@ export class Square extends Container {
         (<Box> Box[j]).setText("0");
         this.onStopMove(ct);
         for (let i = 0; i < n; i++) {
-            setTimeout(() => {
-                j--;
-                if (j <= -1) j = 11;
-                let square = arraySquare[j];
-                let box = <Box> Box[j];
-                if (j == 0) {
-                    let y = arrayStone[0].y + 20;
-                    let x = arrayStone[0].x + 5;
-                    TweenMax.to(spread, 0.4, {x: 113, y: 92});
-                    setTimeout(() => {
-                        viewGame.sound.play_Voice("Stone")
-                        arrayStone[0].position.set(x, y);
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
 
-                    }, 400);
-                }
-                else if (j == 6) {
-                    let y = arrayStone[0].y + 50;
-                    TweenMax.to(spread, 0.4, {x: 575, y: 130});
-                    setTimeout(() => {
-                        viewGame.sound.play_Voice("Stone")
-                        arrayStone[0].position.y = y;
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
-                    }, 400);
-                }
-                else {
-                    TweenMax.to(spread, 0.4, {x: square.x, y: square.y});
-                    setTimeout(() => {
-                        viewGame.sound.play_Voice("Stone")
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
-                    },400);
-                }
+                setTimeout(() => {
+                    j--;
+                    if (j <= -1) j = 11;
+                    let square = arraySquare[j];
+                    let box = <Box> Box[j];
+                    if (j == 0) {
+                        let y = arrayStone[0].y + 20;
+                        let x = arrayStone[0].x + 5;
+                        TweenMax.to(spread, 0.4, {x: 113, y: 92});
+                        // setTimeout(() => {
+                            //if(!isNullOrUndefined(arrayStone[0])) {
+                                viewGame.sound.play_Voice("Stone")
+                                arrayStone[0].position.set(x, y);
+                                square.addChild(arrayStone[0]);
+                                box.setText(this.checkPoint(square));
+                            // }
+                        // }, 400);
+                    }
+                    else if (j == 6) {
+                        let y = arrayStone[0].y + 50;
+                        TweenMax.to(spread, 0.4, {x: 575, y: 130});
+                        // setTimeout(() => {
+                        //     if(!isNullOrUndefined(arrayStone[0])) {
+                                viewGame.sound.play_Voice("Stone")
+                                arrayStone[0].position.y = y;
+                                square.addChild(arrayStone[0]);
+                                box.setText(this.checkPoint(square));
+                            // }
+                        // }, 400);
+                    }
+                    else {
+                        TweenMax.to(spread, 0.4, {x: square.x, y: square.y});
+                        // setTimeout(() => {
+                        //     if(!isNullOrUndefined(arrayStone[0])) {
+                                viewGame.sound.play_Voice("Stone")
+                                square.addChild(arrayStone[0]);
+                                box.setText(this.checkPoint(square));
+                            // }
+                        // }, 400);
+                    }
 
-            }, i * 500);
+                }
+                , i * 600);
 
         }
         setTimeout(() => {
@@ -653,7 +685,7 @@ export class Square extends Container {
             if (v == -1) v = 11;
             this.onEatLeft(arraySquare, Box, v);
 
-        }, n * 510);
+        }, n * 700);
     }
 
 
@@ -731,6 +763,7 @@ export class Square extends Container {
                 else
                     viewGame.player.emit("end game", {team: viewGame.game_turn, result: 2, src: count1 - count2,src1:0});
             }
+            viewGame.player.emit("getInfo");
         }, 7 * 450);
     }
 }

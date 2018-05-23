@@ -43,11 +43,11 @@ class viewGame {
             }
         };
         this.createLogin = () => {
-            viewGame.login_broad = new LoginView_1.Login();
+            viewGame.login_broad = new LoginView_1.Login(viewGame.player);
             this.app.stage.addChild(viewGame.login_broad);
         };
         this.createHall = () => {
-            viewGame.Hall = new Hallview_1.Hall();
+            viewGame.Hall = new Hallview_1.Hall(viewGame.player);
             viewGame.Hall.visible = false;
             this.app.stage.addChild(viewGame.Hall);
         };
@@ -71,6 +71,7 @@ class viewGame {
             viewGame.player.on("user left", this.onUserLeft);
             viewGame.player.on("continue_game", this.onContinue);
             viewGame.player.on("Reset", this.onReset);
+            viewGame.player.on("Reset2", this.onReset2);
             viewGame.player.on("enjoy", this.onEnjoy);
             viewGame.player.on("setInfo", this.onSetInfo);
             viewGame.player.on("new message", (data) => {
@@ -78,6 +79,11 @@ class viewGame {
             });
             viewGame.player.on("score", this.onScore);
             viewGame.player.on("room list", viewGame.Hall.getRoomList);
+            viewGame.player.on("update_gold", (data) => {
+                viewGame.player.gold = data;
+                viewGame.Hall.avatar.show(data);
+                viewGame.Game.My_name.show(data);
+            });
         };
         this.onOK = () => {
             viewGame.player.emit("getInfo");
@@ -93,13 +99,16 @@ class viewGame {
             clearTimeout(viewGame.login_broad.Connect);
         };
         this.onNO = () => {
-            Panel_1.Panel.showMessageDialog("Tên đã tồn tại :(", 1500);
+            Panel_1.Panel.showMessageDialog("Nick đang đang nhập", () => { }, false);
         };
         this.onSetInfo = (data) => {
+            viewGame.player.id = data.id;
             viewGame.player.username = data.name;
             viewGame.player.avatar = data.avatar;
             viewGame.player.sex = data.sex;
-            viewGame.Hall.avatar.show(viewGame.player.sex, viewGame.player.avatar, viewGame.player.username);
+            viewGame.player.gold = data.gold;
+            console.log(data);
+            viewGame.Hall.avatar.show(viewGame.player.gold, viewGame.player.sex, viewGame.player.avatar, viewGame.player.username);
         };
         this.onScore = (data) => {
             viewGame.Game.score1.text = data.x.toString() + "";
@@ -117,12 +126,18 @@ class viewGame {
                 }
             });
         };
-        this.onReset = () => {
+        this.onReset2 = (data) => {
+            viewGame.Game.My_name.show(data.me);
+            viewGame.Game.Opp_name.show(data.you);
+        };
+        this.onReset = (data) => {
             viewGame.sound.play_BG("Play");
             viewGame.game_turn = true;
             viewGame.turn = true;
             viewGame.Game.reloadGame2();
             viewGame.Game.clock.restart();
+            viewGame.Game.My_name.show(data.me);
+            viewGame.Game.Opp_name.show(data.you);
             this.FinishGame = false;
         };
         this.onContinue = () => {
@@ -175,7 +190,8 @@ class viewGame {
             viewGame.player.oppname = data.oppname;
             viewGame.player.oppAvatar = data.avatar;
             viewGame.player.oppsex = data.sex;
-            viewGame.Game.Opp_name.show(viewGame.player.oppsex, viewGame.player.oppAvatar, viewGame.player.oppname);
+            viewGame.player.oppGold = data.gold;
+            viewGame.Game.Opp_name.show(viewGame.player.oppGold, viewGame.player.oppsex, viewGame.player.oppAvatar, viewGame.player.oppname);
             viewGame.Game.clock.restart();
         };
         this.onEndGame = (data) => {

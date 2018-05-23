@@ -5,13 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="54f81735-342d-460d-bfd2-c79141184716" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/bundle.js.map" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.html" afterPath="$PROJECT_DIR$/dist/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tsconfig.json" afterPath="$PROJECT_DIR$/tsconfig.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/IU/Panel.ts" afterPath="$PROJECT_DIR$/Client/src/IU/Panel.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/IU/TextField.ts" afterPath="$PROJECT_DIR$/Client/src/IU/TextField.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/ObjectGame/Clock.ts" afterPath="$PROJECT_DIR$/Client/src/ObjectGame/Clock.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.js" afterPath="$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.js.map" afterPath="$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts" afterPath="$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/viewGame/Game.ts" afterPath="$PROJECT_DIR$/Client/src/viewGame/Game.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/viewGame/LoginView.ts" afterPath="$PROJECT_DIR$/Client/src/viewGame/LoginView.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/viewGame/viewGame.js" afterPath="$PROJECT_DIR$/Client/src/viewGame/viewGame.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/viewGame/viewGame.js.map" afterPath="$PROJECT_DIR$/Client/src/viewGame/viewGame.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/src/viewGame/viewGame.ts" afterPath="$PROJECT_DIR$/Client/src/viewGame/viewGame.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Main.js" afterPath="$PROJECT_DIR$/Server/Main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Main.js.map" afterPath="$PROJECT_DIR$/Server/Main.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Main.ts" afterPath="$PROJECT_DIR$/Server/Main.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Manages.ts" afterPath="$PROJECT_DIR$/Server/Manages.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Room.js" afterPath="$PROJECT_DIR$/Server/Room.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Room.js.map" afterPath="$PROJECT_DIR$/Server/Room.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Room.ts" afterPath="$PROJECT_DIR$/Server/Room.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/User.js" afterPath="$PROJECT_DIR$/Server/User.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/User.js.map" afterPath="$PROJECT_DIR$/Server/User.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/User.ts" afterPath="$PROJECT_DIR$/Server/User.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/bundle.js" afterPath="$PROJECT_DIR$/dist/bundle.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/bundle.js.map" afterPath="$PROJECT_DIR$/dist/bundle.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webpack.config.js" afterPath="$PROJECT_DIR$/webpack.config.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -33,95 +50,78 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="SquareContainer.ts" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1422">
+              <caret line="419" column="51" lean-forward="false" selection-start-line="419" selection-start-column="51" selection-end-line="419" selection-end-column="51" />
+              <folding>
+                <element signature="n#!!block;n#createStone#0;n#Square#0" expanded="false" />
+                <element signature="n#!!block;n#checkStoneLast#0;n#Square#0" expanded="false" />
+                <element signature="n#!!block;n#SpeardStone#0;n#Square#0" expanded="false" />
+                <element signature="e#7419#7599#0" expanded="false" />
+                <element signature="e#7622#7818#0" expanded="false" />
+                <element signature="e#7842#8041#0" expanded="false" />
+                <element signature="e#8083#8618#0" expanded="false" />
+                <element signature="e#8661#8814#0" expanded="false" />
+                <element signature="e#8855#9534#0" expanded="false" />
+                <element signature="n#!!block;n#MoveEat#0;n#Square#0" expanded="false" />
+                <element signature="e#14901#17696#0" expanded="false" />
+                <element signature="e#17758#22064#0" expanded="false" />
+                <element signature="e#22698#25661#0" expanded="false" />
+                <element signature="n#!!block;n#countPoit#0;n#Square#0" expanded="false" />
+                <marker date="1527095737764" expanded="false" signature="25707:25900" ph="{...}" />
+                <marker date="1527095737764" expanded="false" signature="25955:26731" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Clock.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/Clock.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-113">
+              <caret line="33" column="30" lean-forward="true" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="User.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/User.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="337">
+              <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Manages.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/Manages.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="67" column="30" lean-forward="false" selection-start-line="67" selection-start-column="17" selection-end-line="67" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Game.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/src/viewGame/Game.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1207">
-              <caret line="83" column="37" lean-forward="false" selection-start-line="83" selection-start-column="37" selection-end-line="83" selection-end-column="37" />
-              <folding>
-                <element signature="e#5512#5775#0" expanded="false" />
-                <element signature="n#!!block;n#createBroad#0;n#Game#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="App.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/Const/App.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="40" lean-forward="false" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
+            <state relative-caret-position="191">
+              <caret line="142" column="56" lean-forward="false" selection-start-line="142" selection-start-column="56" selection-end-line="142" selection-end-column="56" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dist/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="86" lean-forward="false" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="86" />
-              <folding>
-                <element signature="n#style#0;n#input#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="webpack.config.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webpack.config.js">
+      <file leaf-file-name="Avatar.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/Avatar.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
-              <caret line="17" column="33" lean-forward="false" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TextInput.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/IU/TextInput.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1564">
-              <caret line="92" column="71" lean-forward="false" selection-start-line="92" selection-start-column="71" selection-end-line="92" selection-end-column="71" />
-              <folding>
-                <element signature="e#3422#5717#0" expanded="false" />
-                <element signature="e#5775#6122#0" expanded="false" />
-                <element signature="e#6641#6693#0" expanded="false" />
-                <element signature="e#6746#6766#0" expanded="false" />
-                <element signature="e#6826#7095#0" expanded="false" />
-                <element signature="e#7146#7217#0" expanded="false" />
-                <element signature="e#7270#7970#0" expanded="false" />
-                <element signature="e#8020#8270#0" expanded="false" />
-                <element signature="e#8320#8485#0" expanded="false" />
-                <element signature="e#8546#8595#0" expanded="false" />
-                <element signature="e#8657#9078#0" expanded="false" />
-                <element signature="e#9136#9378#0" expanded="false" />
-                <element signature="e#9437#9670#0" expanded="false" />
-                <element signature="e#9740#9906#0" expanded="false" />
-                <element signature="e#9971#10127#0" expanded="false" />
-                <element signature="e#10192#10348#0" expanded="false" />
-                <element signature="e#10399#10421#0" expanded="false" />
-                <element signature="e#10474#10504#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Room.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/Room.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1462">
-              <caret line="87" column="15" lean-forward="false" selection-start-line="87" selection-start-column="15" selection-end-line="87" selection-end-column="15" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Player.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/Player.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="39" column="31" lean-forward="true" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -130,33 +130,41 @@
       <file leaf-file-name="Hallview.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/src/viewGame/Hallview.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="106" column="0" lean-forward="false" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-              <folding>
-                <element signature="e#1826#3193#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="199">
+              <caret line="105" column="46" lean-forward="true" selection-start-line="105" selection-start-column="11" selection-end-line="105" selection-end-column="46" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="viewGame.ts" pinned="false" current-in-tab="true">
+      <file leaf-file-name="viewGame.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/src/viewGame/viewGame.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="41" column="9" lean-forward="false" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
+            <state relative-caret-position="138">
+              <caret line="111" column="27" lean-forward="true" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="36" />
               <folding>
-                <element signature="e#5590#5932#0" expanded="false" />
-                <element signature="e#6320#7108#0" expanded="false" />
+                <element signature="e#2749#2895#0" expanded="false" />
+                <element signature="e#2922#3020#0" expanded="false" />
+                <element signature="e#4313#4754#0" expanded="false" />
+                <element signature="e#5434#5747#0" expanded="false" />
+                <element signature="e#6231#6573#0" expanded="false" />
+                <element signature="e#6597#6933#0" expanded="false" />
+                <element signature="e#6960#7748#0" expanded="false" />
+                <element signature="e#7782#8270#0" expanded="false" />
+                <element signature="e#8302#10312#0" expanded="false" />
+                <element signature="e#10344#10823#0" expanded="false" />
+                <element signature="e#10857#11345#0" expanded="false" />
+                <element signature="e#11374#11703#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sound.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/Const/Sound.ts">
+      <file leaf-file-name="Room.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/Room.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1479">
-              <caret line="87" column="39" lean-forward="false" selection-start-line="87" selection-start-column="22" selection-end-line="87" selection-end-column="39" />
+            <state relative-caret-position="1568">
+              <caret line="122" column="58" lean-forward="true" selection-start-line="122" selection-start-column="58" selection-end-line="122" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -177,52 +185,38 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>reloadGame</find>
-      <find>roomsScroll</find>
-      <find>My_name</find>
-      <find>.documentMouseDownClosure</find>
-      <find>this.on</find>
-      <find>focus</find>
-      <find>.onDocumentMouseDown</find>
-      <find>getCaretIndexByCoord</find>
-      <find>-45</find>
-      <find>70</find>
-      <find>200</find>
-      <find>interactive</find>
-      <find>isFocusClick</find>
-      <find>scope</find>
-      <find>document</find>
-      <find>documentMouseDownClosure</find>
-      <find>idroom</find>
-      <find>screenfull</find>
-      <find>broad</find>
-      <find>check</find>
-      <find>key</find>
-      <find>keyroom</find>
-      <find>square.addChild</find>
-      <find>14</find>
-      <find>12</find>
-      <find>arraySquare[12].position</find>
-      <find>arraySquare[14]</find>
-      <find>position.x</find>
-      <find>Stone</find>
-      <find>conso</find>
+      <find>hall</find>
+      <find>Tên</find>
+      <find>Tê</find>
+      <find>set</find>
+      <find>.on</find>
+      <find>gold</find>
+      <find>avatar</find>
+      <find>show</find>
+      <find>update</find>
+      <find>left</find>
+      <find>score</find>
+      <find />
+      <find>&gt;5</find>
+      <find>&gt;</find>
+      <find>onE</find>
+      <find>onEatR</find>
+      <find>i * 400</find>
+      <find>}, n * 500)</find>
+      <find>&quot;end game&quot;</find>
+      <find>0.4</find>
+      <find>.update(</find>
+      <find>arrayStone.length&gt;0</find>
+      <find>!isNullOrUndefined(arrayStone[0])</find>
+      <find>0.38</find>
+      <find>setI</find>
+      <find>moveleft</find>
+      <find>&quot;getInfo&quot;</find>
+      <find>upda</find>
+      <find>if(!isNullOrUndefined(arrayStone[0])) {</find>
+      <find>finish move</find>
     </findStrings>
     <replaceStrings>
-      <replace>App.AssetDir + 'Picture</replace>
-      <replace>i</replace>
-      <replace>interactiveChildren = false</replace>
-      <replace>interactiveChildren = true;</replace>
-      <replace>name_player</replace>
-      <replace>this.wait.stop();</replace>
-      <replace>this.wait.run();</replace>
-      <replace>viewGame.sound.play(&quot;AnQuan&quot;)</replace>
-      <replace>viewGame.sound.play(&quot;An&quot;)</replace>
-      <replace>viewGame.sound.play(&quot;Stone&quot;)</replace>
-      <replace>viewGame.sound.play(&quot;TQKV&quot;)</replace>
-      <replace>viewGame.sound.play(&quot;TQBR&quot;)</replace>
-      <replace>viewGame.sound.play(&quot;Play&quot;)</replace>
-      <replace>viewGame.sound.stop(&quot;TrungLon&quot;)</replace>
       <replace>viewGame.sound.stop(&quot;Play&quot;)</replace>
       <replace>viewGame.sound.stop(&quot;Wait&quot;);</replace>
       <replace>viewGame.sound.play(&quot;Wait&quot;)</replace>
@@ -239,6 +233,20 @@
       <replace>thí</replace>
       <replace>this</replace>
       <replace>guest</replace>
+      <replace>txtUsername</replace>
+      <replace>this.con</replace>
+      <replace>var con</replace>
+      <replace>this.player</replace>
+      <replace>this.query</replace>
+      <replace>Main.query</replace>
+      <replace>1000</replace>
+      <replace>0.38</replace>
+      <replace>.show(</replace>
+      <replace>!isNullOrUndefined(arrayStone[0])</replace>
+      <replace>!isNullOrUndefined(arrayStone[0].parent)</replace>
+      <replace>0.4</replace>
+      <replace>&gt;2</replace>
+      <replace>//if(!isNullOrUndefined(arrayStone[0])) {</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\Client\src</dir>
@@ -250,15 +258,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Mobile/www/js/index.js" />
-        <option value="$PROJECT_DIR$/Client/src/IU/Button.js" />
-        <option value="$PROJECT_DIR$/Client/src/ObjectGame/Name.ts" />
-        <option value="$PROJECT_DIR$/Mobile/package.json" />
         <option value="$PROJECT_DIR$/Client/src/Utils.ts" />
         <option value="$PROJECT_DIR$/Client/src/ObjectGame/Wait.ts" />
         <option value="$PROJECT_DIR$/Client/src/viewGame/ViewAll.ts" />
         <option value="$PROJECT_DIR$/tsconfig.json" />
-        <option value="$PROJECT_DIR$/Mobile/www/js/bundle.js" />
         <option value="$PROJECT_DIR$/Client/src/viewGame/Game.js" />
         <option value="$PROJECT_DIR$/Client/src/IU/TextField.js" />
         <option value="$PROJECT_DIR$/Client/src/ObjectGame/Player.ts" />
@@ -267,40 +270,45 @@
         <option value="$PROJECT_DIR$/Client/src/IU/AvataList.ts" />
         <option value="$PROJECT_DIR$/Client/src/ObjectGame/AvatarMain.ts" />
         <option value="$PROJECT_DIR$/Client/src/IU/AvatarList.ts" />
-        <option value="$PROJECT_DIR$/Client/src/Player.ts" />
         <option value="$PROJECT_DIR$/Client/src/IU/TextField1.ts" />
-        <option value="$PROJECT_DIR$/Client/src/ObjectGame/NamePlayer.ts" />
         <option value="$PROJECT_DIR$/Client/src/ObjectGame/BoardRoom.ts" />
         <option value="$PROJECT_DIR$/Client/src/IU/Button.ts" />
         <option value="$PROJECT_DIR$/Client/src/IU/Setting.ts" />
-        <option value="$PROJECT_DIR$/Server/Manages.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/Mobile/config.xml" />
         <option value="$PROJECT_DIR$/Client/src/IU/Invite.ts" />
         <option value="$PROJECT_DIR$/Client/src/HowlerUtils.ts" />
-        <option value="$PROJECT_DIR$/Server/User.ts" />
         <option value="$PROJECT_DIR$/Client/src/viewGame/Chat.ts" />
-        <option value="$PROJECT_DIR$/Client/src/IU/Panel.ts" />
         <option value="$PROJECT_DIR$/Client/src/IU/ScollPane.ts" />
-        <option value="$PROJECT_DIR$/Server/Main.ts" />
-        <option value="$PROJECT_DIR$/Server/Main.js" />
-        <option value="$PROJECT_DIR$/Client/src/ObjectGame/Avatar.ts" />
         <option value="$PROJECT_DIR$/dist/bundle.js" />
-        <option value="$PROJECT_DIR$/Server/Manages.ts" />
-        <option value="$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts" />
-        <option value="$PROJECT_DIR$/Server/Room.ts" />
-        <option value="$PROJECT_DIR$/Client/src/ObjectGame/Clock.ts" />
-        <option value="$PROJECT_DIR$/Client/src/viewGame/LoginView.ts" />
-        <option value="$PROJECT_DIR$/Client/src/viewGame/Hallview.ts" />
-        <option value="$PROJECT_DIR$/Client/src/IU/TextField.ts" />
         <option value="$PROJECT_DIR$/Mobile/www/index.html" />
         <option value="$PROJECT_DIR$/dist/index.html" />
-        <option value="$PROJECT_DIR$/Client/src/viewGame/Game.ts" />
         <option value="$PROJECT_DIR$/webpack.config.js" />
-        <option value="$PROJECT_DIR$/Client/src/Const/App.ts" />
-        <option value="$PROJECT_DIR$/Client/src/IU/TextInput.ts" />
+        <option value="$PROJECT_DIR$/Server/sda.ts" />
         <option value="$PROJECT_DIR$/Client/src/Const/Sound.ts" />
+        <option value="$PROJECT_DIR$/Client/src/IU/Panel.ts" />
+        <option value="$PROJECT_DIR$/Server/Mysql.ts" />
+        <option value="$PROJECT_DIR$/Client/src/ObjectGame/Clock.ts" />
+        <option value="$PROJECT_DIR$/Client/src/IU/TextInput.ts" />
+        <option value="$PROJECT_DIR$/Client/src/IU/TextField.ts" />
+        <option value="$PROJECT_DIR$/Client/src/viewGame/LoginView.ts" />
+        <option value="$PROJECT_DIR$/Client/src/ObjectGame/NamePlayer.ts" />
+        <option value="$PROJECT_DIR$/Server/User.js" />
+        <option value="$PROJECT_DIR$/Server/Main.js" />
+        <option value="$PROJECT_DIR$/Server/Manages.js" />
+        <option value="$PROJECT_DIR$/Server/Room.js" />
+        <option value="$PROJECT_DIR$/Client/src/Player.ts" />
+        <option value="$PROJECT_DIR$/Client/src/viewGame/Hallview.ts" />
+        <option value="$PROJECT_DIR$/Client/src/Const/App.ts" />
+        <option value="$PROJECT_DIR$/Server/Main.ts" />
+        <option value="$PROJECT_DIR$/Server/Manages.ts" />
+        <option value="$PROJECT_DIR$/Server/User.ts" />
+        <option value="$PROJECT_DIR$/Mobile/www/js/bundle.js" />
+        <option value="$PROJECT_DIR$/Client/src/ObjectGame/Avatar.ts" />
+        <option value="$PROJECT_DIR$/Client/src/viewGame/Game.ts" />
+        <option value="$PROJECT_DIR$/Server/Room.ts" />
         <option value="$PROJECT_DIR$/Client/src/viewGame/viewGame.ts" />
+        <option value="$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts" />
       </list>
     </option>
   </component>
@@ -316,9 +324,10 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-7" />
-    <option name="width" value="1378" />
-    <option name="height" value="735" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="754" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -360,8 +369,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -372,6 +381,24 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="O_an_quan" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="O_an_quan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="O_an_quan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="User.ts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NestingTreeNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -416,94 +443,30 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dist" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="Client" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Player.ts" />
+              <option name="myItemId" value="Main.ts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NestingTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="O_an_quan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="O_an_quan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -568,47 +531,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="IU" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="Const" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="O_an_quan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="asset" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -627,19 +550,19 @@
     <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.notifications" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\dist\asset\Picture\IU" />
+      <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\Server" />
+      <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan" />
+      <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\Client\src\ObjectGame" />
+      <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\dist\asset\Picture" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\dist" />
       <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\dist\asset\SoundTrack\Game" />
       <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\Client" />
       <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\dist\asset\Picture\IU" />
       <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\dist\asset\Picture" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\Server" />
-      <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan" />
-      <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\Client\src\ObjectGame" />
-      <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\dist\asset\Picture" />
-      <recent name="C:\Users\Vu Tien Dai\WebstormProjects\O_an_quan\dist\asset\Picture\IU" />
     </key>
   </component>
   <component name="RunManager" selected="Node.js.Main.js">
@@ -778,6 +701,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="54f81735-342d-460d-bfd2-c79141184716" name="Default" comment="" />
@@ -884,7 +810,44 @@
       <workItem from="1503824874282" duration="11347000" />
       <workItem from="1503886368021" duration="18438000" />
       <workItem from="1503990710187" duration="2354000" />
-      <workItem from="1503998308025" duration="1683000" />
+      <workItem from="1503998308025" duration="2313000" />
+      <workItem from="1504014931493" duration="5959000" />
+      <workItem from="1504057467593" duration="9387000" />
+      <workItem from="1504666275161" duration="648000" />
+      <workItem from="1507828341477" duration="644000" />
+      <workItem from="1508112017520" duration="110000" />
+      <workItem from="1511234542166" duration="4693000" />
+      <workItem from="1511253185473" duration="608000" />
+      <workItem from="1511266761636" duration="1163000" />
+      <workItem from="1511270480661" duration="391000" />
+      <workItem from="1511277328896" duration="4861000" />
+      <workItem from="1511318854094" duration="599000" />
+      <workItem from="1511339794982" duration="452000" />
+      <workItem from="1511351567774" duration="3784000" />
+      <workItem from="1511437699189" duration="3510000" />
+      <workItem from="1511490674612" duration="1488000" />
+      <workItem from="1511698668115" duration="283000" />
+      <workItem from="1511750459302" duration="104000" />
+      <workItem from="1512444832761" duration="836000" />
+      <workItem from="1514086583364" duration="1000" />
+      <workItem from="1520389769738" duration="1074000" />
+      <workItem from="1520404865757" duration="5315000" />
+      <workItem from="1520567687327" duration="1812000" />
+      <workItem from="1520571482434" duration="1787000" />
+      <workItem from="1521738665551" duration="1241000" />
+      <workItem from="1521766725705" duration="1189000" />
+      <workItem from="1521776686657" duration="1305000" />
+      <workItem from="1522825451741" duration="112000" />
+      <workItem from="1522995488871" duration="29930000" />
+      <workItem from="1523164018010" duration="1191000" />
+      <workItem from="1523440810848" duration="217000" />
+      <workItem from="1523460654601" duration="30000" />
+      <workItem from="1524237503438" duration="11820000" />
+      <workItem from="1526265747232" duration="1030000" />
+      <workItem from="1526267140621" duration="207000" />
+      <workItem from="1526833020962" duration="2958000" />
+      <workItem from="1526877008217" duration="9379000" />
+      <workItem from="1527049889117" duration="19504000" />
     </task>
     <task id="LOCAL-00001" summary="Ban chinh chua co endgame va room">
       <created>1501071078824</created>
@@ -984,11 +947,18 @@
       <option name="project" value="LOCAL" />
       <updated>1503998460909</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Nhu cc mai thi">
+      <created>1503999999993</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1503999999993</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="887320000" />
+    <option name="totallyTimeSpent" value="1017572000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1000,43 +970,43 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1378" height="735" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14402986" sideWeight="0.47928995" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32952693" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18898809" sideWeight="0.47928995" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33506945" sideWeight="0.5052239" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31932774" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3213703" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32820514" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26041666" sideWeight="0.52071005" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33506945" sideWeight="0.49477613" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.49477613" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3982906" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32952693" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32820514" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31965813" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3982906" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32952693" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32952693" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22185971" sideWeight="0.5026022" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33506945" sideWeight="0.5052239" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3213703" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32820514" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32991454" sideWeight="0.49739778" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32941177" sideWeight="0.49477613" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14434524" sideWeight="0.47928995" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18898809" sideWeight="0.47928995" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31965813" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31932774" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26041666" sideWeight="0.52071005" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -1136,13 +1106,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
-          <line>131</line>
+          <line>132</line>
           <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
-          <line>237</line>
-          <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
@@ -1151,23 +1116,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
-          <line>12</line>
+          <line>13</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
-          <line>136</line>
+          <line>137</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
           <line>279</line>
           <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
-          <line>252</line>
-          <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/IU/Preloader.ts</url>
@@ -1181,12 +1141,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
-          <line>233</line>
-          <option name="timeStamp" value="59" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
-          <line>72</line>
+          <line>73</line>
           <option name="timeStamp" value="60" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1201,464 +1156,444 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/viewGame/Game.ts</url>
-          <line>179</line>
+          <line>180</line>
           <option name="timeStamp" value="71" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/viewGame/LoginView.ts</url>
-          <line>53</line>
+          <line>58</line>
           <option name="timeStamp" value="75" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/viewGame/Hallview.ts</url>
-          <line>128</line>
+          <line>132</line>
           <option name="timeStamp" value="78" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/Client/src/viewGame/Hallview.ts</url>
-          <line>113</line>
-          <option name="timeStamp" value="81" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
-          <line>480</line>
-          <option name="timeStamp" value="91" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/viewGame/viewGame.ts</url>
-          <line>176</line>
+          <line>193</line>
           <option name="timeStamp" value="93" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Client/src/viewGame/Hallview.ts</url>
-          <line>100</line>
+          <line>102</line>
           <option name="timeStamp" value="94" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Server/Main.ts</url>
+          <line>9</line>
+          <option name="timeStamp" value="96" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/src/viewGame/viewGame.ts</url>
+          <line>149</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
+          <line>77</line>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
+          <line>302</line>
+          <option name="timeStamp" value="101" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
+          <line>484</line>
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
+          <line>405</line>
+          <option name="timeStamp" value="103" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts</url>
+          <line>605</line>
+          <option name="timeStamp" value="105" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/src/viewGame/viewGame.ts</url>
+          <line>33</line>
+          <option name="timeStamp" value="106" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="96" />
+      <option name="time" value="109" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Mobile/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/square.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Main.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="27" lean-forward="true" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/radiobtn2.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Mobile/config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="26" column="4" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="64" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/radiobtn1.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/cordova-plugin-statusbar/types/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-102">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/panel.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/cordova-plugin-statusbar/src/android/StatusBar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3169">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/button.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Main.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="18" column="22" lean-forward="false" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/setting.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Manages.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/@types/gsap/Ease.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="21" lean-forward="false" selection-start-line="0" selection-start-column="21" selection-end-line="0" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/User.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-826">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="41">
-          <caret line="6" column="4" lean-forward="true" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/BoxContainer.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-860">
-          <caret line="0" column="34" lean-forward="false" selection-start-line="0" selection-start-column="34" selection-end-line="0" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/IU/Preloader.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/User.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="36" column="53" lean-forward="false" selection-start-line="36" selection-start-column="53" selection-end-line="36" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Room.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2244">
-          <caret line="132" column="6" lean-forward="false" selection-start-line="132" selection-start-column="6" selection-end-line="132" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/viewGame/Chat.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="35" lean-forward="false" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/Utils.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/HowlerUtils.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="51" column="53" lean-forward="false" selection-start-line="51" selection-start-column="53" selection-end-line="51" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dist/asset/SoundTrack/Game/hoa.mp3">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/IU/AvatarList.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/asset/SoundTrack/Game/An.m4a">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/IU/Setting.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="33" column="36" lean-forward="false" selection-start-line="30" selection-start-column="7" selection-end-line="33" selection-end-column="36" />
+        <state relative-caret-position="121">
+          <caret line="15" column="15" lean-forward="false" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/IU/Panel.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1554">
-          <caret line="171" column="4" lean-forward="false" selection-start-line="171" selection-start-column="4" selection-end-line="171" selection-end-column="4" />
+        <state relative-caret-position="160">
+          <caret line="98" column="69" lean-forward="false" selection-start-line="98" selection-start-column="61" selection-end-line="98" selection-end-column="69" />
           <folding>
             <element signature="e#1335#1484#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Main.js.map">
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/Client/src/IU/Identity.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="-221">
+          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Main.js">
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/close_btn.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/nhacnen.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/next.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/longtieng.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/loginbtn.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/khong.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/inviteArea.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/invite.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/doidp.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/emty.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/asset/Picture/IU/outroom.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Mysql.ts" />
+    <entry file="file://$PROJECT_DIR$/Client/src/IU/Button.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="38" column="32" lean-forward="false" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
+        <state relative-caret-position="643">
+          <caret line="94" column="4" lean-forward="false" selection-start-line="94" selection-start-column="4" selection-end-line="94" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/IU/TextInput.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5695">
+          <caret line="1" column="16" lean-forward="false" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/IU/TextField.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="65" column="43" lean-forward="false" selection-start-line="65" selection-start-column="43" selection-end-line="65" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/sda.ts" />
+    <entry file="file://$PROJECT_DIR$/Client/src/HowlerUtils.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="3" column="28" lean-forward="false" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Main.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/viewGame/LoginView.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="54" column="78" lean-forward="true" selection-start-line="54" selection-start-column="20" selection-end-line="54" selection-end-column="78" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/User.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="32" column="3" lean-forward="false" selection-start-line="32" selection-start-column="3" selection-end-line="32" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/NamePlayer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-17">
+          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/typescript/lib/lib.es2017.full.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="8613" column="49" lean-forward="true" selection-start-line="8613" selection-start-column="49" selection-end-line="8613" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/Player.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="255">
+          <caret line="19" column="12" lean-forward="false" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="52" column="32" lean-forward="false" selection-start-line="52" selection-start-column="32" selection-end-line="52" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Manages.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="61" column="27" lean-forward="false" selection-start-line="61" selection-start-column="27" selection-end-line="61" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/Main.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="41">
-          <caret line="21" column="19" lean-forward="false" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/IU/ScollPane.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/IU/ScollPane.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2856">
-          <caret line="169" column="9" lean-forward="false" selection-start-line="169" selection-start-column="9" selection-end-line="169" selection-end-column="9" />
-          <folding>
-            <element signature="e#97#130#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/IU/ScollPane.js.map">
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dist/bundle.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30328">
-          <caret line="1784" column="0" lean-forward="false" selection-start-line="1784" selection-start-column="0" selection-end-line="1784" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Mobile/www/js/bundle.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="1766" column="31" lean-forward="false" selection-start-line="1766" selection-start-column="31" selection-end-line="1766" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/Avatar.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="20" column="57" lean-forward="false" selection-start-line="20" selection-start-column="57" selection-end-line="20" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/IU/Invite.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="57" column="37" lean-forward="false" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/IU/Identity.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="17" column="7" lean-forward="true" selection-start-line="13" selection-start-column="2" selection-end-line="17" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Manages.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1139">
-          <caret line="68" column="17" lean-forward="false" selection-start-line="68" selection-start-column="17" selection-end-line="68" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8585">
-          <caret line="732" column="13" lean-forward="true" selection-start-line="732" selection-start-column="13" selection-end-line="732" selection-end-column="13" />
-          <folding>
-            <element signature="e#9877#13935#0" expanded="false" />
-            <element signature="n#!!block;n#checkForRight#0;n#Square#0" expanded="false" />
-            <element signature="e#17090#21125#0" expanded="false" />
-            <element signature="n#!!block;n#checkForLeft#0;n#Square#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/Stone.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/Clock.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tsconfig.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/viewGame/LoginView.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="49" column="44" lean-forward="false" selection-start-line="49" selection-start-column="44" selection-end-line="49" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/IU/TextField.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="61" column="25" lean-forward="true" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Mobile/www/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="39" column="80" lean-forward="true" selection-start-line="39" selection-start-column="80" selection-end-line="39" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/viewGame/Game.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1207">
-          <caret line="83" column="37" lean-forward="false" selection-start-line="83" selection-start-column="37" selection-end-line="83" selection-end-column="37" />
-          <folding>
-            <element signature="e#5512#5775#0" expanded="false" />
-            <element signature="n#!!block;n#createBroad#0;n#Game#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dist/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="86" lean-forward="false" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="86" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webpack.config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="33" lean-forward="false" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/Const/App.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="40" lean-forward="false" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/IU/TextInput.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1564">
-          <caret line="92" column="71" lean-forward="false" selection-start-line="92" selection-start-column="71" selection-end-line="92" selection-end-column="71" />
-          <folding>
-            <element signature="e#3422#5717#0" expanded="false" />
-            <element signature="e#5775#6122#0" expanded="false" />
-            <element signature="e#6641#6693#0" expanded="false" />
-            <element signature="e#6746#6766#0" expanded="false" />
-            <element signature="e#6826#7095#0" expanded="false" />
-            <element signature="e#7146#7217#0" expanded="false" />
-            <element signature="e#7270#7970#0" expanded="false" />
-            <element signature="e#8020#8270#0" expanded="false" />
-            <element signature="e#8320#8485#0" expanded="false" />
-            <element signature="e#8546#8595#0" expanded="false" />
-            <element signature="e#8657#9078#0" expanded="false" />
-            <element signature="e#9136#9378#0" expanded="false" />
-            <element signature="e#9437#9670#0" expanded="false" />
-            <element signature="e#9740#9906#0" expanded="false" />
-            <element signature="e#9971#10127#0" expanded="false" />
-            <element signature="e#10192#10348#0" expanded="false" />
-            <element signature="e#10399#10421#0" expanded="false" />
-            <element signature="e#10474#10504#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/Player.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="221">
+          <caret line="18" column="33" lean-forward="false" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/Const/Sound.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1479">
-          <caret line="87" column="39" lean-forward="false" selection-start-line="87" selection-start-column="22" selection-end-line="87" selection-end-column="39" />
+        <state relative-caret-position="153">
+          <caret line="9" column="18" lean-forward="false" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Room.ts">
+    <entry file="file://$PROJECT_DIR$/dist/bundle.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1462">
-          <caret line="87" column="15" lean-forward="false" selection-start-line="87" selection-start-column="15" selection-end-line="87" selection-end-column="15" />
+        <state relative-caret-position="337">
+          <caret line="23027" column="38" lean-forward="false" selection-start-line="23027" selection-start-column="38" selection-end-line="23027" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Room.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="126" column="48" lean-forward="false" selection-start-line="126" selection-start-column="34" selection-end-line="126" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/Const/App.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="56" lean-forward="false" selection-start-line="2" selection-start-column="56" selection-end-line="2" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/User.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Mobile/www/js/bundle.js.map">
+      <provider editor-type-id="sourcemapFileViewerProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="0" column="952587" lean-forward="false" selection-start-line="0" selection-start-column="952587" selection-end-line="0" selection-end-column="952587" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Mobile/www/js/bundle.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="10899" column="24" lean-forward="false" selection-start-line="10899" selection-start-column="24" selection-end-line="10899" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/viewGame/Hallview.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1173">
-          <caret line="106" column="0" lean-forward="false" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-          <folding>
-            <element signature="e#1826#3193#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="199">
+          <caret line="105" column="46" lean-forward="true" selection-start-line="105" selection-start-column="11" selection-end-line="105" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/viewGame/Game.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="142" column="56" lean-forward="false" selection-start-line="142" selection-start-column="56" selection-end-line="142" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Manages.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="67" column="30" lean-forward="false" selection-start-line="67" selection-start-column="17" selection-end-line="67" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/Clock.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-113">
+          <caret line="33" column="30" lean-forward="true" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/Avatar.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="39" column="31" lean-forward="true" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Room.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1568">
+          <caret line="122" column="58" lean-forward="true" selection-start-line="122" selection-start-column="58" selection-end-line="122" selection-end-column="58" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/viewGame/viewGame.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="41" column="9" lean-forward="false" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
+        <state relative-caret-position="138">
+          <caret line="111" column="27" lean-forward="true" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="36" />
           <folding>
-            <element signature="e#5590#5932#0" expanded="false" />
-            <element signature="e#6320#7108#0" expanded="false" />
+            <element signature="e#2749#2895#0" expanded="false" />
+            <element signature="e#2922#3020#0" expanded="false" />
+            <element signature="e#4313#4754#0" expanded="false" />
+            <element signature="e#5434#5747#0" expanded="false" />
+            <element signature="e#6231#6573#0" expanded="false" />
+            <element signature="e#6597#6933#0" expanded="false" />
+            <element signature="e#6960#7748#0" expanded="false" />
+            <element signature="e#7782#8270#0" expanded="false" />
+            <element signature="e#8302#10312#0" expanded="false" />
+            <element signature="e#10344#10823#0" expanded="false" />
+            <element signature="e#10857#11345#0" expanded="false" />
+            <element signature="e#11374#11703#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@types/pixi.js/index.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="2799" column="12" lean-forward="false" selection-start-line="2799" selection-start-column="12" selection-end-line="2799" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/ObjectGame/SquareContainer.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1422">
+          <caret line="419" column="51" lean-forward="false" selection-start-line="419" selection-start-column="51" selection-end-line="419" selection-end-column="51" />
+          <folding>
+            <element signature="n#!!block;n#createStone#0;n#Square#0" expanded="false" />
+            <element signature="n#!!block;n#checkStoneLast#0;n#Square#0" expanded="false" />
+            <element signature="n#!!block;n#SpeardStone#0;n#Square#0" expanded="false" />
+            <element signature="e#7419#7599#0" expanded="false" />
+            <element signature="e#7622#7818#0" expanded="false" />
+            <element signature="e#7842#8041#0" expanded="false" />
+            <element signature="e#8083#8618#0" expanded="false" />
+            <element signature="e#8661#8814#0" expanded="false" />
+            <element signature="e#8855#9534#0" expanded="false" />
+            <element signature="n#!!block;n#MoveEat#0;n#Square#0" expanded="false" />
+            <element signature="e#14901#17696#0" expanded="false" />
+            <element signature="e#17758#22064#0" expanded="false" />
+            <element signature="e#22698#25661#0" expanded="false" />
+            <element signature="n#!!block;n#countPoit#0;n#Square#0" expanded="false" />
+            <marker date="1527095737764" expanded="false" signature="25707:25900" ph="{...}" />
+            <marker date="1527095737764" expanded="false" signature="25955:26731" ph="{...}" />
           </folding>
         </state>
       </provider>

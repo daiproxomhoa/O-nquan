@@ -82,7 +82,7 @@ export class TextField extends PIXI.Container {
     set onEnterPress(fn: Function) {
         this.input.onEnterPress = fn;
     }
-
+    onClick: Function;
     getText = (): string => {
         return this.input.text;
     };

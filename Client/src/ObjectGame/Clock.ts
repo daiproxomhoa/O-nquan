@@ -8,7 +8,7 @@ import {viewGame} from "../viewGame/viewGame";
 export class clock extends Container {
     private _number;
     time;
-    timedisplay =15;
+    timedisplay =4;
     timecount = 0;
     i;
     countdown;

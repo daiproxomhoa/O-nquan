@@ -8,6 +8,7 @@ export class Room {
     player0accept = false;
     player1accept = false;
     name: string;
+    turncount:number=0;
     key: string = "--/--";
     guest: string = "--/--";
     score =[0 ,0];
@@ -28,10 +29,20 @@ export class Room {
             this.key = user._username;
             this.users[0].emit("wait player");
             this.users[0].on("disconnect", () => {
+                if (this.users.length == 2&& this.turncount>2) {
+                    this.users[1].update_gold(Math.abs(20),"+");
+                    this.users[0].update_gold(Math.abs(20),"-");
+                }
                 this.onUser0Left(1)
             }, false);
             this.users[0].on("left room", () => {
+                if (this.users.length == 2&& this.turncount>2) {
+                    this.users[1].update_gold(Math.abs(20),"+");
+                    this.users[0].update_gold(Math.abs(20),"-");
+                }
                 this.onUser0Left(2)
+
+
             });
         } else if (this.users.length == 2) {
 
@@ -40,10 +51,21 @@ export class Room {
             this.users[0].emit("set turn", {gameturn: this.turnColor})
             this.users[1].emit("set turn", {gameturn: !this.turnColor});
             this.users[1].on("disconnect", () => {
+                if (this.users.length == 2&& this.turncount>2) {
+                    this.users[1].update_gold(Math.abs(20),"-")
+                    this.users[0].update_gold(Math.abs(20),"+")
+                }
                 this.onUser1Left(1)
             }, false);
             this.users[1].on("left room", () => {
+                if (this.users.length == 2&& this.turncount>2) {
+                    this.users[1].update_gold(Math.abs(20),"-")
+                    this.users[0].update_gold(Math.abs(20),"+")
+
+                }
+
                 this.onUser1Left(2)
+
             });
             this.startgame();
         }
@@ -59,14 +81,15 @@ export class Room {
             gameturn: true,
             oppname: this.users[0].getCompatior().getUserName,
             avatar: this.users[0].getCompatior().avatarID,
-            sex: this.users[0].getCompatior().sex
+            sex: this.users[0].getCompatior().sex,
+            gold: this.users[0].getCompatior().gold
         });
         this.users[1].emit("start game", {
             gameturn: false,
             oppname: this.users[1].getCompatior().getUserName,
             avatar: this.users[1].getCompatior().avatarID,
-            sex: this.users[1].getCompatior().sex
-
+            sex: this.users[1].getCompatior().sex,
+            gold: this.users[1].getCompatior().gold
         });
         this.users[0].emit("score",{x:this.score[0],y:this.score[1]});
         this.users[1].emit("score",{x:this.score[1],y:this.score[0]});
@@ -78,6 +101,7 @@ export class Room {
                 }
             });
             this.users[i].on("change turn", () => {
+                this.turncount++;
                 if (!isNullOrUndefined(this.users[i])) {
                     if(!isNullOrUndefined(this.users[i].getCompatior())){
                     this.turnColor = !this.turnColor;
@@ -89,7 +113,7 @@ export class Room {
             this.users[i].on("end game", (data: any) => {
                 if (!isNullOrUndefined(this.users[i])) {
                     if (!isNullOrUndefined(this.users[i].getCompatior())) {
-                        this.users[i].emit("game_end", data);
+                        this.users[i].emit("game_end", {result:data.result,src:data.src,src1:data.src1});
                         this.users[i].getCompatior().emit("game_end", {result: 4 - data.result, src: data.src,src1:data.src1});
                         this.score[i]+=data.src;
                         this.score[1-i]+=data.src1;
@@ -97,8 +121,13 @@ export class Room {
                             this.users[i].emit("restart");
                         else
                             this.users[i].getCompatior().emit("restart");
+                        this.users[i].emit("Reset2",{me:this.users[i].gold,you:this.users[i].getCompatior().gold});
+                        this.users[i].getCompatior().emit("Reset2",{me:this.users[i].getCompatior().gold,you:this.users[i].gold});
                         this.users[i].emit("score",{x:this.score[i],y:this.score[1-i]});
+                        this.users[i].update_gold(Math.abs(this.score[i]),"+")
                         this.users[i].getCompatior().emit("score",{x:this.score[1-i],y:this.score[i]});
+                        this.users[i].getCompatior().update_gold(Math.abs(this.score[i]),"-")
+                        this.turncount=0;
                     }
                 }
             });
@@ -117,6 +146,7 @@ export class Room {
                 if (!isNullOrUndefined(this.users[i])) {
                     if(!isNullOrUndefined(this.users[i].getCompatior())){
                     this.users[i].getCompatior().emit("continue_game");
+
                     if (i == 0) {
                         this.player0accept = true;
                     }
@@ -137,13 +167,18 @@ export class Room {
 
                         if (this.player0accept == this.player1accept) {
                             console.log("OK")
-                            this.users[i].emit("Reset");
-                            this.users[i].getCompatior().emit("Reset");
+                            if(this.turncount>2) {
+                                this.users[i].getCompatior().update_gold(20, "-")
+                                this.users[i].update_gold(20, "+");
+                            }
+                            this.users[i].emit("Reset",{me:this.users[i].gold,you:this.users[i].getCompatior().gold});
+                            this.users[i].getCompatior().emit("Reset",{me:this.users[i].getCompatior().gold,you:this.users[i].gold});
                             let second  = this.users[i].getCompatior();
                             let first= this.users[i];
                             this.users = [];
                             this.addUser(first);
                             this.addUser(second);
+                            this.turncount=0;
                         }
                     }
                     else {
@@ -159,6 +194,7 @@ export class Room {
         this.score=[0,0];
         this.key = "--/--";
         this.guest = "--/--";
+        this.turncount=0;
         if (this.users.length == 1) {
             this.users[0].setCompatior(null);
             if (c == 2)
@@ -190,6 +226,7 @@ export class Room {
         this.score=[0,0];
         this.key = "--/--";
         this.guest = "--/--";
+        this.turncount=0;
         if (this.users.length == 1) {
             this.users[0].setCompatior(null);
             if (c == 2)

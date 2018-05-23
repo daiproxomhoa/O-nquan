@@ -1310,10 +1310,10 @@ module.exports = g;
 Object.defineProperty(exports, "__esModule", { value: true });
 class App {
 }
-App.Host = 'http://192.168.1.127:3000/';
-// static readonly Host:string = 'http://localhost:3000/';
-App.Domain = 'http://192.168.1.127/';
-// static readonly Domain:string = 'http://localhost/';
+// static readonly Host:string = 'http://192.168.43.38/';
+App.Host = 'http://localhost:3000/';
+// static readonly Domain:string = 'http://192.168.43.38/';
+App.Domain = 'http://localhost/';
 App.IsWeb = true;
 App.AssetDir = App.Host + 'asset/';
 App.width = 1200;
@@ -1737,11 +1737,11 @@ class viewGame {
             }
         };
         this.createLogin = () => {
-            viewGame.login_broad = new LoginView_1.Login();
+            viewGame.login_broad = new LoginView_1.Login(viewGame.player);
             this.app.stage.addChild(viewGame.login_broad);
         };
         this.createHall = () => {
-            viewGame.Hall = new Hallview_1.Hall();
+            viewGame.Hall = new Hallview_1.Hall(viewGame.player);
             viewGame.Hall.visible = false;
             this.app.stage.addChild(viewGame.Hall);
         };
@@ -1765,6 +1765,7 @@ class viewGame {
             viewGame.player.on("user left", this.onUserLeft);
             viewGame.player.on("continue_game", this.onContinue);
             viewGame.player.on("Reset", this.onReset);
+            viewGame.player.on("Reset2", this.onReset2);
             viewGame.player.on("enjoy", this.onEnjoy);
             viewGame.player.on("setInfo", this.onSetInfo);
             viewGame.player.on("new message", (data) => {
@@ -1772,6 +1773,11 @@ class viewGame {
             });
             viewGame.player.on("score", this.onScore);
             viewGame.player.on("room list", viewGame.Hall.getRoomList);
+            viewGame.player.on("update_gold", (data) => {
+                viewGame.player.gold = data;
+                viewGame.Hall.avatar.show(data);
+                viewGame.Game.My_name.show(data);
+            });
         };
         this.onOK = () => {
             viewGame.player.emit("getInfo");
@@ -1787,13 +1793,16 @@ class viewGame {
             clearTimeout(viewGame.login_broad.Connect);
         };
         this.onNO = () => {
-            Panel_1.Panel.showMessageDialog("Tên đã tồn tại :(", 1500);
+            Panel_1.Panel.showMessageDialog("Nick đang đang nhập", () => { }, false);
         };
         this.onSetInfo = (data) => {
+            viewGame.player.id = data.id;
             viewGame.player.username = data.name;
             viewGame.player.avatar = data.avatar;
             viewGame.player.sex = data.sex;
-            viewGame.Hall.avatar.show(viewGame.player.sex, viewGame.player.avatar, viewGame.player.username);
+            viewGame.player.gold = data.gold;
+            console.log(data);
+            viewGame.Hall.avatar.show(viewGame.player.gold, viewGame.player.sex, viewGame.player.avatar, viewGame.player.username);
         };
         this.onScore = (data) => {
             viewGame.Game.score1.text = data.x.toString() + "";
@@ -1811,12 +1820,18 @@ class viewGame {
                 }
             });
         };
-        this.onReset = () => {
+        this.onReset2 = (data) => {
+            viewGame.Game.My_name.show(data.me);
+            viewGame.Game.Opp_name.show(data.you);
+        };
+        this.onReset = (data) => {
             viewGame.sound.play_BG("Play");
             viewGame.game_turn = true;
             viewGame.turn = true;
             viewGame.Game.reloadGame2();
             viewGame.Game.clock.restart();
+            viewGame.Game.My_name.show(data.me);
+            viewGame.Game.Opp_name.show(data.you);
             this.FinishGame = false;
         };
         this.onContinue = () => {
@@ -1869,7 +1884,8 @@ class viewGame {
             viewGame.player.oppname = data.oppname;
             viewGame.player.oppAvatar = data.avatar;
             viewGame.player.oppsex = data.sex;
-            viewGame.Game.Opp_name.show(viewGame.player.oppsex, viewGame.player.oppAvatar, viewGame.player.oppname);
+            viewGame.player.oppGold = data.gold;
+            viewGame.Game.Opp_name.show(viewGame.player.oppGold, viewGame.player.oppsex, viewGame.player.oppAvatar, viewGame.player.oppname);
             viewGame.Game.clock.restart();
         };
         this.onEndGame = (data) => {
@@ -14810,8 +14826,11 @@ Panel.showDialog = (message, duration) => {
         setTimeout(() => viewGame_1.viewGame.Game.interactiveChildren = true, duration ? duration * 1000 + 500 : 2500);
     }
 };
-Panel.showMessageDialog = (message, action) => {
-    viewGame_1.viewGame.Game.interactiveChildren = false;
+Panel.showMessageDialog = (message, action, isgame) => {
+    if (isgame == false) {
+    }
+    else
+        Panel.panel.parent.interactiveChildren = false;
     Panel.panel.texture = PIXI.Texture.fromImage(App_1.App.AssetDir + "Picture/IU/panel.png");
     Panel.panel.scale.set(0.7);
     Panel.panel.y = -500;
@@ -22885,10 +22904,13 @@ class Avatar extends Sprite {
     constructor() {
         super();
         this.sex = true;
-        this.show = (sex, number, name) => {
-            this.removeChildren();
-            if (!util_1.isNullOrUndefined(number && name && sex)) {
-                this.username = new NamePlayer_1.NamePlayer(name);
+        this.name = "";
+        this.show = (gold, sex, number, name) => {
+            if (!util_1.isNullOrUndefined(number && name && sex && gold)) {
+                this.removeChildren();
+                this.name = name;
+                this.gold = gold;
+                this.username = new NamePlayer_1.NamePlayer(this.name + " : " + this.gold);
                 this.username.position.set(152, 325);
                 this.sex = sex;
                 if (this.sex == true) {
@@ -22899,6 +22921,13 @@ class Avatar extends Sprite {
                 this.avatar = PIXI.Sprite.fromImage(App_1.App.AssetDir + this.dir + number + ".png");
                 this.avatar.scale.set(0.2);
                 this.addChild(this.username, this.avatar);
+            }
+            else if (util_1.isNullOrUndefined(number && name && sex) && !util_1.isNullOrUndefined(gold) && this.children.length > 0) {
+                this.gold = gold;
+                this.username.setName(this.name + " : " + this.gold);
+            }
+            else {
+                this.removeChildren();
             }
         };
     }
@@ -23019,10 +23048,10 @@ class Game extends Container {
                         this.reloadGame();
                         this.onWait();
                         this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
+                        this.player.emit("get room list     ");
                         this.player.emit("left room");
                         viewGame_1.viewGame.Game.visible = false;
                         viewGame_1.viewGame.Hall.visible = true;
-                        this.player.emit("get room list");
                     }
                 }, {
                     text: "Không",
@@ -23045,6 +23074,7 @@ class Game extends Container {
             this.buttonBox.position.set(1125, -10);
         };
         this.onWait = () => {
+            this.player.emit("get room list");
             this.player.oppname = "";
             this.Opp_name.show();
             viewGame_1.viewGame.sound.play_BG("Wait");
@@ -33867,9 +33897,9 @@ const HowlerUtils_1 = __webpack_require__(55);
  */
 class Sound {
     constructor() {
-        this.isRunBG = true;
+        this.isRunBG = false;
         this.arr_last = [];
-        this.isRunV = true;
+        this.isRunV = false;
         this.play_Voice = (url) => {
             if (this.isRunV)
                 this.voice.get(url).play();
@@ -34445,7 +34475,6 @@ function PixiTextInput(text, style) {
     this.windowBlurClosure = this.onWindowBlur.bind(this);
     this.documentMouseDownClosure = this.onDocumentMouseDown.bind(this);
     this.documentMouseUpClosure = this.onBackgroundMouseUp.bind(this);
-    ;
     this.isFocusClick = false;
     this.updateText();
     this.textField.mask = this.textFieldMask;
@@ -34477,8 +34506,7 @@ PixiTextInput.prototype.onBackgroundMouseUp = function () {
             this.text = item.value;
             item.blur();
             document.getElementById("canvas").focus();
-            document.getElementById("canvas").style.top = 0 + 'px';
-            document.getElementById("canvas").style.left = 0 + 'px';
+            document.getElementById("canvas").style.position = "absolute";
         }
         else {
             this.text = item.value;
@@ -34795,7 +34823,7 @@ const viewGame_1 = __webpack_require__(8);
 class clock extends Container {
     constructor() {
         super();
-        this.timedisplay = 15;
+        this.timedisplay = 4;
         this.timecount = 0;
         this.style = new PIXI.TextStyle({
             fontFamily: 'Cooper Black',
@@ -35027,6 +35055,11 @@ class Square extends Container {
                             let box2 = Box[13];
                             box2.setText(this.checkPoint(square));
                             this.Seq_Eat = true;
+                            v = this.pos + 1;
+                            if (v == 12)
+                                v = 0;
+                            this.onEatRight(arraySquare, Box, v);
+                            return;
                         }, 400);
                     }
                     else {
@@ -35045,21 +35078,22 @@ class Square extends Container {
                             let box2 = Box[12];
                             box2.setText(this.checkPoint(square));
                             this.Seq_Eat = true;
+                            v = this.pos + 1;
+                            if (v == 12)
+                                v = 0;
+                            this.onEatRight(arraySquare, Box, v);
+                            return;
                         }, 400);
                     }
-                    v = this.pos + 1;
-                    if (v == 12)
-                        v = 0;
-                    setTimeout(() => {
-                        this.onEatRight(arraySquare, Box, v);
-                    }, 450);
                 }
                 else {
                     this.checkForRight(arraySquare, Box, v);
+                    return;
                 }
             }
             else {
                 this.checkForRight(arraySquare, Box, v);
+                return;
             }
         };
         this.onMoveRight = (ct) => {
@@ -35087,32 +35121,38 @@ class Square extends Container {
                         let y = arrayStone[0].y + 20;
                         let x = arrayStone[0].x + 5;
                         TweenMax.to(spread, 0.4, { x: 113, y: 92 });
-                        setTimeout(() => {
-                            viewGame_1.viewGame.sound.play_Voice("Stone");
-                            arrayStone[0].position.set(x, y);
-                            square.addChild(arrayStone[0]);
-                            box.setText(this.checkPoint(square));
-                        }, 400);
+                        // setTimeout(() => {
+                        //     if(!isNullOrUndefined(arrayStone[0])){
+                        viewGame_1.viewGame.sound.play_Voice("Stone");
+                        arrayStone[0].position.set(x, y);
+                        square.addChild(arrayStone[0]);
+                        box.setText(this.checkPoint(square));
+                        // }
+                        // }, 400);
                     }
                     else if (j == 6) {
                         let y = arrayStone[0].y + 65;
                         TweenMax.to(spread, 0.4, { x: 575, y: 130 });
-                        setTimeout(() => {
-                            viewGame_1.viewGame.sound.play_Voice("Stone");
-                            arrayStone[0].position.y = y;
-                            square.addChild(arrayStone[0]);
-                            box.setText(this.checkPoint(square));
-                        }, 400);
+                        // setTimeout(() => {
+                        //     if(!isNullOrUndefined(arrayStone[0])) {
+                        viewGame_1.viewGame.sound.play_Voice("Stone");
+                        arrayStone[0].position.y = y;
+                        square.addChild(arrayStone[0]);
+                        box.setText(this.checkPoint(square));
+                        // }
+                        // }, 400);
                     }
                     else {
                         TweenMax.to(spread, 0.4, { x: square.x, y: square.y });
-                        setTimeout(() => {
-                            viewGame_1.viewGame.sound.play_Voice("Stone");
-                            square.addChild(arrayStone[0]);
-                            box.setText(this.checkPoint(square));
-                        }, 400);
+                        // setTimeout(() =>{
+                        // if(!isNullOrUndefined(arrayStone[0])) {
+                        viewGame_1.viewGame.sound.play_Voice("Stone");
+                        square.addChild(arrayStone[0]);
+                        box.setText(this.checkPoint(square));
+                        // }
+                        // }, 400);
                     }
-                }, i * 500);
+                }, i * 600);
             }
             setTimeout(() => {
                 this.pos = j;
@@ -35120,7 +35160,7 @@ class Square extends Container {
                 if (v == 12)
                     v = 0;
                 this.onEatRight(arraySquare, Box, v);
-            }, n * 510);
+            }, n * 700);
         };
         this.onEatLeft = (arraySquare, Box, v) => {
             let check;
@@ -35182,6 +35222,11 @@ class Square extends Container {
                             let box2 = Box[13];
                             box2.setText(this.checkPoint(square));
                             this.Seq_Eat = true;
+                            v = this.pos - 1;
+                            if (v == -1)
+                                v = 11;
+                            this.onEatLeft(arraySquare, Box, v);
+                            return;
                         }, 400);
                     }
                     else {
@@ -35200,21 +35245,23 @@ class Square extends Container {
                             let box2 = Box[12];
                             box2.setText(this.checkPoint(square));
                             this.Seq_Eat = true;
+                            v = this.pos - 1;
+                            if (v == -1)
+                                v = 11;
+                            this.onEatLeft(arraySquare, Box, v);
+                            return;
                         }, 400);
                     }
-                    v = this.pos - 1;
-                    if (v == -1)
-                        v = 11;
-                    setTimeout(() => {
-                        this.onEatLeft(arraySquare, Box, v);
-                    }, 450);
                 }
                 else {
                     this.checkForLeft(arraySquare, Box, v);
+                    return;
                 }
             }
-            else
+            else {
                 this.checkForLeft(arraySquare, Box, v);
+                return;
+            }
         };
         this.onMoveLeft = (ct) => {
             this.stop = false;
@@ -35241,32 +35288,38 @@ class Square extends Container {
                         let y = arrayStone[0].y + 20;
                         let x = arrayStone[0].x + 5;
                         TweenMax.to(spread, 0.4, { x: 113, y: 92 });
-                        setTimeout(() => {
-                            viewGame_1.viewGame.sound.play_Voice("Stone");
-                            arrayStone[0].position.set(x, y);
-                            square.addChild(arrayStone[0]);
-                            box.setText(this.checkPoint(square));
-                        }, 400);
+                        // setTimeout(() => {
+                        //if(!isNullOrUndefined(arrayStone[0])) {
+                        viewGame_1.viewGame.sound.play_Voice("Stone");
+                        arrayStone[0].position.set(x, y);
+                        square.addChild(arrayStone[0]);
+                        box.setText(this.checkPoint(square));
+                        // }
+                        // }, 400);
                     }
                     else if (j == 6) {
                         let y = arrayStone[0].y + 50;
                         TweenMax.to(spread, 0.4, { x: 575, y: 130 });
-                        setTimeout(() => {
-                            viewGame_1.viewGame.sound.play_Voice("Stone");
-                            arrayStone[0].position.y = y;
-                            square.addChild(arrayStone[0]);
-                            box.setText(this.checkPoint(square));
-                        }, 400);
+                        // setTimeout(() => {
+                        //     if(!isNullOrUndefined(arrayStone[0])) {
+                        viewGame_1.viewGame.sound.play_Voice("Stone");
+                        arrayStone[0].position.y = y;
+                        square.addChild(arrayStone[0]);
+                        box.setText(this.checkPoint(square));
+                        // }
+                        // }, 400);
                     }
                     else {
                         TweenMax.to(spread, 0.4, { x: square.x, y: square.y });
-                        setTimeout(() => {
-                            viewGame_1.viewGame.sound.play_Voice("Stone");
-                            square.addChild(arrayStone[0]);
-                            box.setText(this.checkPoint(square));
-                        }, 400);
+                        // setTimeout(() => {
+                        //     if(!isNullOrUndefined(arrayStone[0])) {
+                        viewGame_1.viewGame.sound.play_Voice("Stone");
+                        square.addChild(arrayStone[0]);
+                        box.setText(this.checkPoint(square));
+                        // }
+                        // }, 400);
                     }
-                }, i * 500);
+                }, i * 600);
             }
             setTimeout(() => {
                 this.pos = j;
@@ -35274,7 +35327,7 @@ class Square extends Container {
                 if (v == -1)
                     v = 11;
                 this.onEatLeft(arraySquare, Box, v);
-            }, n * 510);
+            }, n * 700);
         };
         this.ct = ct;
         this.index = index;
@@ -35399,7 +35452,7 @@ class Square extends Container {
             let m = Stone.length;
             count = 1;
             if (m == 0) {
-                viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 3 });
+                viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 3, src: 0, src1: 0 });
             }
             for (let i = 0; i < m; i++) {
                 setTimeout(() => {
@@ -35569,6 +35622,7 @@ class Square extends Container {
                 else
                     viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 2, src: count1 - count2, src1: 0 });
             }
+            viewGame_1.viewGame.player.emit("getInfo");
         }, 7 * 450);
     }
 }
@@ -35743,30 +35797,6 @@ class Player {
         };
         this._socket = io(App_1.App.Host);
     }
-    get oppsex() {
-        return this._oppsex;
-    }
-    set oppsex(value) {
-        this._oppsex = value;
-    }
-    get oppAvatar() {
-        return this._oppAvatar;
-    }
-    set oppAvatar(value) {
-        this._oppAvatar = value;
-    }
-    get avatar() {
-        return this._avatar;
-    }
-    set avatar(value) {
-        this._avatar = value;
-    }
-    get sex() {
-        return this._sex;
-    }
-    set sex(value) {
-        this._sex = value;
-    }
     get game() {
         return this.viewGame;
     }
@@ -35779,8 +35809,20 @@ class Player {
     set socket(value) {
         this._socket = value;
     }
+    get gold() {
+        return this._gold;
+    }
+    set gold(value) {
+        this._gold = value;
+    }
     get username() {
         return this._username;
+    }
+    get id() {
+        return this._id;
+    }
+    set id(value) {
+        this._id = value;
     }
     set username(value) {
         this._username = value;
@@ -35796,6 +35838,36 @@ class Player {
     }
     set color(value) {
         this._color = value;
+    }
+    get oppsex() {
+        return this._oppsex;
+    }
+    set oppsex(value) {
+        this._oppsex = value;
+    }
+    get oppAvatar() {
+        return this._oppAvatar;
+    }
+    set oppAvatar(value) {
+        this._oppAvatar = value;
+    }
+    get oppGold() {
+        return this._oppgold;
+    }
+    set oppGold(value) {
+        this._oppgold = value;
+    }
+    get avatar() {
+        return this._avatar;
+    }
+    set avatar(value) {
+        this._avatar = value;
+    }
+    get sex() {
+        return this._sex;
+    }
+    set sex(value) {
+        this._sex = value;
     }
 }
 exports.Player = Player;
@@ -35865,10 +35937,10 @@ var TweenMax = gsap.TweenMax;
  * Created by Vu Tien Dai on 17/08/2017.
  */
 class Hall extends Container {
-    constructor() {
+    constructor(player) {
         super();
         this.run = () => {
-            viewGame_1.viewGame.player.socket.removeAllListeners();
+            this.player.socket.removeAllListeners();
             this.roomList = new PIXI.Container();
             this.roomList.position.set(405, 140);
             this.contentRoom = new PIXI.Container();
@@ -35923,7 +35995,7 @@ class Hall extends Container {
             let refresh = new Button_1.Button(395, 600, "", App_1.App.AssetDir + "Picture/IU/refreshbtn.png");
             refresh.setSize(new PIXI.Point(100, 50));
             refresh.onClick = () => {
-                viewGame_1.viewGame.player.emit("get room list");
+                this.player.emit("get room list");
             };
             let setting = new Button_1.Button(525, 600, "", App_1.App.AssetDir + "Picture/IU/setting.png");
             setting.setSize(new PIXI.Point(110, 50));
@@ -35936,16 +36008,16 @@ class Hall extends Container {
             this.eventForPlayer();
         };
         this.eventForPlayer = () => {
-            viewGame_1.viewGame.player.socket.removeAllListeners();
-            viewGame_1.viewGame.player.emit("get room list");
-            viewGame_1.viewGame.player.once("room list", this.getRoomList);
-            viewGame_1.viewGame.player.on("room full", () => {
+            this.player.socket.removeAllListeners();
+            this.player.emit("get room list");
+            this.player.once("room list", this.getRoomList);
+            this.player.on("room full", () => {
                 Panel_1.Panel.showMessageDialog("This room is full");
             });
-            viewGame_1.viewGame.player.on("join room success", () => {
+            this.player.on("join room success", () => {
                 viewGame_1.viewGame.Hall.visible = false;
                 viewGame_1.viewGame.Game.visible = true;
-                viewGame_1.viewGame.Game.My_name.show(viewGame_1.viewGame.player.sex, viewGame_1.viewGame.player.avatar, viewGame_1.viewGame.player.username);
+                viewGame_1.viewGame.Game.My_name.show(this.player.gold, this.player.sex, this.player.avatar, this.player.username);
             });
         };
         this.getRoomList = (rooms) => {
@@ -35964,7 +36036,7 @@ class Hall extends Container {
                 else
                     button.position.set(640, 190 * Math.floor(i / 5) - 45);
                 button.onClick = () => {
-                    viewGame_1.viewGame.player.emit("join room", rooms[i].id);
+                    this.player.emit("join room", rooms[i].id);
                 };
                 if (i < 15) {
                     this.first.addChild(button);
@@ -35974,7 +36046,8 @@ class Hall extends Container {
             }
             this.next.interactive = true;
         };
-        let backgroud = PIXI.Sprite.fromImage(App_1.App.AssetDir + 'Picture/Room/roomback.png');
+        this.player = player;
+        let background = PIXI.Sprite.fromImage(App_1.App.AssetDir + 'Picture/Room/roomback.png');
         let gt;
         if (App_1.App.IsWeb) {
             gt = PIXI.Sprite.fromImage(App_1.App.AssetDir + "Picture/gioithieu.png");
@@ -35985,9 +36058,9 @@ class Hall extends Container {
         gt.position.set(4, 350);
         gt.width = 320;
         gt.height = 290;
-        this.addChild(backgroud, gt);
-        backgroud.width = App_1.App.width;
-        backgroud.height = App_1.App.height;
+        this.addChild(background, gt);
+        background.width = App_1.App.width;
+        background.height = App_1.App.height;
         // this.width = App.width;
         // this.height = App.height;
         this.run();
@@ -36041,47 +36114,88 @@ const Identity_1 = __webpack_require__(130);
  * Created by Vu Tien Dai on 01/08/2017.
  */
 class Login extends PIXI.Container {
-    constructor() {
+    constructor(player) {
         super();
-        this.createLogin = () => {
+        this.createLogin = (name, pass) => {
+            this.removeChildren();
             let backgroud = PIXI.Sprite.fromImage(App_1.App.AssetDir + 'Picture/background.jpg');
             backgroud.width = 1200;
             backgroud.height = 640;
-            this.txtMessage = new TextField_1.TextField(385, 400);
-            this.txtMessage.setText('User name' + Math.floor(Math.random() * 1000));
-            this.txtMessage.scale.set(0.4);
-            this.txtMessage.onEnterPress = () => {
-                viewGame_1.viewGame.player.username = this.txtMessage.getText();
-                viewGame_1.viewGame.player.sex = this.sex.sex;
-                viewGame_1.viewGame.player.emit("login", { name: this.txtMessage.getText(), sex: viewGame_1.viewGame.player.sex });
-                viewGame_1.viewGame.player.username = this.txtMessage.getText();
-                this.txtMessage.setText("");
-                viewGame_1.viewGame.player.emit("get room list");
-                this.Connect = setTimeout(() => {
-                    Panel_1.Panel.showMessageDialog("Can not connecting to server @@! ...");
-                }, 2500);
-                console.log("nhu cc");
+            let txtUsername = new TextField_1.TextField(385, 237);
+            txtUsername.setText(name);
+            txtUsername.scale.set(0.4);
+            let txtPassword = new TextField_1.TextField(385, 300);
+            txtPassword.setText(pass);
+            txtPassword.scale.set(0.4);
+            txtUsername.onEnterPress = () => {
+                this.player.emit("login", { name: txtUsername.getText(), pass: txtPassword });
+                this.player.username = txtUsername.getText();
+                txtUsername.setText("");
+                txtPassword.setText("");
+                this.player.emit("get room list");
             };
-            let Loginbtn = new Button_1.Button(750, 400, "", App_1.App.AssetDir + "Picture/IU/loginbtn.png");
+            txtUsername.onClick = () => {
+                txtUsername.setText("");
+            };
+            txtPassword.onClick = () => {
+                txtPassword.setText("");
+            };
+            let Loginbtn = new Button_1.Button(435, 405, "", App_1.App.AssetDir + "Picture/IU/loginbtn.png");
+            let Signup = new Button_1.Button(580, 405, "", App_1.App.AssetDir + "Picture/IU/signup.png");
             Loginbtn.setSize(new PIXI.Point(100, 50));
+            Signup.setSize(new PIXI.Point(100, 50));
             Loginbtn.onClick = () => {
-                if (this.txtMessage.getText() != "") {
-                    viewGame_1.viewGame.player.username = this.txtMessage.getText();
-                    viewGame_1.viewGame.player.sex = this.sex.sex;
-                    viewGame_1.viewGame.player.emit("login", { name: this.txtMessage.getText(), sex: viewGame_1.viewGame.player.sex });
-                    viewGame_1.viewGame.player.username = this.txtMessage.getText();
-                    this.txtMessage.setText("");
-                    this.Connect = setTimeout(() => {
-                        Panel_1.Panel.showMessageDialog("Can not connecting to server @@! ...");
-                    }, 2500);
+                if (txtUsername.getText() != "") {
+                    this.player.emit("login", { name: txtUsername.getText(), pass: txtPassword.getText() });
+                    this.player.on("login_wrong", () => {
+                        Panel_1.Panel.showMessageDialog("Sai ten hoac pass", () => { }, false);
+                    });
+                    // txtUsername.setText("");
+                    // txtPassword.setText("");
                 }
             };
-            this.sex = new Identity_1.Identity();
-            this.sex.position.set(405, 458);
-            this.addChild(backgroud, this.txtMessage, Loginbtn, this.sex);
+            Signup.onClick = () => {
+                this.createSignup();
+            };
+            this.addChild(backgroud, txtUsername, txtPassword, Loginbtn, Signup);
         };
-        this.createLogin();
+        this.player = player;
+        this.createLogin("", "");
         viewGame_1.viewGame.sound.play_BG("Login");
+    }
+    createSignup() {
+        this.removeChildren();
+        let backgroud = PIXI.Sprite.fromImage(App_1.App.AssetDir + 'Picture/background.jpg');
+        backgroud.width = 1200;
+        backgroud.height = 640;
+        let txtUsername = new TextField_1.TextField(385, 237);
+        txtUsername.scale.set(0.4);
+        let txtPassword = new TextField_1.TextField(385, 300);
+        txtPassword.scale.set(0.4);
+        let sex = new Identity_1.Identity();
+        sex.position.set(405, 345);
+        let Signup = new Button_1.Button(435, 405, "", App_1.App.AssetDir + "Picture/IU/signup.png");
+        Signup.setSize(new PIXI.Point(100, 50));
+        let Back = new Button_1.Button(580, 405, "", App_1.App.AssetDir + "Picture/IU/outroom.png");
+        Back.setSize(new PIXI.Point(100, 50));
+        this.addChild(backgroud, txtUsername, txtPassword, Signup, Back, sex);
+        Signup.onClick = () => {
+            if (txtUsername.getText() != "" && txtPassword.getText() != "") {
+                this.player.emit("signup", { name: txtUsername.getText(), pass: txtPassword.getText(), sex: sex.sex });
+            }
+            this.player.on("sign_up", (data) => {
+                if (data == true) {
+                    Panel_1.Panel.showMessageDialog("Dang ki thanh cong", () => {
+                        this.createLogin(txtUsername.getText(), txtPassword.getText());
+                    }, false);
+                }
+                else
+                    Panel_1.Panel.showMessageDialog("User name da ton tai", () => { }, false);
+            });
+        };
+        Back.onClick = () => {
+            this.createLogin("", "");
+        };
     }
 }
 exports.Login = Login;

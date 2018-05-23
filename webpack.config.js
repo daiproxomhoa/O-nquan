@@ -15,8 +15,8 @@ module.exports = {
     },
     output: {
         path: __dirname,
-        // filename: 'dist/bundle.js'
-        filename: 'Mobile/www/js/bundle.js'
+        filename: 'dist/bundle.js'
+        // filename: 'Mobile/www/js/bundle.js'
     },
     devtool : "source-map",
     module: {

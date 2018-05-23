@@ -140,10 +140,10 @@ export class Game extends Container {
                     this.reloadGame();
                     this.onWait();
                     this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
+                    this.player.emit("get room list     ");
                     this.player.emit("left room");
                     viewGame.Game.visible = false;
                     viewGame.Hall.visible = true;
-                    this.player.emit("get room list");
                 }
             }, {
                 text: "Không",
@@ -168,6 +168,7 @@ export class Game extends Container {
     }
 
     onWait = () => {
+        this.player.emit("get room list");
         this.player.oppname = "";
         this.Opp_name.show();
         viewGame.sound.play_BG("Wait");

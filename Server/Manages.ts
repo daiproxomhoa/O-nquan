@@ -31,7 +31,7 @@ export class Manages {
             user.emit("InviteList", this.getInvite());
         });
         user.on("getInfo", () => {
-            user.emit("setInfo", {name: user._username, avatar: user.avatarID, sex: user.sex});
+            user.emit("setInfo", {id:user._id,name: user._username, avatar: user.avatarID, sex: user.sex,gold:user.gold});
         })
         user.on("join room", (roomID) => {
             let findRoom = false;
@@ -67,6 +67,7 @@ export class Manages {
         })
         user.on("get room list", () => {
             user.emit("room list", this.getRoomList());
+            user.emit("update_gold",user.gold);
         });
     }
 
@@ -96,7 +97,6 @@ export class Manages {
         }
         return roomArr;
     }
-
 }
 //
 // }

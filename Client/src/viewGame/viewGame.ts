@@ -40,9 +40,10 @@ export class viewGame {
             this.app.stage.scale.set(App.W / App.width, App.H / App.height);
 
         }
+
         else
             this.app = new PIXI.Application(App.width, App.height);
-        document.body.appendChild(this.app.view);
+            document.body.appendChild(this.app.view);
         this.app.stage.addChild(Panel.panel);
         this.createLogin();
         this.eventPlayer();
@@ -73,12 +74,12 @@ export class viewGame {
         }
 
     }
-    createLogin = () => {
-        viewGame.login_broad = new Login();
+        createLogin = () => {
+        viewGame.login_broad = new Login(viewGame.player);
         this.app.stage.addChild(viewGame.login_broad);
     }
     createHall = () => {
-        viewGame.Hall = new Hall();
+        viewGame.Hall = new Hall(viewGame.player);
         viewGame.Hall.visible = false;
         this.app.stage.addChild(viewGame.Hall);
     }
@@ -106,6 +107,7 @@ export class viewGame {
         viewGame.player.on("user left", this.onUserLeft);
         viewGame.player.on("continue_game", this.onContinue);
         viewGame.player.on("Reset", this.onReset);
+        viewGame.player.on("Reset2", this.onReset2);
         viewGame.player.on("enjoy", this.onEnjoy);
         viewGame.player.on("setInfo", this.onSetInfo);
         viewGame.player.on("new message", (data: any) => {
@@ -113,6 +115,12 @@ export class viewGame {
         });
         viewGame.player.on("score", this.onScore);
         viewGame.player.on("room list", viewGame.Hall.getRoomList);
+        viewGame.player.on("update_gold", (data)=>{
+            viewGame.player.gold=data;
+            viewGame.Hall.avatar.show(data);
+            viewGame.Game.My_name.show(data);
+        });
+
     }
     onOK = () => {
         viewGame.player.emit("getInfo");
@@ -128,13 +136,16 @@ export class viewGame {
         clearTimeout(viewGame.login_broad.Connect);
     }
     onNO = () => {
-        Panel.showMessageDialog("Tên đã tồn tại :(", 1500);
+        Panel.showMessageDialog("Nick đang đang nhập",()=>{},false);
     }
     onSetInfo = (data: any) => {
+        viewGame.player.id = data.id;
         viewGame.player.username = data.name;
         viewGame.player.avatar = data.avatar;
         viewGame.player.sex = data.sex;
-        viewGame.Hall.avatar.show(viewGame.player.sex, viewGame.player.avatar, viewGame.player.username);
+        viewGame.player.gold =data.gold;
+        console.log(data);
+        viewGame.Hall.avatar.show(viewGame.player.gold,viewGame.player.sex, viewGame.player.avatar, viewGame.player.username);
     }
     onScore = (data) => {
         viewGame.Game.score1.text = data.x.toString() + "";
@@ -152,12 +163,18 @@ export class viewGame {
             }
         })
     }
-    onReset = () => {
+    onReset2 =(data)=>{
+        viewGame.Game.My_name.show(data.me);
+        viewGame.Game.Opp_name.show(data.you);
+    }
+    onReset = (data) => {
         viewGame.sound.play_BG("Play");
         viewGame.game_turn = true;
         viewGame.turn = true;
         viewGame.Game.reloadGame2();
         viewGame.Game.clock.restart();
+        viewGame.Game.My_name.show(data.me);
+        viewGame.Game.Opp_name.show(data.you);
         this.FinishGame = false;
     }
     onContinue = () => {
@@ -183,7 +200,6 @@ export class viewGame {
         viewGame.Game.broad.getChildAt(1).onStopMove(viewGame.Game.broad.getChildAt(1));
         this.FinishGame = false;
     }
-
     onAutoEndturn = () => {
         if (this.FinishGame == false) {
             let bool;
@@ -213,7 +229,8 @@ export class viewGame {
         viewGame.player.oppname = data.oppname;
         viewGame.player.oppAvatar = data.avatar;
         viewGame.player.oppsex = data.sex;
-        viewGame.Game.Opp_name.show(viewGame.player.oppsex, viewGame.player.oppAvatar, viewGame.player.oppname);
+        viewGame.player.oppGold = data.gold;
+        viewGame.Game.Opp_name.show( viewGame.player.oppGold,viewGame.player.oppsex, viewGame.player.oppAvatar, viewGame.player.oppname);
         viewGame.Game.clock.restart();
     }
     onEndGame = (data: any) => {
