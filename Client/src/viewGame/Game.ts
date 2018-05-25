@@ -68,7 +68,7 @@ export class Game extends Container {
     reloadGame2 = () => {
         Game.endgame = false;
         this.clock.stop();
-        this.removeChildren(8, this.children.length);
+        this.removeChildren(7, this.children.length);
         this.createBroadGame();
     }
 

@@ -6,6 +6,7 @@ var TweenMax = gsap.TweenMax;
 const viewGame_1 = require("../viewGame/viewGame");
 const Stone_1 = require("./Stone");
 const Game_1 = require("../viewGame/Game");
+const util_1 = require("util");
 /**
  * Created by Vu Tien Dai on 21/06/2017.
  */
@@ -200,49 +201,117 @@ class Square extends Container {
                     let square = arraySquare[j];
                     let box = Box[j];
                     if (j == 0) {
-                        let y = arrayStone[0].y + 20;
-                        let x = arrayStone[0].x + 5;
                         TweenMax.to(spread, 0.4, { x: 113, y: 92 });
                         // setTimeout(() => {
-                        //     if(!isNullOrUndefined(arrayStone[0])){
-                        viewGame_1.viewGame.sound.play_Voice("Stone");
-                        arrayStone[0].position.set(x, y);
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
-                        // }
+                        if (!util_1.isNullOrUndefined(arrayStone[0])) {
+                            let y = arrayStone[0].y + 20;
+                            let x = arrayStone[0].x + 5;
+                            viewGame_1.viewGame.sound.play_Voice("Stone");
+                            arrayStone[0].position.set(x, y);
+                            square.addChild(arrayStone[0]);
+                            box.setText(this.checkPoint(square));
+                        }
                         // }, 400);
                     }
                     else if (j == 6) {
-                        let y = arrayStone[0].y + 65;
                         TweenMax.to(spread, 0.4, { x: 575, y: 130 });
                         // setTimeout(() => {
-                        //     if(!isNullOrUndefined(arrayStone[0])) {
-                        viewGame_1.viewGame.sound.play_Voice("Stone");
-                        arrayStone[0].position.y = y;
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
-                        // }
+                        if (!util_1.isNullOrUndefined(arrayStone[0])) {
+                            let y = arrayStone[0].y + 65;
+                            viewGame_1.viewGame.sound.play_Voice("Stone");
+                            arrayStone[0].position.y = y;
+                            square.addChild(arrayStone[0]);
+                            box.setText(this.checkPoint(square));
+                        }
                         // }, 400);
                     }
                     else {
                         TweenMax.to(spread, 0.4, { x: square.x, y: square.y });
                         // setTimeout(() =>{
-                        // if(!isNullOrUndefined(arrayStone[0])) {
-                        viewGame_1.viewGame.sound.play_Voice("Stone");
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
-                        // }
-                        // }, 400);
+                        if (!util_1.isNullOrUndefined(arrayStone[0])) {
+                            viewGame_1.viewGame.sound.play_Voice("Stone");
+                            square.addChild(arrayStone[0]);
+                            box.setText(this.checkPoint(square));
+                        }
                     }
-                }, i * 600);
+                    // }, 400);
+                }, (i + 1) * 500);
             }
             setTimeout(() => {
                 this.pos = j;
                 let v = j + 1;
                 if (v == 12)
                     v = 0;
+                console.log("nhucc " + n + "    " + arrayStone.length);
                 this.onEatRight(arraySquare, Box, v);
-            }, n * 700);
+            }, (n + 1) * 600);
+        };
+        this.onMoveLeft = (ct) => {
+            this.stop = false;
+            let arraySquare = ct.parent.children; //12 ô
+            let arrayBox = ct.parent.parent.getChildAt(1); //12 ô
+            let Box = arrayBox.children; //12 ô
+            var j = ct.parent.getChildIndex(ct); //vị trí bắt đầu ném đá vào
+            let oldPos = new PIXI.Point(ct.position.x, ct.position.y);
+            let spread = arraySquare[14];
+            spread.position.set(oldPos.x, oldPos.y);
+            this.MoveEat(ct, spread);
+            let arrayStone = spread.children;
+            let n = arrayStone.length;
+            Box[j].setText("0");
+            this.onStopMove(ct);
+            for (let i = 0; i < n; i++) {
+                setTimeout(() => {
+                    j--;
+                    if (j <= -1)
+                        j = 11;
+                    let square = arraySquare[j];
+                    let box = Box[j];
+                    if (j == 0) {
+                        let y = arrayStone[0].y + 20;
+                        let x = arrayStone[0].x + 5;
+                        TweenMax.to(spread, 0.4, { x: 113, y: 92 });
+                        // setTimeout(() => {
+                        if (!util_1.isNullOrUndefined(arrayStone[0])) {
+                            viewGame_1.viewGame.sound.play_Voice("Stone");
+                            arrayStone[0].position.set(x, y);
+                            square.addChild(arrayStone[0]);
+                            box.setText(this.checkPoint(square));
+                        }
+                        // }, 400);
+                    }
+                    else if (j == 6) {
+                        let y = arrayStone[0].y + 50;
+                        TweenMax.to(spread, 0.4, { x: 575, y: 130 });
+                        // setTimeout(() => {
+                        if (!util_1.isNullOrUndefined(arrayStone[0])) {
+                            viewGame_1.viewGame.sound.play_Voice("Stone");
+                            arrayStone[0].position.y = y;
+                            square.addChild(arrayStone[0]);
+                            box.setText(this.checkPoint(square));
+                        }
+                        // }, 400);
+                    }
+                    else {
+                        TweenMax.to(spread, 0.4, { x: square.x, y: square.y });
+                        // setTimeout(() => {
+                        if (!util_1.isNullOrUndefined(arrayStone[0])) {
+                            viewGame_1.viewGame.sound.play_Voice("Stone");
+                            square.addChild(arrayStone[0]);
+                            box.setText(this.checkPoint(square));
+                        }
+                        // }, 400);
+                    }
+                }, i * 600);
+            }
+            setTimeout(() => {
+                this.pos = j;
+                let v = j - 1;
+                if (v == -1)
+                    v = 11;
+                console.log("nhucc " + n + "    " + arrayStone.length);
+                this.onEatLeft(arraySquare, Box, v);
+            }, (n + 1) * 600);
         };
         this.onEatLeft = (arraySquare, Box, v) => {
             let check;
@@ -345,72 +414,6 @@ class Square extends Container {
                 return;
             }
         };
-        this.onMoveLeft = (ct) => {
-            this.stop = false;
-            let arraySquare = ct.parent.children; //12 ô
-            let arrayBox = ct.parent.parent.getChildAt(1); //12 ô
-            let Box = arrayBox.children; //12 ô
-            var j = ct.parent.getChildIndex(ct); //vị trí bắt đầu ném đá vào
-            let oldPos = new PIXI.Point(ct.position.x, ct.position.y);
-            let spread = arraySquare[14];
-            spread.position.set(oldPos.x, oldPos.y);
-            this.MoveEat(ct, spread);
-            let arrayStone = spread.children;
-            let n = arrayStone.length;
-            Box[j].setText("0");
-            this.onStopMove(ct);
-            for (let i = 0; i < n; i++) {
-                setTimeout(() => {
-                    j--;
-                    if (j <= -1)
-                        j = 11;
-                    let square = arraySquare[j];
-                    let box = Box[j];
-                    if (j == 0) {
-                        let y = arrayStone[0].y + 20;
-                        let x = arrayStone[0].x + 5;
-                        TweenMax.to(spread, 0.4, { x: 113, y: 92 });
-                        // setTimeout(() => {
-                        //if(!isNullOrUndefined(arrayStone[0])) {
-                        viewGame_1.viewGame.sound.play_Voice("Stone");
-                        arrayStone[0].position.set(x, y);
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
-                        // }
-                        // }, 400);
-                    }
-                    else if (j == 6) {
-                        let y = arrayStone[0].y + 50;
-                        TweenMax.to(spread, 0.4, { x: 575, y: 130 });
-                        // setTimeout(() => {
-                        //     if(!isNullOrUndefined(arrayStone[0])) {
-                        viewGame_1.viewGame.sound.play_Voice("Stone");
-                        arrayStone[0].position.y = y;
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
-                        // }
-                        // }, 400);
-                    }
-                    else {
-                        TweenMax.to(spread, 0.4, { x: square.x, y: square.y });
-                        // setTimeout(() => {
-                        //     if(!isNullOrUndefined(arrayStone[0])) {
-                        viewGame_1.viewGame.sound.play_Voice("Stone");
-                        square.addChild(arrayStone[0]);
-                        box.setText(this.checkPoint(square));
-                        // }
-                        // }, 400);
-                    }
-                }, i * 600);
-            }
-            setTimeout(() => {
-                this.pos = j;
-                let v = j - 1;
-                if (v == -1)
-                    v = 11;
-                this.onEatLeft(arraySquare, Box, v);
-            }, n * 700);
-        };
         this.ct = ct;
         this.index = index;
         if (type == 1 || type == 2) {
@@ -432,8 +435,6 @@ class Square extends Container {
                 this.scale.set(1);
             })
                 .on("finish move", () => {
-                if (viewGame_1.viewGame.turn == viewGame_1.viewGame.game_turn)
-                    viewGame_1.viewGame.player.emit("change turn");
             });
         }
     }
@@ -615,7 +616,10 @@ class Square extends Container {
             if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
                 this.onStartMove(arraySquare[1]);
             }
-            setTimeout(this.emit("finish move"), 1000);
+            if (viewGame_1.viewGame.turn == viewGame_1.viewGame.game_turn)
+                viewGame_1.viewGame.player.emit("change turn", true);
+            else
+                viewGame_1.viewGame.player.emit("change turn", false);
         }
     }
     checkForLeft(arraySquare, Box, v) {
@@ -630,7 +634,10 @@ class Square extends Container {
             if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
                 this.onStartMove(arraySquare[1]);
             }
-            setTimeout(this.emit("finish move"), 1000);
+            if (viewGame_1.viewGame.turn == viewGame_1.viewGame.game_turn)
+                viewGame_1.viewGame.player.emit("change turn", true);
+            else
+                viewGame_1.viewGame.player.emit("change turn", false);
         }
     }
     checkPoint(ct) {
@@ -698,14 +705,28 @@ class Square extends Container {
             count2 = this.checkPoint(arraySquare[13]);
             if (viewGame_1.viewGame.turn == viewGame_1.viewGame.game_turn) {
                 if (count1 > count2)
-                    viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 1, src: count1 - count2, src1: count2 - count1 });
+                    viewGame_1.viewGame.player.emit("end game", {
+                        team: viewGame_1.viewGame.game_turn,
+                        result: 1,
+                        src: count1 - count2,
+                        src1: count2 - count1
+                    });
                 else if (count1 < count2)
-                    viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 3, src: count1 - count2, src1: count2 - count1 });
+                    viewGame_1.viewGame.player.emit("end game", {
+                        team: viewGame_1.viewGame.game_turn,
+                        result: 3,
+                        src: count1 - count2,
+                        src1: count2 - count1
+                    });
                 else
-                    viewGame_1.viewGame.player.emit("end game", { team: viewGame_1.viewGame.game_turn, result: 2, src: count1 - count2, src1: 0 });
+                    viewGame_1.viewGame.player.emit("end game", {
+                        team: viewGame_1.viewGame.game_turn,
+                        result: 2,
+                        src: count1 - count2,
+                        src1: 0
+                    });
             }
-            viewGame_1.viewGame.player.emit("getInfo");
-        }, 7 * 450);
+        }, 7 * 430);
     }
 }
 exports.Square = Square;

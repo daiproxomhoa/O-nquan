@@ -11,6 +11,7 @@ class Room {
         this.key = "--/--";
         this.guest = "--/--";
         this.score = [0, 0];
+        this.keycount = 0;
         this.addUser = (user) => {
             if (this.users.length == 2)
                 return false;
@@ -87,15 +88,23 @@ class Room {
                             this.users[i].getCompatior().emit("opponent move", data);
                     }
                 });
-                this.users[i].on("change turn", () => {
+                this.users[i].on("change turn", (data) => {
                     this.turncount++;
-                    if (!util_1.isNullOrUndefined(this.users[i])) {
-                        if (!util_1.isNullOrUndefined(this.users[i].getCompatior())) {
-                            this.turnColor = !this.turnColor;
-                            this.users[i].getCompatior().emit("turn color", { turn: this.turnColor });
-                            this.users[i].emit("turn color", { turn: this.turnColor });
-                        }
+                    if (data == true) {
+                        this.keyturn = i;
                     }
+                    if (this.turncount == 2) {
+                        this.changeturn(this.keyturn);
+                        this.turncount = 0;
+                    }
+                    // console.log("Name : "+ this.users[this.keyturn].getUserName+"keycount : "+this.turncount);
+                    // this.turncount++;
+                    // if (!isNullOrUndefined(this.users[i])) {
+                    //     if(!isNullOrUndefined(this.users[i].getCompatior())){
+                    //     this.turnColor = !this.turnColor;
+                    //     this.users[i].getCompatior().emit("turn color", {turn: this.turnColor});
+                    //     this.users[i].emit("turn color", {turn: this.turnColor});
+                    // }}
                 });
                 this.users[i].on("end game", (data) => {
                     if (!util_1.isNullOrUndefined(this.users[i])) {
@@ -108,12 +117,12 @@ class Room {
                                 this.users[i].emit("restart");
                             else
                                 this.users[i].getCompatior().emit("restart");
-                            this.users[i].emit("Reset2", { me: this.users[i].gold, you: this.users[i].getCompatior().gold });
-                            this.users[i].getCompatior().emit("Reset2", { me: this.users[i].getCompatior().gold, you: this.users[i].gold });
                             this.users[i].emit("score", { x: this.score[i], y: this.score[1 - i] });
                             this.users[i].update_gold(Math.abs(this.score[i]), "+");
                             this.users[i].getCompatior().emit("score", { x: this.score[1 - i], y: this.score[i] });
                             this.users[i].getCompatior().update_gold(Math.abs(this.score[i]), "-");
+                            this.users[i].emit("Reset2", { me: this.users[i].gold, you: this.users[i].getCompatior().gold });
+                            this.users[i].getCompatior().emit("Reset2", { me: this.users[i].getCompatior().gold, you: this.users[i].gold });
                             this.turncount = 0;
                         }
                     }
@@ -239,6 +248,16 @@ class Room {
                 this.users = [];
                 this.addUser(us);
                 this.users[0].emit("user left");
+            }
+        };
+        this.changeturn = (i) => {
+            this.turncount++;
+            if (!util_1.isNullOrUndefined(this.users[i])) {
+                if (!util_1.isNullOrUndefined(this.users[i].getCompatior())) {
+                    this.turnColor = !this.turnColor;
+                    this.users[i].getCompatior().emit("turn color", { turn: this.turnColor });
+                    this.users[i].emit("turn color", { turn: this.turnColor });
+                }
             }
         };
         this.isFull = () => {

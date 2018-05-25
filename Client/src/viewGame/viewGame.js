@@ -129,6 +129,7 @@ class viewGame {
         this.onReset2 = (data) => {
             viewGame.Game.My_name.show(data.me);
             viewGame.Game.Opp_name.show(data.you);
+            console.log("CHUAN roi " + data.you + "      " + data.me);
         };
         this.onReset = (data) => {
             viewGame.sound.play_BG("Play");

@@ -16,7 +16,8 @@ export class Room {
         this.id = id;
         this.name = name;
     }
-
+    keyturn:number;
+    keycount:number=0;
     addUser = (user: User) => {
         if (this.users.length == 2)
             return false;
@@ -100,14 +101,24 @@ export class Room {
                     this.users[i].getCompatior().emit("opponent move", data);
                 }
             });
-            this.users[i].on("change turn", () => {
+            this.users[i].on("change turn", (data) => {
                 this.turncount++;
-                if (!isNullOrUndefined(this.users[i])) {
-                    if(!isNullOrUndefined(this.users[i].getCompatior())){
-                    this.turnColor = !this.turnColor;
-                    this.users[i].getCompatior().emit("turn color", {turn: this.turnColor});
-                    this.users[i].emit("turn color", {turn: this.turnColor});
-                }}
+                if(data==true){
+                    this.keyturn=i;
+                }
+                if(this.turncount==2){
+                    this.changeturn(this.keyturn);
+                    this.turncount=0;
+
+                }
+                // console.log("Name : "+ this.users[this.keyturn].getUserName+"keycount : "+this.turncount);
+                // this.turncount++;
+                // if (!isNullOrUndefined(this.users[i])) {
+                //     if(!isNullOrUndefined(this.users[i].getCompatior())){
+                //     this.turnColor = !this.turnColor;
+                //     this.users[i].getCompatior().emit("turn color", {turn: this.turnColor});
+                //     this.users[i].emit("turn color", {turn: this.turnColor});
+                // }}
 
             });
             this.users[i].on("end game", (data: any) => {
@@ -121,12 +132,12 @@ export class Room {
                             this.users[i].emit("restart");
                         else
                             this.users[i].getCompatior().emit("restart");
-                        this.users[i].emit("Reset2",{me:this.users[i].gold,you:this.users[i].getCompatior().gold});
-                        this.users[i].getCompatior().emit("Reset2",{me:this.users[i].getCompatior().gold,you:this.users[i].gold});
                         this.users[i].emit("score",{x:this.score[i],y:this.score[1-i]});
                         this.users[i].update_gold(Math.abs(this.score[i]),"+")
                         this.users[i].getCompatior().emit("score",{x:this.score[1-i],y:this.score[i]});
                         this.users[i].getCompatior().update_gold(Math.abs(this.score[i]),"-")
+                        this.users[i].emit("Reset2",{me:this.users[i].gold,you:this.users[i].getCompatior().gold});
+                        this.users[i].getCompatior().emit("Reset2",{me:this.users[i].getCompatior().gold,you:this.users[i].gold});
                         this.turncount=0;
                     }
                 }
@@ -254,7 +265,16 @@ export class Room {
             this.users[0].emit("user left");
         }
     };
+    changeturn=(i)=>{
+        this.turncount++;
+        if (!isNullOrUndefined(this.users[i])) {
+        if(!isNullOrUndefined(this.users[i].getCompatior())){
+        this.turnColor = !this.turnColor;
+        this.users[i].getCompatior().emit("turn color", {turn: this.turnColor});
+    this.users[i].emit("turn color", {turn: this.turnColor});
+}}
 
+}
     isFull = () => {
         if (this.users.length >= 2) {
             return true;
