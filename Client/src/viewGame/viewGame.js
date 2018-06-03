@@ -17,15 +17,15 @@ const Sound_1 = require("../Const/Sound");
 const Setting_1 = require("../IU/Setting");
 const Invite_1 = require("../IU/Invite");
 var screenfull = require('screenfull');
-///<preference name="StatusBarOverlaysWebView" value="true" />
+// /<preference name="StatusBarOverlaysWebView" value="true" />;
 class viewGame {
     constructor() {
         this.FinishGame = false;
-        this.onDeviceReady = () => {
-            if (StatusBar.isVisible = true) {
-                StatusBar.hide();
-            }
-        };
+        // onDeviceReady = () => {
+        //     if (StatusBar.isVisible = true) {
+        //         StatusBar.hide();
+        //     }
+        // }
         this.ReSize = () => {
             if (!App_1.App.IsWeb || screenfull.isFullScreen) {
                 App_1.App.W = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -185,6 +185,7 @@ class viewGame {
             }
         };
         this.onStartGame = (data) => {
+            viewGame.player.emit("get room list");
             viewGame.sound.play_BG("Play");
             viewGame.Game.wait.stop();
             viewGame.player.color = data.color;
@@ -285,7 +286,6 @@ class viewGame {
         viewGame.player = new Player_1.Player();
         if (!App_1.App.IsWeb) {
             this.ReSize();
-            this.onDeviceReady();
             this.app = new PIXI.Application(App_1.App.W, App_1.App.H);
             this.app.stage.scale.set(App_1.App.W / App_1.App.width, App_1.App.H / App_1.App.height);
         }

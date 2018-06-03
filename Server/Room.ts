@@ -12,6 +12,7 @@ export class Room {
     key: string = "--/--";
     guest: string = "--/--";
     score =[0 ,0];
+    private countend: number;
     constructor(id, name) {
         this.id = id;
         this.name = name;
@@ -31,8 +32,8 @@ export class Room {
             this.users[0].emit("wait player");
             this.users[0].on("disconnect", () => {
                 if (this.users.length == 2&& this.turncount>2) {
-                    this.users[1].update_gold(Math.abs(20),"+");
-                    this.users[0].update_gold(Math.abs(20),"-");
+                    this.users[1].update_gold(Math.abs(20), "+");
+                    this.users[0].update_gold(Math.abs(20), "-");
                 }
                 this.onUser0Left(1)
             }, false);
@@ -102,13 +103,13 @@ export class Room {
                 }
             });
             this.users[i].on("change turn", (data) => {
-                this.turncount++;
+                this.keycount++;
                 if(data==true){
                     this.keyturn=i;
                 }
-                if(this.turncount==2){
+                if(this.keycount==2){
                     this.changeturn(this.keyturn);
-                    this.turncount=0;
+                    this.keycount=0;
 
                 }
                 // console.log("Name : "+ this.users[this.keyturn].getUserName+"keycount : "+this.turncount);
@@ -198,7 +199,6 @@ export class Room {
                     }
                 }}
             });
-
         }
     }
     onUser0Left = (c: number) => {

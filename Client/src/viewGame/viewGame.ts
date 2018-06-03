@@ -17,7 +17,7 @@ import {Sound} from "../Const/Sound";
 import {Setting} from "../IU/Setting";
 import {Invite} from "../IU/Invite";
 var screenfull = require('screenfull');
-///<preference name="StatusBarOverlaysWebView" value="true" />
+// /<preference name="StatusBarOverlaysWebView" value="true" />;
 export class viewGame {
     app;
     static turn = true;
@@ -30,12 +30,10 @@ export class viewGame {
     static sound: Sound = new Sound();
     static Setting: Setting;
     static Invite: Invite;
-
     constructor() {
         viewGame.player = new Player();
         if (!App.IsWeb) {
             this.ReSize();
-            this.onDeviceReady();
             this.app = new PIXI.Application(App.W, App.H);
             this.app.stage.scale.set(App.W / App.width, App.H / App.height);
 
@@ -52,11 +50,11 @@ export class viewGame {
 
     }
 
-    onDeviceReady = () => {
-        if (StatusBar.isVisible = true) {
-            StatusBar.hide();
-        }
-    }
+    // onDeviceReady = () => {
+    //     if (StatusBar.isVisible = true) {
+    //         StatusBar.hide();
+    //     }
+    // }
     ReSize = () => {
         if (!App.IsWeb || screenfull.isFullScreen) {
             App.W = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -224,6 +222,7 @@ export class viewGame {
 
     }
     onStartGame = (data: any) => {
+        viewGame.player.emit("get room list");
         viewGame.sound.play_BG("Play");
         viewGame.Game.wait.stop();
         viewGame.player.color = data.color;

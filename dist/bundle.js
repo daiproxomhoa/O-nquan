@@ -1310,8 +1310,8 @@ module.exports = g;
 Object.defineProperty(exports, "__esModule", { value: true });
 class App {
 }
-// static readonly Host:string = 'http://192.168.43.38/';
-App.Host = 'http://localhost:3000/';
+App.Host = 'http://192.168.1.48:3000/';
+// static readonly Host:string = 'http://localhost:3000/';
 // static readonly Domain:string = 'http://192.168.43.38/';
 App.Domain = 'http://localhost/';
 App.IsWeb = true;
@@ -1711,15 +1711,15 @@ const Sound_1 = __webpack_require__(129);
 const Setting_1 = __webpack_require__(133);
 const Invite_1 = __webpack_require__(131);
 var screenfull = __webpack_require__(259);
-///<preference name="StatusBarOverlaysWebView" value="true" />
+// /<preference name="StatusBarOverlaysWebView" value="true" />;
 class viewGame {
     constructor() {
         this.FinishGame = false;
-        this.onDeviceReady = () => {
-            if (StatusBar.isVisible = true) {
-                StatusBar.hide();
-            }
-        };
+        // onDeviceReady = () => {
+        //     if (StatusBar.isVisible = true) {
+        //         StatusBar.hide();
+        //     }
+        // }
         this.ReSize = () => {
             if (!App_1.App.IsWeb || screenfull.isFullScreen) {
                 App_1.App.W = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -1879,6 +1879,7 @@ class viewGame {
             }
         };
         this.onStartGame = (data) => {
+            viewGame.player.emit("get room list");
             viewGame.sound.play_BG("Play");
             viewGame.Game.wait.stop();
             viewGame.player.color = data.color;
@@ -1979,7 +1980,6 @@ class viewGame {
         viewGame.player = new Player_1.Player();
         if (!App_1.App.IsWeb) {
             this.ReSize();
-            this.onDeviceReady();
             this.app = new PIXI.Application(App_1.App.W, App_1.App.H);
             this.app.stage.scale.set(App_1.App.W / App_1.App.width, App_1.App.H / App_1.App.height);
         }
@@ -23415,6 +23415,10 @@ class TextField extends PIXI.Container {
     constructor(x, y, size = 1, name) {
         super();
         this.size = size;
+        this.pageScroll = () => {
+            window.scrollBy(0, 1);
+            let scrolldelay = setTimeout(this.pageScroll, 10);
+        };
         this.focus = () => {
             this.input.focus();
         };
@@ -23472,6 +23476,21 @@ class TextField extends PIXI.Container {
         this.input.x = 20;
         this.input.y = -this.input.height / 2;
         this.addChild(this.input);
+        this.on("pointerdown", () => {
+            console.log("DMDMDMDMDs");
+            let item = document.getElementById("textbox");
+            item.focus();
+            item.value = this.input.text;
+            item.addEventListener("keydown", (e) => {
+                if (e.keyCode == 13) {
+                    item.blur();
+                    document.getElementById("canvas").focus();
+                    // document.getElementById("canvas").style.position="absolute"
+                    this.pageScroll();
+                }
+                this.setText(item.value);
+            });
+        });
     }
     set onEnterPress(fn) {
         this.input.onEnterPress = fn;
@@ -23642,8 +23661,8 @@ class Game extends Container {
                         this.reloadGame();
                         this.onWait();
                         this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
-                        this.player.emit("get room list     ");
                         this.player.emit("left room");
+                        this.player.emit("get room list");
                         viewGame_1.viewGame.Game.visible = false;
                         viewGame_1.viewGame.Hall.visible = true;
                     }
@@ -23687,6 +23706,15 @@ class Game extends Container {
         this.createChat();
         this.createScore();
         this.createBroadGame();
+        this.player.on("mustout", () => {
+            this.reloadGame();
+            this.onWait();
+            this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
+            this.player.emit("left room");
+            this.player.emit("get room list");
+            viewGame_1.viewGame.Game.visible = false;
+            viewGame_1.viewGame.Hall.visible = true;
+        });
     }
     createBroad(table) {
         this.broad_main = new PIXI.Container();
@@ -34499,20 +34527,18 @@ PixiTextInput.prototype.onBackgroundMouseDown = function (e) {
 };
 PixiTextInput.prototype.onBackgroundMouseUp = function () {
     this.blur();
-    let item = document.getElementById("textbox");
-    item.focus();
-    item.value = this.text;
-    item.addEventListener("keydown", (e) => {
-        if (e.keyCode == 13) {
-            this.text = item.value;
-            item.blur();
-            document.getElementById("canvas").focus();
-            document.getElementById("canvas").style.position = "absolute";
-        }
-        else {
-            this.text = item.value;
-        }
-    });
+    // let item: any = document.getElementById("textbox");
+    // item.focus();
+    // item.value = this.text;
+    // item.addEventListener("keydown", (e) => {
+    //     if (e.keyCode == 13) {
+    //         item.blur();
+    //         document.getElementById("canvas").focus();
+    //         // document.getElementById("canvas").style.position="absolute"
+    //         pageScroll();
+    //     }
+    //     this.setText(item.value)
+    // });
 };
 PixiTextInput.prototype.focus = function () {
     this.blur();
@@ -35535,14 +35561,10 @@ class Square extends Container {
             if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
                 this.onStartMove(arraySquare[1]);
             }
-            // console.log("nhucc LOLOLOLOL"+viewGame.turn+"   "+ viewGame.game_turn);
-            // setTimeout(()=> {
             if (viewGame_1.viewGame.turn == viewGame_1.viewGame.game_turn)
                 viewGame_1.viewGame.player.emit("change turn", true);
             else
                 viewGame_1.viewGame.player.emit("change turn", false);
-            // this.emit("finish move");
-            // },2000);
         }
     }
     checkForLeft(arraySquare, Box, v) {
@@ -35557,14 +35579,10 @@ class Square extends Container {
             if (viewGame_1.viewGame.game_turn != viewGame_1.viewGame.turn) {
                 this.onStartMove(arraySquare[1]);
             }
-            // console.log("nhucc LOLOLOLOL"+viewGame.turn+"   "+ viewGame.game_turn);
-            // setTimeout(()=>{
             if (viewGame_1.viewGame.turn == viewGame_1.viewGame.game_turn)
                 viewGame_1.viewGame.player.emit("change turn", true);
             else
                 viewGame_1.viewGame.player.emit("change turn", false);
-            // this.emit("finish move");
-            // },2000);
         }
     }
     checkPoint(ct) {
@@ -36042,7 +36060,7 @@ class Hall extends Container {
             this.player.emit("get room list");
             this.player.once("room list", this.getRoomList);
             this.player.on("room full", () => {
-                Panel_1.Panel.showMessageDialog("This room is full");
+                Panel_1.Panel.showMessageDialog("This room is full", () => { }, false);
             });
             this.player.on("join room success", () => {
                 viewGame_1.viewGame.Hall.visible = false;

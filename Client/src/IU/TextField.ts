@@ -64,12 +64,34 @@ export class TextField extends PIXI.Container {
         });
 
         this.input = new Input.PixiTextInput("", this.style);
+
         this.input.background = false;
         this.input.width = center.width;
         this.input.caretColor = 0xffffff;
         this.input.x = 20;
         this.input.y = -this.input.height / 2;
         this.addChild(this.input);
+        this.on("pointerdown", () => {
+            console.log("DMDMDMDMDs")
+            let item: any = document.getElementById("textbox");
+            item.focus();
+            item.value = this.input.text;
+            item.addEventListener("keydown", (e) => {
+                if (e.keyCode == 13) {
+                    item.blur();
+                    document.getElementById("canvas").focus();
+                    // document.getElementById("canvas").style.position="absolute"
+                    this.pageScroll();
+                }
+                this.setText(item.value)
+            });
+
+        });
+    }
+
+    pageScroll = () => {
+        window.scrollBy(0, 1);
+        let scrolldelay = setTimeout(this.pageScroll, 10);
     }
     focus = () => {
         this.input.focus();
@@ -82,6 +104,7 @@ export class TextField extends PIXI.Container {
     set onEnterPress(fn: Function) {
         this.input.onEnterPress = fn;
     }
+
     onClick: Function;
     getText = (): string => {
         return this.input.text;

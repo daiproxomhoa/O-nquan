@@ -53,6 +53,15 @@ export class Game extends Container {
         this.createChat();
         this.createScore();
         this.createBroadGame();
+        this.player.on("mustout",()=>{
+            this.reloadGame();
+            this.onWait();
+            this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
+            this.player.emit("left room");
+            this.player.emit("get room list");
+            viewGame.Game.visible = false;
+            viewGame.Hall.visible = true;
+        })
 
     }
 
@@ -140,8 +149,8 @@ export class Game extends Container {
                     this.reloadGame();
                     this.onWait();
                     this.broad.getChildAt(1).onStopMove(this.broad.getChildAt(1));
-                    this.player.emit("get room list     ");
                     this.player.emit("left room");
+                    this.player.emit("get room list");
                     viewGame.Game.visible = false;
                     viewGame.Hall.visible = true;
                 }

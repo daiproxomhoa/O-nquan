@@ -18,6 +18,7 @@ module.exports = {
         filename: 'dist/bundle.js'
         // filename: 'Mobile/www/js/bundle.js'
     },
+
     devtool : "source-map",
     module: {
         loaders: [

@@ -1,5 +1,6 @@
 import {User} from "./User";
 import {Room} from "./Room";
+import {isNullOrUndefined} from "util";
 // /**
 //  * Created by Vu Tien Dai on 01/08/2017.
 //  */
@@ -13,6 +14,7 @@ export class Manages {
         for (let i = 0; i < 30; i++) {
             this.rooms.push(new Room(i + 1, "Room " + i));
         }
+
     }
 
     addUser = (user: User) => {
@@ -54,6 +56,7 @@ export class Manages {
             let index = this.users.findIndex((element): boolean => {
                 return element == user;
             });
+            user.socket.broadcast.emit("room list", this.getRoomList());
             this.users.splice(index, 1);
         }, false);
         user.on("invited", (data: any) => {
@@ -67,7 +70,7 @@ export class Manages {
         })
         user.on("get room list", () => {
             user.emit("room list", this.getRoomList());
-            user.emit("update_gold",user.gold);
+            user.socket.broadcast.emit("room list", this.getRoomList());
         });
     }
 

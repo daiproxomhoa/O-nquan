@@ -89,13 +89,13 @@ class Room {
                     }
                 });
                 this.users[i].on("change turn", (data) => {
-                    this.turncount++;
+                    this.keycount++;
                     if (data == true) {
                         this.keyturn = i;
                     }
-                    if (this.turncount == 2) {
+                    if (this.keycount == 2) {
                         this.changeturn(this.keyturn);
-                        this.turncount = 0;
+                        this.keycount = 0;
                     }
                     // console.log("Name : "+ this.users[this.keyturn].getUserName+"keycount : "+this.turncount);
                     // this.turncount++;
